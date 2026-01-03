@@ -11,37 +11,6 @@ SkySpy is configured via environment variables in your `.env` file. Copy the sam
 cp .env.test.sample .env
 ```
 
-## Configuration Overview
-
-```mermaid
-flowchart TB
-    subgraph Required["🔴 Required"]
-        DB[DATABASE_URL]
-        UF[ULTRAFEEDER_HOST]
-        LAT[FEEDER_LAT/LON]
-    end
-
-    subgraph Core["🟡 Core Settings"]
-        POLL[Polling Intervals]
-        SAFE[Safety Thresholds]
-    end
-
-    subgraph Optional["🟢 Optional"]
-        NOTIFY[Notifications]
-        UAT[UAT 978MHz]
-        REDIS[Redis Pub/Sub]
-        ACARS[ACARS Messages]
-        PHOTO[Photo Cache]
-    end
-
-    Required --> Core
-    Core --> Optional
-
-    style Required fill:#ffebee
-    style Core fill:#fff3e0
-    style Optional fill:#e8f5e9
-```
-
 ## Required Settings
 
 <Warning>
