@@ -1,0 +1,8 @@
+- health_check_api_v1_health_get
+- get_status_api_v1_status_get
+- api_info_api_v1__get
+- get_ws_status_api_v1_ws_status_get
+- get_config_api_v1_config_get
+- get_photo_cache_status_api_v1_photos_cache_get
+- get_opensky_db_status_api_v1_opensky_stats_get
+- opensky_lookup_api_v1_opensky_lookup__icao_hex__get

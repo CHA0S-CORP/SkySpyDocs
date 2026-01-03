@@ -1,0 +1,7 @@
+- get_config_api_v1_notifications_config_get
+- update_config_api_v1_notifications_config_put
+- send_test_api_v1_notifications_test_post
+- get_history_api_v1_notifications_history_get
+- get_stats_api_v1_notifications_stats_get
+- enable_notifications_api_v1_notifications_enable_post
+- disable_notifications_api_v1_notifications_disable_post

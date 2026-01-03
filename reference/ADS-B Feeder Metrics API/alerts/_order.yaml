@@ -1,0 +1,8 @@
+- get_rules_api_v1_alerts_rules_get
+- create_rule_api_v1_alerts_rules_post
+- get_rule_api_v1_alerts_rules__rule_id__get
+- update_rule_api_v1_alerts_rules__rule_id__put
+- delete_rule_api_v1_alerts_rules__rule_id__delete
+- toggle_rule_api_v1_alerts_rules__rule_id__toggle_post
+- get_history_api_v1_alerts_history_get
+- clear_history_api_v1_alerts_history_delete

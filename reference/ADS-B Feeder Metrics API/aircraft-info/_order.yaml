@@ -1,0 +1,5 @@
+- get_airframe_info_api_v1_aircraft__icao_hex__info_get
+- get_aircraft_photo_api_v1_aircraft__icao_hex__photo_get
+- download_aircraft_photo_api_v1_aircraft__icao_hex__photo_download_get
+- get_bulk_info_api_v1_aircraft_info_bulk_post
+- get_cache_stats_api_v1_aircraft_info_cache_stats_get
