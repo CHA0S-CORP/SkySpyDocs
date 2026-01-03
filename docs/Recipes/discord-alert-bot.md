@@ -1,109 +1,165 @@
 ---
-title: "Discord Alert Bot"
-slug: "discord-alert-bot"
-excerpt: "Send real-time aircraft alerts to your Discord server using webhooks."
-hidden: false
+title: Discord Alert Bot
+description: Send real-time aircraft alerts to your Discord server using webhooks.
+hidden: true
+recipe:
+  color: '#5865F2'
+  icon: 🤖
 ---
-
-Build a Discord bot that sends aircraft alerts to your server in real-time.
-
-```mermaid
-%%{init: {'theme': 'dark', 'themeVariables': { 'primaryColor': '#1e3a5f', 'primaryTextColor': '#fff', 'primaryBorderColor': '#3b82f6', 'lineColor': '#60a5fa'}}}%%
-flowchart LR
-    SKYSPY["📡 SkySpy API"] -->|"📤 SSE Stream"| BOT["🐍 Python Bot"]
-    BOT -->|"📨 Webhook"| DISCORD["💬 Discord Channel"]
-
-    style SKYSPY fill:#0d4f8b,stroke:#3b82f6,stroke-width:2px,color:#fff
-    style BOT fill:#7c4a03,stroke:#f59e0b,stroke-width:2px,color:#fff
-    style DISCORD fill:#5865F2,stroke:#7289da,stroke-width:2px,color:#fff
+```shell Shell
+pip install sseclient-py requests discord-webhook
+export DISCORD_WEBHOOK_URL="https://discord.com/api/webhooks/..."
+python discord_bot.py
 ```
 
-## What You'll Build
+```go Go
+package main
 
-<CardGroup cols={2}>
-  <Card title="Real-time Alerts" icon="bolt">
-    Instant notifications when aircraft match your rules
-  </Card>
-  <Card title="Rich Embeds" icon="image">
-    Beautiful Discord embeds with aircraft details
-  </Card>
-  <Card title="Safety Events" icon="shield">
-    TCAS, proximity, and emergency alerts
-  </Card>
-  <Card title="Customizable" icon="gear">
-    Filter by aircraft type, distance, altitude
-  </Card>
-</CardGroup>
+import (
+    "bufio"
+    "bytes"
+    "encoding/json"
+    "fmt"
+    "net/http"
+    "os"
+    "strings"
+)
 
-## Prerequisites
+func main() {
+    webhookURL := os.Getenv("DISCORD_WEBHOOK_URL")
+    resp, _ := http.Get("http://localhost:5000/api/v1/map/sse")
+    defer resp.Body.Close()
 
-<Check>
-**SkySpy running** — API accessible at `http://localhost:5000`
-</Check>
-
-<Check>
-**Discord webhook** — Create one in your channel settings
-</Check>
-
----
-
-## Quick Setup
-
-<Steps>
-  <Step title="Create Discord Webhook">
-    Right-click channel → **Edit Channel** → **Integrations** → **Webhooks** → **New Webhook**
-  </Step>
-  <Step title="Install Dependencies">
-    ```bash
-    pip install sseclient-py requests discord-webhook
-    ```
-  </Step>
-  <Step title="Configure & Run">
-    ```bash
-    export DISCORD_WEBHOOK_URL="https://discord.com/api/webhooks/..."
-    python discord_bot.py
-    ```
-  </Step>
-</Steps>
-
----
-
-## Implementation
-
-<Cards columns={2}>
-  <Card title="Bot Code" icon="code" href="/docs/discord-alert-bot/code">
-    Complete Python bot implementation
-  </Card>
-  <Card title="Run as Service" icon="server" href="/docs/discord-alert-bot/service">
-    Systemd and Docker deployment
-  </Card>
-</Cards>
-
----
-
-## Example Output
-
-```
-┌────────────────────────────────────────┐
-│ 🎖️ Military: EVAC26                    │
-├────────────────────────────────────────┤
-│ Type: C17     │ Altitude: 28,000 ft    │
-│ Speed: 420 kts│ Distance: 12.4 NM      │
-│ Squawk: 4621  │ ICAO: AE1234           │
-├────────────────────────────────────────┤
-│ SkySpy Alert • Today at 3:42 PM        │
-└────────────────────────────────────────┘
+    scanner := bufio.NewScanner(resp.Body)
+    for scanner.Scan() {
+        line := scanner.Text()
+        if strings.HasPrefix(line, "data:") {
+            var data map[string]interface{}
+            json.Unmarshal([]byte(line[5:]), &data)
+            if aircraft, ok := data["aircraft"].([]interface{}); ok {
+                for _, a := range aircraft {
+                    ac := a.(map[string]interface{})
+                    if ac["military"] == true {
+                        embed := map[string]interface{}{
+                            "embeds": []map[string]interface{}{{
+                                "title": fmt.Sprintf("🎖️ Military: %s", ac["flight"]),
+                                "color": 0x5865F2,
+                            }},
+                        }
+                        body, _ := json.Marshal(embed)
+                        http.Post(webhookURL, "application/json", bytes.NewReader(body))
+                    }
+                }
+            }
+        }
+    }
+}
 ```
 
----
+```python Python
+import json
+import os
+import requests
+import sseclient
+from discord_webhook import DiscordWebhook, DiscordEmbed
 
-## Next Steps
+SKYSPY_URL = os.getenv("SKYSPY_URL", "http://localhost:5000")
+WEBHOOK_URL = os.getenv("DISCORD_WEBHOOK_URL")
 
-<Cards columns={2}>
-  <Card title="Track Specific Aircraft" icon="plane" href="/docs/track-aircraft">
-    Add alerts for specific tail numbers
-  </Card>
-  <Card title="Safety & Alerts" icon="bell" href="/docs/safety-and-alerts">
-    Configure custom alert rules in SkySpy
-  </Card>
-</Cards>
+response = requests.get(f"{SKYSPY_URL}/api/v1/map/sse", stream=True)
+client = sseclient.SSEClient(response)
+alerted = set()
+
+for event in client.events():
+    if event.event in ["aircraft_update", "aircraft_new"]:
+        data = json.loads(event.data)
+        for aircraft in data.get("aircraft", []):
+            hex_code = aircraft.get("hex")
+            if hex_code in alerted:
+                continue
+            if aircraft.get("military"):
+                webhook = DiscordWebhook(url=WEBHOOK_URL)
+                embed = DiscordEmbed(
+                    title=f"🎖️ Military: {aircraft.get('flight', hex_code)}",
+                    color="5865F2"
+                )
+                embed.add_embed_field(name="Type", value=aircraft.get("type", "Unknown"))
+                embed.add_embed_field(name="Altitude", value=f"{aircraft.get('alt', 0):,} ft")
+                webhook.add_embed(embed)
+                webhook.execute()
+                alerted.add(hex_code)
+```
+
+```javascript JavaScript
+const EventSource = require('eventsource');
+const fetch = require('node-fetch');
+
+const WEBHOOK_URL = process.env.DISCORD_WEBHOOK_URL;
+const alerted = new Set();
+
+const es = new EventSource('http://localhost:5000/api/v1/map/sse');
+
+es.addEventListener('aircraft_update', async (e) => {
+  const data = JSON.parse(e.data);
+  for (const aircraft of data.aircraft) {
+    if (alerted.has(aircraft.hex)) continue;
+    if (aircraft.military) {
+      await fetch(WEBHOOK_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          embeds: [{
+            title: `🎖️ Military: ${aircraft.flight || aircraft.hex}`,
+            color: 0x5865F2,
+            fields: [
+              { name: 'Type', value: aircraft.type || 'Unknown', inline: true },
+              { name: 'Altitude', value: `${aircraft.alt?.toLocaleString() || 0} ft`, inline: true }
+            ]
+          }]
+        })
+      });
+      alerted.add(aircraft.hex);
+    }
+  }
+});
+```
+
+```json Response Example
+{"embeds": [{"title": "🎖️ Military: RCH419", "color": 5793266, "fields": [{"name": "Type", "value": "C17"}, {"name": "Altitude", "value": "28,000 ft"}]}]}
+```
+
+# step1
+
+<!-- shell@ -->
+<!-- go@ -->
+<!-- python@ -->
+<!-- javascript@ -->
+
+Build a Discord bot that sends aircraft alerts to your server in real-time. Create a Discord webhook first: Right-click channel → Edit Channel → Integrations → Webhooks → New Webhook.
+
+# step2
+
+The bot connects to SkySpy's SSE stream and sends rich embeds for matching aircraft. Customize the filter conditions to alert on military aircraft, emergencies, or specific callsigns.
+
+<!-- shell@ -->
+<!-- go@ -->
+<!-- python@ -->
+<!-- javascript@ -->
+
+# step3
+
+To run as a background service, use systemd (Linux) or Docker:
+
+```shell
+# Systemd
+sudo systemctl enable skyspy-discord
+sudo systemctl start skyspy-discord
+
+# Docker
+docker run -d -e DISCORD_WEBHOOK_URL="..." skyspy-discord
+```
+
+<!-- shell@ -->
+<!-- go@ -->
+<!-- python@ -->
+<!-- javascript@ -->

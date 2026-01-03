@@ -1,132 +1,188 @@
 ---
-title: "Build a Live Dashboard"
-slug: "live-dashboard"
-excerpt: "Create a real-time aircraft monitoring dashboard with React and SSE."
-hidden: false
+title: Build a Live Dashboard
+description: Create a real-time aircraft monitoring dashboard with React and SSE.
+hidden: true
+recipe:
+  color: '#10B981'
+  icon: 🖥️
 ---
-
-Build a custom aircraft monitoring dashboard that displays live data from SkySpy.
-
-```mermaid
-%%{init: {'theme': 'dark', 'themeVariables': { 'primaryColor': '#1e3a5f', 'primaryTextColor': '#fff', 'primaryBorderColor': '#3b82f6', 'lineColor': '#60a5fa'}}}%%
-flowchart LR
-    subgraph SkySpy["📡 SkySpy API"]
-        SSE["📤 SSE Stream"]
-    end
-
-    subgraph Dashboard["🖥️ React Dashboard"]
-        HOOK["🪝 useSkySpySSE"]
-        MAP["🗺️ Map View"]
-        LIST["📋 Aircraft List"]
-        STATS["📊 Statistics"]
-    end
-
-    SSE --> HOOK
-    HOOK --> MAP
-    HOOK --> LIST
-    HOOK --> STATS
-
-    style SkySpy fill:#0d4f8b,stroke:#3b82f6,stroke-width:2px,color:#fff
-    style Dashboard fill:#065f46,stroke:#10b981,stroke-width:2px,color:#fff
-```
-
-## What You'll Build
-
-<CardGroup cols={2}>
-  <Card title="Live Aircraft List" icon="list">
-    Real-time table with sorting and filtering
-  </Card>
-  <Card title="Statistics Panel" icon="chart-bar">
-    Live counts, distances, and altitude distribution
-  </Card>
-  <Card title="Safety Alerts" icon="bell">
-    Toast notifications for safety events
-  </Card>
-  <Card title="Zero Dependencies" icon="feather">
-    Uses native EventSource API
-  </Card>
-</CardGroup>
-
-## Prerequisites
-
-<Check>
-**SkySpy running** — API accessible (we'll use `http://localhost:5000`)
-</Check>
-
-<Check>
-**Node.js 18+** — For running the React development server
-</Check>
-
----
-
-## Quick Start
-
-```bash
+```shell Shell
 npm create vite@latest skyspy-dashboard -- --template react-ts
 cd skyspy-dashboard
 npm install
-```
-
----
-
-## Implementation
-
-<Cards columns={2}>
-  <Card title="SSE Hook" icon="code" href="/docs/live-dashboard/sse-hook">
-    Create the useSkySpySSE React hook
-  </Card>
-  <Card title="Components" icon="puzzle-piece" href="/docs/live-dashboard/components">
-    Build AircraftList, Statistics, and ConnectionStatus
-  </Card>
-  <Card title="Main App" icon="window" href="/docs/live-dashboard/app">
-    Wire everything together
-  </Card>
-  <Card title="Styling" icon="palette" href="/docs/live-dashboard/styling">
-    Add dark theme CSS
-  </Card>
-</Cards>
-
----
-
-## Run the Dashboard
-
-```bash
 npm run dev
 ```
 
-Open `http://localhost:5173` to see your dashboard.
+```go Go
+package main
 
----
+import (
+    "bufio"
+    "encoding/json"
+    "fmt"
+    "html/template"
+    "net/http"
+    "strings"
+    "sync"
+)
 
-## Extend It
+var (
+    aircraft = make(map[string]interface{})
+    mu       sync.RWMutex
+    tmpl     = template.Must(template.New("dashboard").Parse(`
+<!DOCTYPE html>
+<html><head><title>SkySpy Dashboard</title></head>
+<body>
+<h1>Aircraft: {{len .}}</h1>
+<table><tr><th>Callsign</th><th>Type</th><th>Altitude</th></tr>
+{{range .}}<tr><td>{{.flight}}</td><td>{{.type}}</td><td>{{.alt}}</td></tr>{{end}}
+</table>
+<script>setTimeout(() => location.reload(), 5000)</script>
+</body></html>`))
+)
 
-<AccordionGroup>
-  <Accordion title="Add a map view" icon="map">
-    ```bash
-    npm install leaflet react-leaflet
-    ```
-    See the [React Leaflet documentation](https://react-leaflet.js.org/) for integration.
-  </Accordion>
+func main() {
+    go func() {
+        resp, _ := http.Get("http://localhost:5000/api/v1/map/sse")
+        scanner := bufio.NewScanner(resp.Body)
+        for scanner.Scan() {
+            line := scanner.Text()
+            if strings.HasPrefix(line, "data:") {
+                var data map[string]interface{}
+                json.Unmarshal([]byte(line[5:]), &data)
+                if ac, ok := data["aircraft"].([]interface{}); ok {
+                    mu.Lock()
+                    for _, a := range ac {
+                        m := a.(map[string]interface{})
+                        aircraft[fmt.Sprint(m["hex"])] = m
+                    }
+                    mu.Unlock()
+                }
+            }
+        }
+    }()
 
-  <Accordion title="Add sound alerts" icon="volume-high">
-    ```typescript
-    const playAlert = () => {
-      const audio = new Audio('/alert.mp3');
-      audio.play();
-    };
-    ```
-  </Accordion>
-</AccordionGroup>
+    http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+        mu.RLock()
+        defer mu.RUnlock()
+        list := make([]map[string]interface{}, 0, len(aircraft))
+        for _, v := range aircraft {
+            list = append(list, v.(map[string]interface{}))
+        }
+        tmpl.Execute(w, list)
+    })
+    http.ListenAndServe(":8080", nil)
+}
+```
 
----
+```python Python
+from flask import Flask, render_template_string
+import json
+import requests
+import sseclient
+import threading
 
-## Next Steps
+app = Flask(__name__)
+aircraft = {}
 
-<Cards columns={2}>
-  <Card title="SSE Streaming API" icon="signal-stream" href="/docs/sse">
-    Learn more about SSE event types
-  </Card>
-  <Card title="Discord Alert Bot" icon="discord" href="/docs/discord-alert-bot">
-    Add Discord notifications
-  </Card>
-</Cards>
+TEMPLATE = """
+<!DOCTYPE html>
+<html><head><title>SkySpy Dashboard</title>
+<meta http-equiv="refresh" content="5"></head>
+<body>
+<h1>Aircraft: {{ aircraft|length }}</h1>
+<table><tr><th>Callsign</th><th>Type</th><th>Altitude</th></tr>
+{% for a in aircraft.values() %}
+<tr><td>{{ a.flight }}</td><td>{{ a.type }}</td><td>{{ a.alt }}</td></tr>
+{% endfor %}
+</table>
+</body></html>
+"""
+
+def stream_aircraft():
+    response = requests.get("http://localhost:5000/api/v1/map/sse", stream=True)
+    client = sseclient.SSEClient(response)
+    for event in client.events():
+        if event.event in ["aircraft_update", "aircraft_new"]:
+            data = json.loads(event.data)
+            for a in data.get("aircraft", []):
+                aircraft[a["hex"]] = a
+
+@app.route("/")
+def index():
+    return render_template_string(TEMPLATE, aircraft=aircraft)
+
+if __name__ == "__main__":
+    threading.Thread(target=stream_aircraft, daemon=True).start()
+    app.run(port=8080)
+```
+
+```javascript JavaScript
+// src/hooks/useSkySpySSE.ts
+import { useEffect, useState } from 'react';
+
+export function useSkySpySSE(url = 'http://localhost:5000/api/v1/map/sse') {
+  const [aircraft, setAircraft] = useState(new Map());
+  const [connected, setConnected] = useState(false);
+
+  useEffect(() => {
+    const es = new EventSource(url);
+    es.onopen = () => setConnected(true);
+    es.onerror = () => setConnected(false);
+
+    es.addEventListener('aircraft_update', (e) => {
+      const data = JSON.parse(e.data);
+      setAircraft(prev => {
+        const next = new Map(prev);
+        data.aircraft.forEach(a => next.set(a.hex, { ...next.get(a.hex), ...a }));
+        return next;
+      });
+    });
+
+    return () => es.close();
+  }, [url]);
+
+  return { aircraft: Array.from(aircraft.values()), connected, count: aircraft.size };
+}
+```
+
+```json Response Example
+{"aircraft": [{"hex": "A12345", "flight": "UAL123", "type": "B738", "alt": 35000, "gs": 450}], "count": 1, "connected": true}
+```
+
+# step1
+
+<!-- shell@ -->
+<!-- go@ -->
+<!-- python@ -->
+<!-- javascript@ -->
+
+Build a custom aircraft monitoring dashboard that displays live data from SkySpy using Server-Sent Events (SSE). The React version uses a custom hook for real-time updates.
+
+# step2
+
+The dashboard displays:
+- Live aircraft count
+- Sortable aircraft list with callsign, type, altitude, speed
+- Connection status indicator
+- Safety event notifications
+
+<!-- shell@ -->
+<!-- go@ -->
+<!-- python@ -->
+<!-- javascript@ -->
+
+# step3
+
+To extend with a map view:
+
+```shell
+npm install leaflet react-leaflet
+```
+
+Then add aircraft markers using the lat/lon coordinates from the SSE stream.
+
+<!-- shell@ -->
+<!-- go@ -->
+<!-- python@ -->
+<!-- javascript@ -->

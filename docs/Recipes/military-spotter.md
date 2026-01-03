@@ -1,69 +1,12 @@
 ---
-title: "Military Aircraft Spotter"
-slug: "military-spotter"
-excerpt: "Get notified when military aircraft are in your area."
-hidden: false
+title: Military Aircraft Spotter
+description: Get notified when military aircraft are in your area.
+hidden: true
+recipe:
+  color: '#6366F1'
+  icon: 🎖️
 ---
-
-Set up alerts to track military aircraft in your receiver's coverage area.
-
-```mermaid
-%%{init: {'theme': 'dark', 'themeVariables': { 'primaryColor': '#1e3a5f', 'primaryTextColor': '#fff', 'primaryBorderColor': '#3b82f6', 'lineColor': '#60a5fa'}}}%%
-flowchart LR
-    subgraph Detection["🔍 Detection"]
-        MIL["🎖️ Military Flag"]
-        TYPE["✈️ Aircraft Type"]
-        CALL["🏷️ Callsign Pattern"]
-    end
-
-    subgraph Alert["🔔 Alert"]
-        PUSH["📱 Push Notification"]
-        DISCORD["🤖 Discord Bot"]
-    end
-
-    Detection --> Alert
-
-    style Detection fill:#0d4f8b,stroke:#3b82f6,stroke-width:2px,color:#fff
-    style Alert fill:#065f46,stroke:#10b981,stroke-width:2px,color:#fff
-```
-
-## How Military Detection Works
-
-<CardGroup cols={3}>
-  <Card title="Military Flag" icon="flag">
-    ADS-B category indicates military/government
-  </Card>
-  <Card title="ICAO Range" icon="hashtag">
-    Military ICAO hex ranges by country
-  </Card>
-  <Card title="Callsign" icon="plane">
-    Known military callsign patterns
-  </Card>
-</CardGroup>
-
----
-
-## Dashboard Quick Setup
-
-<Steps>
-  <Step title="Open Alert Rules">
-    Navigate to **Settings** → **Alert Rules**
-  </Step>
-  <Step title="Create Rule">
-    Set Field: `military`, Operator: `eq`, Value: `true`
-  </Step>
-  <Step title="Add Distance Filter (Optional)">
-    Field: `distance`, Operator: `lt`, Value: `50`
-  </Step>
-</Steps>
-
----
-
-## API Rules
-
-### Basic Military Alert
-
-```bash
+```shell Shell
 curl -X POST http://localhost:5000/api/alerts/rules \
   -H "Content-Type: application/json" \
   -d '{
@@ -80,9 +23,88 @@ curl -X POST http://localhost:5000/api/alerts/rules \
   }'
 ```
 
-### Military Within 25nm
+```go Go
+package main
 
-```bash
+import (
+    "bytes"
+    "encoding/json"
+    "net/http"
+)
+
+func main() {
+    rule := map[string]interface{}{
+        "name":     "Military Aircraft",
+        "enabled":  true,
+        "priority": "high",
+        "conditions": map[string]interface{}{
+            "operator": "AND",
+            "conditions": []map[string]interface{}{
+                {"field": "military", "operator": "eq", "value": true},
+            },
+        },
+        "notification_enabled": true,
+    }
+    body, _ := json.Marshal(rule)
+    http.Post("http://localhost:5000/api/alerts/rules", "application/json", bytes.NewReader(body))
+}
+```
+
+```python Python
+import requests
+
+rule = {
+    "name": "Military Aircraft",
+    "enabled": True,
+    "priority": "high",
+    "conditions": {
+        "operator": "AND",
+        "conditions": [
+            {"field": "military", "operator": "eq", "value": True}
+        ]
+    },
+    "notification_enabled": True
+}
+requests.post("http://localhost:5000/api/alerts/rules", json=rule)
+```
+
+```javascript JavaScript
+fetch('http://localhost:5000/api/alerts/rules', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    name: 'Military Aircraft',
+    enabled: true,
+    priority: 'high',
+    conditions: {
+      operator: 'AND',
+      conditions: [
+        { field: 'military', operator: 'eq', value: true }
+      ]
+    },
+    notification_enabled: true
+  })
+});
+```
+
+```json Response Example
+{"id": 1, "name": "Military Aircraft", "enabled": true, "priority": "high"}
+```
+
+# step1
+
+<!-- shell@ -->
+<!-- go@ -->
+<!-- python@ -->
+<!-- javascript@ -->
+
+Set up alerts to track military aircraft in your receiver's coverage area. SkySpy detects military aircraft through ADS-B category flags, ICAO hex ranges, and known military callsign patterns.
+
+# step2
+
+To filter military aircraft within a specific distance (e.g., 25 nautical miles):
+
+```shell
 curl -X POST http://localhost:5000/api/alerts/rules \
   -H "Content-Type: application/json" \
   -d '{
@@ -99,51 +121,22 @@ curl -X POST http://localhost:5000/api/alerts/rules \
   }'
 ```
 
-```mermaid
-%%{init: {'theme': 'dark', 'themeVariables': { 'primaryColor': '#1e3a5f', 'primaryTextColor': '#fff', 'primaryBorderColor': '#3b82f6', 'lineColor': '#60a5fa'}}}%%
-flowchart LR
-    A["🎖️ Military = true"] --> AND{"✅ AND"}
-    B["📍 Distance < 25 NM"] --> AND
-    AND --> ALERT["🔔 Alert"]
+<!-- shell@ -->
+<!-- go@ -->
+<!-- python@ -->
+<!-- javascript@ -->
 
-    style AND fill:#7c4a03,stroke:#f59e0b,stroke-width:2px,color:#fff
-    style ALERT fill:#065f46,stroke:#10b981,stroke-width:2px,color:#fff
-```
+# step3
 
----
+Common military aircraft types you may see:
 
-## Common Military Aircraft
+- **F16, F15** - Fighter jets
+- **C17, C130** - Transport aircraft
+- **KC135** - Tanker
+- **B52** - Bomber
+- **TYPHOON, RAFALE, TORNADO** - NATO fighters
 
-<AccordionGroup>
-  <Accordion title="US Military" icon="flag-usa">
-    | Type | Aircraft |
-    | :--- | :--- |
-    | F16 | Fighting Falcon |
-    | F15 | Eagle |
-    | C17 | Globemaster III |
-    | C130 | Hercules |
-    | KC135 | Stratotanker |
-    | B52 | Stratofortress |
-  </Accordion>
-  <Accordion title="NATO / Allied" icon="globe">
-    | Type | Aircraft |
-    | :--- | :--- |
-    | TYPHOON | Eurofighter |
-    | RAFALE | Rafale |
-    | TORNADO | Tornado |
-    | GRIPEN | Gripen |
-  </Accordion>
-</AccordionGroup>
-
----
-
-## Next Steps
-
-<Cards columns={2}>
-  <Card title="Discord Alert Bot" icon="discord" href="/docs/discord-alert-bot">
-    Send military sightings to Discord
-  </Card>
-  <Card title="Export to CSV" icon="file-csv" href="/docs/export-csv">
-    Log all sightings for analysis
-  </Card>
-</Cards>
+<!-- shell@ -->
+<!-- go@ -->
+<!-- python@ -->
+<!-- javascript@ -->
