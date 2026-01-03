@@ -8,20 +8,21 @@ hidden: false
 Create a logging system that records all aircraft sightings to CSV files. Perfect for building historical records, analyzing traffic patterns, or feeding data to other tools.
 
 ```mermaid
+%%{init: {'theme': 'dark', 'themeVariables': { 'primaryColor': '#1e3a5f', 'primaryTextColor': '#fff', 'primaryBorderColor': '#3b82f6', 'lineColor': '#60a5fa'}}}%%
 flowchart LR
     subgraph Input["📡 SkySpy"]
-        SSE[SSE Stream]
+        SSE["📤 SSE Stream"]
     end
 
     subgraph Processing["⚙️ Logger"]
-        FILTER[Filter]
-        FORMAT[Format]
+        FILTER["🔍 Filter"]
+        FORMAT["📝 Format"]
     end
 
     subgraph Output["📁 Files"]
-        CSV[aircraft.csv]
-        SAFETY[safety.csv]
-        DAILY[daily/]
+        CSV["📊 aircraft.csv"]
+        SAFETY["🛡️ safety.csv"]
+        DAILY["📅 daily/"]
     end
 
     SSE --> FILTER
@@ -30,9 +31,9 @@ flowchart LR
     FORMAT --> SAFETY
     FORMAT --> DAILY
 
-    style Input fill:#e3f2fd
-    style Processing fill:#fff3e0
-    style Output fill:#e8f5e9
+    style Input fill:#0d4f8b,stroke:#3b82f6,stroke-width:2px,color:#fff
+    style Processing fill:#7c4a03,stroke:#f59e0b,stroke-width:2px,color:#fff
+    style Output fill:#065f46,stroke:#10b981,stroke-width:2px,color:#fff
 ```
 
 ## What You'll Build

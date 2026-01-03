@@ -8,16 +8,17 @@ hidden: false
 Build a custom aircraft monitoring dashboard that displays live data from SkySpy. Perfect for creating custom displays, embedding in other applications, or building specialized monitoring tools.
 
 ```mermaid
+%%{init: {'theme': 'dark', 'themeVariables': { 'primaryColor': '#1e3a5f', 'primaryTextColor': '#fff', 'primaryBorderColor': '#3b82f6', 'lineColor': '#60a5fa'}}}%%
 flowchart LR
     subgraph SkySpy["📡 SkySpy API"]
-        SSE[SSE Stream]
+        SSE["📤 SSE Stream"]
     end
 
     subgraph Dashboard["🖥️ React Dashboard"]
-        HOOK[useSkySpySSE]
-        MAP[Map View]
-        LIST[Aircraft List]
-        STATS[Statistics]
+        HOOK["🪝 useSkySpySSE"]
+        MAP["🗺️ Map View"]
+        LIST["📋 Aircraft List"]
+        STATS["📊 Statistics"]
     end
 
     SSE --> HOOK
@@ -25,8 +26,8 @@ flowchart LR
     HOOK --> LIST
     HOOK --> STATS
 
-    style SkySpy fill:#e3f2fd
-    style Dashboard fill:#e8f5e9
+    style SkySpy fill:#0d4f8b,stroke:#3b82f6,stroke-width:2px,color:#fff
+    style Dashboard fill:#065f46,stroke:#10b981,stroke-width:2px,color:#fff
 ```
 
 ## What You'll Build

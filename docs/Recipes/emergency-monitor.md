@@ -8,22 +8,23 @@ hidden: false
 Set up real-time monitoring for aircraft broadcasting emergency squawk codes. Get instant alerts when aircraft in distress enter your receiver's coverage.
 
 ```mermaid
+%%{init: {'theme': 'dark', 'themeVariables': { 'primaryColor': '#1e3a5f', 'primaryTextColor': '#fff', 'primaryBorderColor': '#3b82f6', 'lineColor': '#60a5fa'}}}%%
 flowchart LR
     subgraph Squawks["🚨 Emergency Squawks"]
-        S7700[7700 - Emergency]
-        S7600[7600 - Radio Failure]
-        S7500[7500 - Hijack]
+        S7700["🆘 7700 - Emergency"]
+        S7600["📻 7600 - Radio Failure"]
+        S7500["⚠️ 7500 - Hijack"]
     end
 
     subgraph Alert["🔔 Immediate Alert"]
-        PUSH[Push Notification]
-        DASH[Dashboard Alert]
+        PUSH["📱 Push Notification"]
+        DASH["🖥️ Dashboard Alert"]
     end
 
     Squawks --> Alert
 
-    style Squawks fill:#ffcdd2
-    style Alert fill:#e8f5e9
+    style Squawks fill:#991b1b,stroke:#ef4444,stroke-width:2px,color:#fff
+    style Alert fill:#065f46,stroke:#10b981,stroke-width:2px,color:#fff
 ```
 
 ## Emergency Squawk Codes
@@ -80,14 +81,15 @@ curl -X POST http://localhost:5000/api/alerts/rules \
 ```
 
 ```mermaid
+%%{init: {'theme': 'dark', 'themeVariables': { 'primaryColor': '#1e3a5f', 'primaryTextColor': '#fff', 'primaryBorderColor': '#3b82f6', 'lineColor': '#60a5fa'}}}%%
 flowchart TB
-    S1[Squawk = 7700] --> OR{OR}
-    S2[Squawk = 7600] --> OR
-    S3[Squawk = 7500] --> OR
-    OR --> ALERT[🚨 CRITICAL ALERT]
+    S1["🆘 Squawk = 7700"] --> OR{"☑️ OR"}
+    S2["📻 Squawk = 7600"] --> OR
+    S3["⚠️ Squawk = 7500"] --> OR
+    OR --> ALERT["🚨 CRITICAL ALERT"]
 
-    style OR fill:#ffcdd2
-    style ALERT fill:#d32f2f,color:#fff
+    style OR fill:#991b1b,stroke:#ef4444,stroke-width:2px,color:#fff
+    style ALERT fill:#7f1d1d,stroke:#dc2626,stroke-width:2px,color:#fff
 ```
 
 ---

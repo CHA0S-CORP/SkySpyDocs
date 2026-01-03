@@ -39,14 +39,15 @@ Control how frequently SkySpy fetches data and writes to the database:
 | `DB_STORE_INTERVAL` | `10` | Seconds between database writes |
 
 ```mermaid
+%%{init: {'theme': 'dark', 'themeVariables': { 'primaryColor': '#1e3a5f', 'primaryTextColor': '#fff', 'primaryBorderColor': '#3b82f6', 'lineColor': '#60a5fa'}}}%%
 flowchart LR
     subgraph Timing["⏱️ Data Flow Timing"]
         direction LR
-        RX[Receiver] -->|2s| API[API]
-        API -->|10s| DB[(Database)]
+        RX["📡 Receiver"] -->|"⚡ 2s"| API["🚀 API"]
+        API -->|"💾 10s"| DB[("🗄️ Database")]
     end
 
-    style Timing fill:#e3f2fd
+    style Timing fill:#0d4f8b,stroke:#3b82f6,stroke-width:2px,color:#fff
 ```
 
 <Info>
@@ -64,22 +65,23 @@ Configure the safety analysis engine that detects TCAS events, proximity alerts,
 | `SAFETY_ALTITUDE_DIFF_FT` | `1000` | Vertical separation threshold (feet) |
 
 ```mermaid
+%%{init: {'theme': 'dark', 'themeVariables': { 'primaryColor': '#1e3a5f', 'primaryTextColor': '#fff', 'primaryBorderColor': '#3b82f6', 'lineColor': '#60a5fa'}}}%%
 flowchart TB
     subgraph Safety["🛡️ Safety Engine"]
         direction TB
-        PROX["Proximity Check<br/>< 1.0 NM horizontal"]
-        ALT["Altitude Check<br/>< 1000 ft vertical"]
-        TCAS["TCAS Detection<br/>RA/TA flags"]
-        EMER["Emergency Squawks<br/>7700/7600/7500"]
+        PROX["📏 Proximity Check<br/>< 1.0 NM horizontal"]
+        ALT["📐 Altitude Check<br/>< 1000 ft vertical"]
+        TCAS["⚠️ TCAS Detection<br/>RA/TA flags"]
+        EMER["🚨 Emergency Squawks<br/>7700/7600/7500"]
     end
 
-    PROX --> ALERT[Alert Triggered]
+    PROX --> ALERT["🔔 Alert Triggered"]
     ALT --> ALERT
     TCAS --> ALERT
     EMER --> ALERT
 
-    style Safety fill:#fff3e0
-    style ALERT fill:#ffcdd2
+    style Safety fill:#7c4a03,stroke:#f59e0b,stroke-width:2px,color:#fff
+    style ALERT fill:#991b1b,stroke:#ef4444,stroke-width:2px,color:#fff
 ```
 
 ## Notifications
@@ -177,21 +179,22 @@ Enable Redis for pub/sub messaging in multi-worker deployments:
 | `REDIS_URL` | — | Redis connection string (e.g., `redis://localhost:6379`) |
 
 ```mermaid
+%%{init: {'theme': 'dark', 'themeVariables': { 'primaryColor': '#1e3a5f', 'primaryTextColor': '#fff', 'primaryBorderColor': '#3b82f6', 'lineColor': '#60a5fa'}}}%%
 flowchart LR
-    subgraph Workers["Multiple API Workers"]
-        W1[Worker 1]
-        W2[Worker 2]
-        W3[Worker 3]
+    subgraph Workers["⚙️ Multiple API Workers"]
+        W1["🔧 Worker 1"]
+        W2["🔧 Worker 2"]
+        W3["🔧 Worker 3"]
     end
 
-    subgraph Redis["Redis Pub/Sub"]
-        R[(Redis)]
+    subgraph Redis["⚡ Redis Pub/Sub"]
+        R[("🗄️ Redis")]
     end
 
-    subgraph Clients["SSE Clients"]
-        C1[Client A]
-        C2[Client B]
-        C3[Client C]
+    subgraph Clients["📱 SSE Clients"]
+        C1["👤 Client A"]
+        C2["👤 Client B"]
+        C3["👤 Client C"]
     end
 
     W1 --> R
@@ -201,9 +204,9 @@ flowchart LR
     R --> C2
     R --> C3
 
-    style Workers fill:#e3f2fd
-    style Redis fill:#ffcdd2
-    style Clients fill:#e8f5e9
+    style Workers fill:#0d4f8b,stroke:#3b82f6,stroke-width:2px,color:#fff
+    style Redis fill:#991b1b,stroke:#ef4444,stroke-width:2px,color:#fff
+    style Clients fill:#065f46,stroke:#10b981,stroke-width:2px,color:#fff
 ```
 
 ### ACARS/VDL2 Messages

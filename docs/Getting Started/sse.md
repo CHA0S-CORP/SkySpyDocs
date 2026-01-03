@@ -8,25 +8,26 @@ hidden: false
 SkySpy provides a Server-Sent Events (SSE) stream for applications that only need to receive data. SSE is a lightweight alternative to Socket.IO, supported natively in all browsers without additional libraries.
 
 ```mermaid
+%%{init: {'theme': 'dark', 'themeVariables': { 'primaryColor': '#1e3a5f', 'primaryTextColor': '#fff', 'primaryBorderColor': '#3b82f6', 'lineColor': '#60a5fa'}}}%%
 flowchart LR
     subgraph Server["🖥️ SkySpy API"]
-        DATA[Live Data]
-        SSE[SSE Endpoint]
+        DATA["📡 Live Data"]
+        SSE["📤 SSE Endpoint"]
     end
 
     subgraph Clients["📱 Your Apps"]
-        BROWSER[Browser]
-        PYTHON[Python Script]
-        CURL[curl]
+        BROWSER["🌐 Browser"]
+        PYTHON["🐍 Python Script"]
+        CURL["💻 curl"]
     end
 
     DATA --> SSE
-    SSE -->|One-way stream| BROWSER
-    SSE -->|One-way stream| PYTHON
-    SSE -->|One-way stream| CURL
+    SSE -->|"📨 One-way stream"| BROWSER
+    SSE -->|"📨 One-way stream"| PYTHON
+    SSE -->|"📨 One-way stream"| CURL
 
-    style Server fill:#e3f2fd
-    style Clients fill:#e8f5e9
+    style Server fill:#0d4f8b,stroke:#3b82f6,stroke-width:2px,color:#fff
+    style Clients fill:#065f46,stroke:#10b981,stroke-width:2px,color:#fff
 ```
 
 <Info>
@@ -110,25 +111,26 @@ const stream = new EventSource('/api/v1/map/sse?replay_history=true');
 ### Event Flow
 
 ```mermaid
+%%{init: {'theme': 'dark', 'themeVariables': { 'primaryColor': '#3b82f6', 'primaryTextColor': '#fff', 'primaryBorderColor': '#60a5fa', 'lineColor': '#60a5fa', 'actorTextColor': '#fff', 'actorBkg': '#1e3a5f', 'actorBorder': '#3b82f6'}}}%%
 sequenceDiagram
-    participant C as Client
-    participant S as Server
+    participant C as 📱 Client
+    participant S as 🖥️ Server
 
-    C->>S: GET /api/v1/map/sse
-    S->>C: Connection established
+    C->>S: 🔗 GET /api/v1/map/sse
+    S->>C: ✅ Connection established
 
-    opt replay_history=true
-        S->>C: Buffered events
+    opt 📜 replay_history=true
+        S->>C: 📦 Buffered events
     end
 
-    loop Continuous stream
-        S->>C: aircraft_update
-        S->>C: aircraft_new
-        S->>C: safety_event
-        S->>C: heartbeat (every 30s)
+    loop 🔄 Continuous stream
+        S->>C: ✈️ aircraft_update
+        S->>C: 🆕 aircraft_new
+        S->>C: 🚨 safety_event
+        S->>C: 💓 heartbeat (every 30s)
     end
 
-    S->>C: aircraft_remove
+    S->>C: 👋 aircraft_remove
 ```
 
 <Tabs>
@@ -395,21 +397,22 @@ stream.onerror = (err) => {
 ```
 
 ```mermaid
+%%{init: {'theme': 'dark', 'themeVariables': { 'primaryColor': '#1e3a5f', 'primaryTextColor': '#fff', 'primaryBorderColor': '#3b82f6', 'lineColor': '#60a5fa'}}}%%
 flowchart LR
     subgraph Normal["✅ Normal Flow"]
-        CONN[Connected] --> DATA[Receiving Data]
+        CONN["🔗 Connected"] --> DATA["📡 Receiving Data"]
     end
 
     subgraph Error["⚠️ Error Recovery"]
-        ERR[Connection Lost] --> WAIT[Wait 3s]
-        WAIT --> RETRY[Auto-Reconnect]
+        ERR["❌ Connection Lost"] --> WAIT["⏳ Wait 3s"]
+        WAIT --> RETRY["🔄 Auto-Reconnect"]
         RETRY --> CONN
     end
 
     DATA --> ERR
 
-    style Normal fill:#e8f5e9
-    style Error fill:#fff3e0
+    style Normal fill:#065f46,stroke:#10b981,stroke-width:2px,color:#fff
+    style Error fill:#7c4a03,stroke:#f59e0b,stroke-width:2px,color:#fff
 ```
 
 <Warning>

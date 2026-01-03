@@ -8,22 +8,23 @@ hidden: false
 Set up alerts to track military aircraft in your receiver's coverage area. Great for aviation enthusiasts who want to spot interesting military traffic.
 
 ```mermaid
+%%{init: {'theme': 'dark', 'themeVariables': { 'primaryColor': '#1e3a5f', 'primaryTextColor': '#fff', 'primaryBorderColor': '#3b82f6', 'lineColor': '#60a5fa'}}}%%
 flowchart LR
     subgraph Detection["🔍 Detection"]
-        MIL[Military Flag]
-        TYPE[Aircraft Type]
-        CALL[Callsign Pattern]
+        MIL["🎖️ Military Flag"]
+        TYPE["✈️ Aircraft Type"]
+        CALL["🏷️ Callsign Pattern"]
     end
 
     subgraph Alert["🔔 Alert"]
-        PUSH[Push Notification]
-        DISCORD[Discord Bot]
+        PUSH["📱 Push Notification"]
+        DISCORD["🤖 Discord Bot"]
     end
 
     Detection --> Alert
 
-    style Detection fill:#e3f2fd
-    style Alert fill:#e8f5e9
+    style Detection fill:#0d4f8b,stroke:#3b82f6,stroke-width:2px,color:#fff
+    style Alert fill:#065f46,stroke:#10b981,stroke-width:2px,color:#fff
 ```
 
 ## How Military Detection Works
@@ -116,13 +117,14 @@ curl -X POST http://localhost:5000/api/alerts/rules \
 ```
 
 ```mermaid
+%%{init: {'theme': 'dark', 'themeVariables': { 'primaryColor': '#1e3a5f', 'primaryTextColor': '#fff', 'primaryBorderColor': '#3b82f6', 'lineColor': '#60a5fa'}}}%%
 flowchart LR
-    A[Military = true] --> AND{AND}
-    B[Distance < 25 NM] --> AND
-    AND --> ALERT[🔔 Alert]
+    A["🎖️ Military = true"] --> AND{"✅ AND"}
+    B["📍 Distance < 25 NM"] --> AND
+    AND --> ALERT["🔔 Alert"]
 
-    style AND fill:#fff3e0
-    style ALERT fill:#c8e6c9
+    style AND fill:#7c4a03,stroke:#f59e0b,stroke-width:2px,color:#fff
+    style ALERT fill:#065f46,stroke:#10b981,stroke-width:2px,color:#fff
 ```
 
 ---

@@ -8,19 +8,20 @@ hidden: false
 SkySpy provides two types of alerts: automatic **safety monitoring** that detects dangerous conditions, and **custom alert rules** you define to track specific aircraft or situations.
 
 ```mermaid
+%%{init: {'theme': 'dark', 'themeVariables': { 'primaryColor': '#1e3a5f', 'primaryTextColor': '#fff', 'primaryBorderColor': '#3b82f6', 'lineColor': '#60a5fa'}}}%%
 flowchart LR
     subgraph Input["📡 Live Traffic"]
-        AC[Aircraft Data]
+        AC["✈️ Aircraft Data"]
     end
 
     subgraph Detection["🔍 Detection"]
-        SAFETY[Safety Engine]
-        RULES[Custom Rules]
+        SAFETY["🛡️ Safety Engine"]
+        RULES["📋 Custom Rules"]
     end
 
     subgraph Output["📬 Alerts"]
-        DASH[Dashboard]
-        PUSH[Push Notifications]
+        DASH["🖥️ Dashboard"]
+        PUSH["📱 Push Notifications"]
     end
 
     AC --> SAFETY
@@ -30,9 +31,9 @@ flowchart LR
     RULES --> DASH
     RULES --> PUSH
 
-    style Input fill:#e3f2fd
-    style Detection fill:#fff3e0
-    style Output fill:#e8f5e9
+    style Input fill:#0d4f8b,stroke:#3b82f6,stroke-width:2px,color:#fff
+    style Detection fill:#7c4a03,stroke:#f59e0b,stroke-width:2px,color:#fff
+    style Output fill:#065f46,stroke:#10b981,stroke-width:2px,color:#fff
 ```
 
 ## Safety Monitoring
@@ -72,24 +73,25 @@ These codes indicate serious aviation emergencies and will trigger immediate ale
 ### How Safety Detection Works
 
 ```mermaid
+%%{init: {'theme': 'dark', 'themeVariables': { 'primaryColor': '#3b82f6', 'primaryTextColor': '#fff', 'primaryBorderColor': '#60a5fa', 'lineColor': '#60a5fa', 'actorTextColor': '#fff', 'actorBkg': '#1e3a5f', 'actorBorder': '#3b82f6'}}}%%
 sequenceDiagram
-    participant R as Receiver
-    participant A as API
-    participant S as Safety Engine
-    participant N as Notifications
+    participant R as 📡 Receiver
+    participant A as 🚀 API
+    participant S as 🛡️ Safety Engine
+    participant N as 📱 Notifications
 
-    loop Every 2 seconds
-        R->>A: Aircraft positions
-        A->>S: Analyze traffic
+    loop ⏱️ Every 2 seconds
+        R->>A: ✈️ Aircraft positions
+        A->>S: 🔍 Analyze traffic
 
-        alt Proximity < 1.0 NM
-            S->>A: Proximity conflict!
-            A->>N: Send alert
+        alt ⚠️ Proximity < 1.0 NM
+            S->>A: 🚨 Proximity conflict!
+            A->>N: 🔔 Send alert
         end
 
-        alt Emergency squawk
-            S->>A: Emergency detected!
-            A->>N: Send alert
+        alt 🆘 Emergency squawk
+            S->>A: 🚨 Emergency detected!
+            A->>N: 🔔 Send alert
         end
     end
 ```
@@ -115,36 +117,37 @@ Create rules to get notified when specific aircraft appear or conditions are met
 ### Rule Builder Concept
 
 ```mermaid
+%%{init: {'theme': 'dark', 'themeVariables': { 'primaryColor': '#1e3a5f', 'primaryTextColor': '#fff', 'primaryBorderColor': '#3b82f6', 'lineColor': '#60a5fa'}}}%%
 flowchart TB
     subgraph Rule["📋 Alert Rule"]
         direction TB
-        NAME[Rule Name]
-        COND[Conditions]
-        PRIO[Priority Level]
+        NAME["📝 Rule Name"]
+        COND["⚙️ Conditions"]
+        PRIO["🎯 Priority Level"]
     end
 
     subgraph Conditions["🔀 Condition Logic"]
         direction TB
-        AND["AND: All must match"]
-        OR["OR: Any must match"]
+        AND["✅ AND: All must match"]
+        OR["☑️ OR: Any must match"]
     end
 
     subgraph Fields["📊 Available Fields"]
         direction LR
-        ICAO[ICAO Hex]
-        CALL[Callsign]
-        ALT[Altitude]
-        DIST[Distance]
-        MIL[Military]
-        TYPE[Aircraft Type]
+        ICAO["🔢 ICAO Hex"]
+        CALL["🏷️ Callsign"]
+        ALT["📏 Altitude"]
+        DIST["📍 Distance"]
+        MIL["🎖️ Military"]
+        TYPE["✈️ Aircraft Type"]
     end
 
     Rule --> Conditions
     Conditions --> Fields
 
-    style Rule fill:#e3f2fd
-    style Conditions fill:#fff3e0
-    style Fields fill:#e8f5e9
+    style Rule fill:#0d4f8b,stroke:#3b82f6,stroke-width:2px,color:#fff
+    style Conditions fill:#7c4a03,stroke:#f59e0b,stroke-width:2px,color:#fff
+    style Fields fill:#065f46,stroke:#10b981,stroke-width:2px,color:#fff
 ```
 
 ### Creating Rules
@@ -258,14 +261,15 @@ Use `AND` and `OR` operators to build complex rules. You can nest condition grou
     ```
 
     ```mermaid
+    %%{init: {'theme': 'dark', 'themeVariables': { 'primaryColor': '#1e3a5f', 'primaryTextColor': '#fff', 'primaryBorderColor': '#3b82f6', 'lineColor': '#60a5fa'}}}%%
     flowchart LR
-        M[Military = true] --> AND{AND}
-        A[Altitude < 10000] --> AND
-        D[Distance < 25] --> AND
-        AND --> ALERT[Alert!]
+        M["🎖️ Military = true"] --> AND{"✅ AND"}
+        A["📏 Altitude < 10000"] --> AND
+        D["📍 Distance < 25"] --> AND
+        AND --> ALERT["🔔 Alert!"]
 
-        style AND fill:#fff3e0
-        style ALERT fill:#c8e6c9
+        style AND fill:#7c4a03,stroke:#f59e0b,stroke-width:2px,color:#fff
+        style ALERT fill:#065f46,stroke:#10b981,stroke-width:2px,color:#fff
     ```
   </Tab>
   <Tab title="OR (any must match)">
@@ -283,14 +287,15 @@ Use `AND` and `OR` operators to build complex rules. You can nest condition grou
     ```
 
     ```mermaid
+    %%{init: {'theme': 'dark', 'themeVariables': { 'primaryColor': '#1e3a5f', 'primaryTextColor': '#fff', 'primaryBorderColor': '#3b82f6', 'lineColor': '#60a5fa'}}}%%
     flowchart LR
-        S1[Squawk = 7700] --> OR{OR}
-        S2[Squawk = 7600] --> OR
-        S3[Squawk = 7500] --> OR
-        OR --> ALERT[Alert!]
+        S1["🚨 Squawk = 7700"] --> OR{"☑️ OR"}
+        S2["📻 Squawk = 7600"] --> OR
+        S3["⚠️ Squawk = 7500"] --> OR
+        OR --> ALERT["🔔 Alert!"]
 
-        style OR fill:#e3f2fd
-        style ALERT fill:#c8e6c9
+        style OR fill:#0d4f8b,stroke:#3b82f6,stroke-width:2px,color:#fff
+        style ALERT fill:#065f46,stroke:#10b981,stroke-width:2px,color:#fff
     ```
   </Tab>
   <Tab title="Nested Logic">
@@ -313,20 +318,21 @@ Use `AND` and `OR` operators to build complex rules. You can nest condition grou
     ```
 
     ```mermaid
+    %%{init: {'theme': 'dark', 'themeVariables': { 'primaryColor': '#1e3a5f', 'primaryTextColor': '#fff', 'primaryBorderColor': '#3b82f6', 'lineColor': '#60a5fa'}}}%%
     flowchart TB
-        CALL[Callsign starts with AFR] --> OR{OR}
+        CALL["🏷️ Callsign starts with AFR"] --> OR{"☑️ OR"}
 
-        subgraph Nested["Nested AND"]
-            MIL[Military = true] --> AND{AND}
-            DIST[Distance < 10] --> AND
+        subgraph Nested["🔀 Nested AND"]
+            MIL["🎖️ Military = true"] --> AND{"✅ AND"}
+            DIST["📍 Distance < 10"] --> AND
         end
 
         AND --> OR
-        OR --> ALERT[Alert!]
+        OR --> ALERT["🔔 Alert!"]
 
-        style OR fill:#e3f2fd
-        style Nested fill:#fff3e0
-        style ALERT fill:#c8e6c9
+        style OR fill:#0d4f8b,stroke:#3b82f6,stroke-width:2px,color:#fff
+        style Nested fill:#7c4a03,stroke:#f59e0b,stroke-width:2px,color:#fff
+        style ALERT fill:#065f46,stroke:#10b981,stroke-width:2px,color:#fff
     ```
   </Tab>
 </Tabs>
@@ -411,17 +417,18 @@ Use `AND` and `OR` operators to build complex rules. You can nest condition grou
 When alerts trigger, SkySpy can send push notifications via [Apprise](https://github.com/caronc/apprise).
 
 ```mermaid
+%%{init: {'theme': 'dark', 'themeVariables': { 'primaryColor': '#1e3a5f', 'primaryTextColor': '#fff', 'primaryBorderColor': '#3b82f6', 'lineColor': '#60a5fa'}}}%%
 flowchart LR
-    ALERT[Alert Triggered] --> APPRISE[Apprise]
+    ALERT["🔔 Alert Triggered"] --> APPRISE["📤 Apprise"]
 
-    APPRISE --> PO[Pushover]
-    APPRISE --> TG[Telegram]
-    APPRISE --> DC[Discord]
-    APPRISE --> SL[Slack]
-    APPRISE --> MORE[80+ more...]
+    APPRISE --> PO["📱 Pushover"]
+    APPRISE --> TG["✈️ Telegram"]
+    APPRISE --> DC["💬 Discord"]
+    APPRISE --> SL["💼 Slack"]
+    APPRISE --> MORE["🔌 80+ more..."]
 
-    style ALERT fill:#ffcdd2
-    style APPRISE fill:#fff3e0
+    style ALERT fill:#991b1b,stroke:#ef4444,stroke-width:2px,color:#fff
+    style APPRISE fill:#7c4a03,stroke:#f59e0b,stroke-width:2px,color:#fff
 ```
 
 Configure notification services in your `.env`:

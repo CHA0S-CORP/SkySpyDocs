@@ -104,26 +104,27 @@ flowchart TB
 ## How It Works
 
 ```mermaid
+%%{init: {'theme': 'dark', 'themeVariables': { 'primaryColor': '#3b82f6', 'primaryTextColor': '#fff', 'primaryBorderColor': '#60a5fa', 'lineColor': '#60a5fa', 'actorTextColor': '#fff', 'actorBkg': '#1e3a5f', 'actorBorder': '#3b82f6'}}}%%
 sequenceDiagram
-    participant R as ADS-B Receiver
-    participant A as SkySpy API
-    participant S as Safety Engine
-    participant D as Database
-    participant W as Web Dashboard
-    participant N as Notifications
+    participant R as 📡 ADS-B Receiver
+    participant A as 🚀 SkySpy API
+    participant S as 🛡️ Safety Engine
+    participant D as 🗄️ Database
+    participant W as 🖥️ Web Dashboard
+    participant N as 📱 Notifications
 
-    R->>A: Aircraft JSON (every 2s)
-    A->>S: Analyze traffic
-    A->>D: Store positions
+    R->>A: ✈️ Aircraft JSON (every 2s)
+    A->>S: 🔍 Analyze traffic
+    A->>D: 💾 Store positions
 
-    alt Safety Event Detected
-        S->>A: Proximity/TCAS alert
-        A->>N: Push notification
-        A->>W: Real-time event
+    alt 🚨 Safety Event Detected
+        S->>A: ⚠️ Proximity/TCAS alert
+        A->>N: 🔔 Push notification
+        A->>W: ⚡ Real-time event
     end
 
-    A->>W: SSE/Socket.IO stream
-    W->>W: Update radar display
+    A->>W: 📡 SSE/Socket.IO stream
+    W->>W: 🗺️ Update radar display
 ```
 
 ## Key Features at a Glance

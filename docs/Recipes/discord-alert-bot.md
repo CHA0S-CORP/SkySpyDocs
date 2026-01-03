@@ -8,13 +8,14 @@ hidden: false
 Build a Discord bot that sends aircraft alerts to your server in real-time. Get notified about military aircraft, emergency squawks, and custom alert rules.
 
 ```mermaid
+%%{init: {'theme': 'dark', 'themeVariables': { 'primaryColor': '#1e3a5f', 'primaryTextColor': '#fff', 'primaryBorderColor': '#3b82f6', 'lineColor': '#60a5fa'}}}%%
 flowchart LR
-    SKYSPY[SkySpy API] -->|SSE Stream| BOT[Python Bot]
-    BOT -->|Webhook| DISCORD[Discord Channel]
+    SKYSPY["📡 SkySpy API"] -->|"📤 SSE Stream"| BOT["🐍 Python Bot"]
+    BOT -->|"📨 Webhook"| DISCORD["💬 Discord Channel"]
 
-    style SKYSPY fill:#e3f2fd
-    style BOT fill:#fff3e0
-    style DISCORD fill:#7289da,color:#fff
+    style SKYSPY fill:#0d4f8b,stroke:#3b82f6,stroke-width:2px,color:#fff
+    style BOT fill:#7c4a03,stroke:#f59e0b,stroke-width:2px,color:#fff
+    style DISCORD fill:#5865F2,stroke:#7289da,stroke-width:2px,color:#fff
 ```
 
 ## What You'll Build

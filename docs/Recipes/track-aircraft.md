@@ -8,29 +8,30 @@ hidden: false
 Set up alerts to track specific aircraft whenever they appear in your receiver's coverage area. Perfect for tracking interesting aircraft, your own plane, or friends' flights.
 
 ```mermaid
+%%{init: {'theme': 'dark', 'themeVariables': { 'primaryColor': '#1e3a5f', 'primaryTextColor': '#fff', 'primaryBorderColor': '#3b82f6', 'lineColor': '#60a5fa'}}}%%
 flowchart LR
     subgraph Watchlist["📋 Your Watchlist"]
-        N12345[N12345]
-        A12ABC[A12ABC]
-        UAL123[UAL123]
+        N12345["✈️ N12345"]
+        A12ABC["✈️ A12ABC"]
+        UAL123["✈️ UAL123"]
     end
 
     subgraph SkySpy["📡 SkySpy"]
-        RULES[Alert Rules]
+        RULES["📋 Alert Rules"]
     end
 
     subgraph Output["📬 Notifications"]
-        PUSH[Push Alert]
-        DISCORD[Discord]
+        PUSH["📱 Push Alert"]
+        DISCORD["💬 Discord"]
     end
 
     Watchlist --> RULES
     RULES --> PUSH
     RULES --> DISCORD
 
-    style Watchlist fill:#e3f2fd
-    style SkySpy fill:#fff3e0
-    style Output fill:#e8f5e9
+    style Watchlist fill:#0d4f8b,stroke:#3b82f6,stroke-width:2px,color:#fff
+    style SkySpy fill:#7c4a03,stroke:#f59e0b,stroke-width:2px,color:#fff
+    style Output fill:#065f46,stroke:#10b981,stroke-width:2px,color:#fff
 ```
 
 ## What You'll Build
@@ -354,13 +355,14 @@ curl -X POST http://localhost:5000/api/alerts/rules \
 ```
 
 ```mermaid
+%%{init: {'theme': 'dark', 'themeVariables': { 'primaryColor': '#1e3a5f', 'primaryTextColor': '#fff', 'primaryBorderColor': '#3b82f6', 'lineColor': '#60a5fa'}}}%%
 flowchart LR
-    A[ICAO = A12345] --> AND{AND}
-    B[Distance < 25 NM] --> AND
-    AND --> ALERT[Alert!]
+    A["🔢 ICAO = A12345"] --> AND{"✅ AND"}
+    B["📍 Distance < 25 NM"] --> AND
+    AND --> ALERT["🔔 Alert!"]
 
-    style AND fill:#fff3e0
-    style ALERT fill:#c8e6c9
+    style AND fill:#7c4a03,stroke:#f59e0b,stroke-width:2px,color:#fff
+    style ALERT fill:#065f46,stroke:#10b981,stroke-width:2px,color:#fff
 ```
 
 ---

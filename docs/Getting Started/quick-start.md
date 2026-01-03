@@ -8,15 +8,16 @@ hidden: false
 Deploy SkySpy using Docker Compose in under 5 minutes.
 
 ```mermaid
+%%{init: {'theme': 'dark', 'themeVariables': { 'primaryColor': '#1e3a5f', 'primaryTextColor': '#fff', 'primaryBorderColor': '#3b82f6', 'lineColor': '#60a5fa'}}}%%
 flowchart LR
-    A[Clone Repo] --> B[Configure .env]
-    B --> C[Docker Compose Up]
-    C --> D[Open Dashboard]
+    A["📥 Clone Repo"] --> B["⚙️ Configure .env"]
+    B --> C["🐳 Docker Compose Up"]
+    C --> D["🖥️ Open Dashboard"]
 
-    style A fill:#e3f2fd
-    style B fill:#fff3e0
-    style C fill:#e8f5e9
-    style D fill:#f3e5f5
+    style A fill:#0d4f8b,stroke:#3b82f6,stroke-width:2px,color:#fff
+    style B fill:#7c4a03,stroke:#f59e0b,stroke-width:2px,color:#fff
+    style C fill:#065f46,stroke:#10b981,stroke-width:2px,color:#fff
+    style D fill:#5b2168,stroke:#a855f7,stroke-width:2px,color:#fff
 ```
 
 ## Prerequisites
@@ -92,24 +93,25 @@ Once the containers are running, you can access:
 ## What You'll See
 
 ```mermaid
+%%{init: {'theme': 'dark', 'themeVariables': { 'primaryColor': '#1e3a5f', 'primaryTextColor': '#fff', 'primaryBorderColor': '#3b82f6', 'lineColor': '#60a5fa'}}}%%
 flowchart TB
     subgraph Dashboard["🖥️ Web Dashboard"]
         direction LR
-        RADAR[Radar Display]
-        LIST[Aircraft List]
-        DETAIL[Aircraft Details]
+        RADAR["🗺️ Radar Display"]
+        LIST["📋 Aircraft List"]
+        DETAIL["✈️ Aircraft Details"]
     end
 
     subgraph Data["📡 Live Data"]
-        POS[Position Updates]
-        SAFE[Safety Alerts]
-        WX[Weather Data]
+        POS["📍 Position Updates"]
+        SAFE["🛡️ Safety Alerts"]
+        WX["🌦️ Weather Data"]
     end
 
     Data --> Dashboard
 
-    style Dashboard fill:#e8f5e9
-    style Data fill:#e3f2fd
+    style Dashboard fill:#065f46,stroke:#10b981,stroke-width:2px,color:#fff
+    style Data fill:#0d4f8b,stroke:#3b82f6,stroke-width:2px,color:#fff
 ```
 
 The dashboard shows:

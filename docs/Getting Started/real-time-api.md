@@ -8,25 +8,26 @@ hidden: false
 The SkySpy Real-Time API uses Socket.IO to stream aircraft positions, safety events, and aviation data to your application in real-time.
 
 ```mermaid
+%%{init: {'theme': 'dark', 'themeVariables': { 'primaryColor': '#1e3a5f', 'primaryTextColor': '#fff', 'primaryBorderColor': '#3b82f6', 'lineColor': '#60a5fa'}}}%%
 flowchart LR
     subgraph Server["🖥️ SkySpy API"]
-        DATA[Live Data]
-        SOCKETIO[Socket.IO]
+        DATA["📡 Live Data"]
+        SOCKETIO["🔌 Socket.IO"]
     end
 
     subgraph Clients["📱 Your Apps"]
-        WEB[Web App]
-        MOBILE[Mobile App]
-        BOT[Discord Bot]
+        WEB["🌐 Web App"]
+        MOBILE["📲 Mobile App"]
+        BOT["🤖 Discord Bot"]
     end
 
     DATA --> SOCKETIO
-    SOCKETIO <-->|Bi-directional| WEB
-    SOCKETIO <-->|Bi-directional| MOBILE
-    SOCKETIO <-->|Bi-directional| BOT
+    SOCKETIO <-->|"⚡ Bi-directional"| WEB
+    SOCKETIO <-->|"⚡ Bi-directional"| MOBILE
+    SOCKETIO <-->|"⚡ Bi-directional"| BOT
 
-    style Server fill:#e3f2fd
-    style Clients fill:#e8f5e9
+    style Server fill:#0d4f8b,stroke:#3b82f6,stroke-width:2px,color:#fff
+    style Clients fill:#065f46,stroke:#10b981,stroke-width:2px,color:#fff
 ```
 
 ## Quick Start
@@ -122,18 +123,19 @@ socket.emit('unsubscribe', { topics: ['safety'] });
 Subscribe to `aircraft` topic.
 
 ```mermaid
+%%{init: {'theme': 'dark', 'themeVariables': { 'primaryColor': '#3b82f6', 'primaryTextColor': '#fff', 'primaryBorderColor': '#60a5fa', 'lineColor': '#60a5fa', 'actorTextColor': '#fff', 'actorBkg': '#1e3a5f', 'actorBorder': '#3b82f6'}}}%%
 sequenceDiagram
-    participant C as Client
-    participant S as Server
+    participant C as 📱 Client
+    participant S as 🖥️ Server
 
-    C->>S: Connect with topics=aircraft
-    S->>C: aircraft:snapshot (all current)
+    C->>S: 🔗 Connect with topics=aircraft
+    S->>C: ✈️ aircraft:snapshot (all current)
 
-    loop Every update
-        S->>C: aircraft:update (changes only)
+    loop ⏱️ Every update
+        S->>C: 🔄 aircraft:update (changes only)
     end
 
-    S->>C: aircraft:remove (left coverage)
+    S->>C: 👋 aircraft:remove (left coverage)
 ```
 
 <Tabs>
@@ -288,15 +290,16 @@ Subscribe to `acars` topic. Requires ACARS receiver configured.
 Fetch on-demand data (weather, airspace, aircraft info) using an RPC-style pattern over the same Socket.IO connection.
 
 ```mermaid
+%%{init: {'theme': 'dark', 'themeVariables': { 'primaryColor': '#3b82f6', 'primaryTextColor': '#fff', 'primaryBorderColor': '#60a5fa', 'lineColor': '#60a5fa', 'actorTextColor': '#fff', 'actorBkg': '#1e3a5f', 'actorBorder': '#3b82f6'}}}%%
 sequenceDiagram
-    participant C as Client
-    participant S as Server
-    participant API as External APIs
+    participant C as 📱 Client
+    participant S as 🖥️ Server
+    participant API as 🌐 External APIs
 
-    C->>S: request { type: 'pireps', params: {...} }
-    S->>API: Fetch PIREPs
-    API->>S: PIREP data
-    S->>C: response { data: [...] }
+    C->>S: 📤 request { type: 'pireps', params: {...} }
+    S->>API: 🔍 Fetch PIREPs
+    API->>S: 🌦️ PIREP data
+    S->>C: 📥 response { data: [...] }
 ```
 
 ### Making Requests
