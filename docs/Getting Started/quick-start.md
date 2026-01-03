@@ -5,64 +5,126 @@ excerpt: "Get SkySpy up and running using Docker Compose."
 hidden: false
 ---
 
-This guide will help you deploy SkySpy using Docker Compose, which is the recommended method for most users.
+Deploy SkySpy using Docker Compose in under 5 minutes.
 
 ## Prerequisites
 
-* Docker & Docker Compose
-* An ADS-B receiver (Ultrafeeder, readsb, or dump1090) available on your network
+Before you begin, make sure you have:
+
+- **Docker & Docker Compose** — [Install Docker](https://docs.docker.com/get-docker/)
+- **An ADS-B receiver** — Running [Ultrafeeder](https://github.com/sdr-enthusiasts/docker-adsb-ultrafeeder), readsb, or dump1090 on your network
 
 ## Installation
 
-1.  **Clone the repository**
-    ```bash
-    git clone [https://github.com/your-org/skyspy.git](https://github.com/your-org/skyspy.git)
-    cd skyspy
-    ```
+### 1. Clone the repository
 
-2.  **Configure Environment**
-    Copy the sample environment file to `.env`:
-    ```bash
-    cp .env.test.sample .env
-    ```
+```bash
+git clone https://github.com/your-org/skyspy.git
+cd skyspy
+```
 
-3.  **Edit Configuration**
-    Open `.env` and configure the following required variables:
-    * `FEEDER_LAT`: Your receiver's latitude.
-    * `FEEDER_LON`: Your receiver's longitude.
-    * `ULTRAFEEDER_HOST`: The hostname or IP of your ADS-B receiver.
+### 2. Configure environment
 
-4.  **Start Services**
-    ```bash
-    docker compose up -d
-    ```
+Copy the sample environment file and edit it with your settings:
 
-## Accessing the Dashboard
+```bash
+cp .env.test.sample .env
+```
 
-Once the containers are running, you can access the services at:
+Open `.env` and set these required variables:
 
-| Service | URL |
-| :--- | :--- |
-| **Web Dashboard** | `http://localhost:3000` |
-| **API Docs (Swagger)** | `http://localhost:5000/docs` |
+| Variable | Description | Example |
+| :--- | :--- | :--- |
+| `FEEDER_LAT` | Your receiver's latitude | `47.9377` |
+| `FEEDER_LON` | Your receiver's longitude | `-121.9687` |
+| `ULTRAFEEDER_HOST` | Hostname or IP of your ADS-B receiver | `ultrafeeder` or `192.168.1.100` |
+
+> 📘 Finding your coordinates
+>
+> Use [Google Maps](https://maps.google.com) — right-click your location and copy the coordinates.
+
+### 3. Start the services
+
+```bash
+docker compose up -d
+```
+
+Wait for the containers to start (usually 10-30 seconds), then verify they're running:
+
+```bash
+docker compose ps
+```
+
+## Access the Dashboard
+
+| Service | URL | Description |
+| :--- | :--- | :--- |
+| **Web Dashboard** | [http://localhost:3000](http://localhost:3000) | Interactive aircraft map |
+| **API Docs** | [http://localhost:5000/docs](http://localhost:5000/docs) | Swagger/OpenAPI reference |
+
+> ✅ Success
+>
+> You should see aircraft appearing on the map within a few seconds if your receiver is working properly.
+
+## Troubleshooting
+
+<Accordion title="No aircraft appearing on the map">
+
+1. Verify your receiver is running and accessible:
+   ```bash
+   curl http://ULTRAFEEDER_HOST/tar1090/data/aircraft.json
+   ```
+2. Check that `ULTRAFEEDER_HOST` in your `.env` matches your receiver's address
+3. View the API logs for connection errors:
+   ```bash
+   docker compose logs adsb-api
+   ```
+
+</Accordion>
+
+<Accordion title="Container fails to start">
+
+1. Check the logs for the failing container:
+   ```bash
+   docker compose logs <service-name>
+   ```
+2. Verify your `.env` file has all required variables set
+3. Ensure ports 3000 and 5000 are not in use by other services
+
+</Accordion>
 
 ## Local Development
 
-If you wish to contribute or run the services locally without Docker:
+For contributors who want to run services without Docker:
 
-**Backend (adsb-api)**
-```bash
-cd adsb-api
-pip install -e ".[dev]"
-uvicorn app.main:app --host 0.0.0.0 --port 5000 --reload
+<Tabs>
+  <Tab title="Backend">
 
-```
+  ```bash
+  cd adsb-api
+  pip install -e ".[dev]"
+  uvicorn app.main:app --host 0.0.0.0 --port 5000 --reload
+  ```
 
-**Frontend (web)**
+  </Tab>
+  <Tab title="Frontend">
 
-```bash
-cd web
-npm install
-npm run dev
+  ```bash
+  cd web
+  npm install
+  npm run dev
+  ```
 
-```
+  </Tab>
+</Tabs>
+
+## Next Steps
+
+<Cards columns={2}>
+  <Card title="Configuration" icon="gear" href="/docs/configuration">
+    Customize polling, safety thresholds, and integrations
+  </Card>
+  <Card title="Safety & Alerts" icon="bell" href="/docs/safety-and-alerts">
+    Set up custom alert rules and notifications
+  </Card>
+</Cards>

@@ -5,57 +5,65 @@ excerpt: "Lightweight, one-way real-time data streaming using Server-Sent Events
 hidden: false
 ---
 
-For applications that only need to receive data without sending messages back to the server, SkySpy provides a standard **Server-Sent Events (SSE)** stream. This is a lightweight alternative to the Socket.IO API, supported natively in all modern browsers.
+SkySpy provides a Server-Sent Events (SSE) stream for applications that only need to receive data. SSE is a lightweight alternative to Socket.IO, supported natively in all browsers without additional libraries.
 
-## Connection Details
+> 📘 When to use SSE vs Socket.IO
+>
+> Use **SSE** for simple, read-only clients (dashboards, monitors). Use **[Socket.IO](/docs/real-time-api)** when you need bi-directional communication or the request/response API for weather data.
+
+## Quick Start
+
+Connect using the native browser `EventSource` API:
+
+```javascript
+const stream = new EventSource('http://localhost:5000/api/v1/map/sse');
+
+stream.addEventListener('aircraft_update', (event) => {
+  const data = JSON.parse(event.data);
+  console.log('Aircraft:', data.aircraft);
+});
+
+stream.addEventListener('safety_event', (event) => {
+  const alert = JSON.parse(event.data);
+  console.warn('Safety:', alert.message);
+});
+```
+
+## Connection
 
 | Setting | Value |
 | :--- | :--- |
-| **Endpoint** | `/api/v1/map/sse` |
-| **Method** | `GET` |
+| **Endpoint** | `GET /api/v1/map/sse` |
 | **Content-Type** | `text/event-stream` |
 
 ### Query Parameters
 
 | Parameter | Type | Default | Description |
 | :--- | :--- | :--- | :--- |
-| `replay_history` | `boolean` | `false` | If `true`, the server will replay recent events (buffered in memory/Redis) immediately upon connection. |
+| `replay_history` | boolean | `false` | Replay buffered events on connect |
 
-## Client Implementation
-
-You can connect using the native browser `EventSource` API.
+Use `replay_history=true` to receive recent events immediately upon connection—useful for populating a dashboard with current state:
 
 ```javascript
-const stream = new EventSource('http://localhost:5000/api/v1/map/sse?replay_history=true');
-
-stream.onopen = () => {
-  console.log('Connected to SkySpy SSE Stream');
-};
-
-stream.addEventListener('aircraft_update', (event) => {
-  const data = JSON.parse(event.data);
-  console.log('Updated Aircraft:', data.aircraft);
-});
-
-stream.addEventListener('safety_event', (event) => {
-  const warning = JSON.parse(event.data);
-  console.warn('Safety Alert:', warning.message);
-});
-
-stream.onerror = (err) => {
-  console.error('Stream connection lost', err);
-  stream.close();
-};
-
+const stream = new EventSource('/api/v1/map/sse?replay_history=true');
 ```
 
-## Event Reference
+## Events
 
-The stream emits specific event types that you can listen for using `addEventListener`.
+| Event | Description |
+| :--- | :--- |
+| `aircraft_update` | Position/telemetry changes |
+| `aircraft_new` | New aircraft in coverage |
+| `aircraft_remove` | Aircraft left coverage |
+| `safety_event` | TCAS, proximity, emergency alerts |
+| `alert_triggered` | Custom rule matched |
+| `acars_message` | ACARS/VDL2 message decoded |
+| `heartbeat` | Keep-alive (every ~30s) |
 
-### `aircraft_update`
+<Tabs>
+  <Tab title="aircraft_update">
 
-Emitted when aircraft positions or telemetry change. The payload contains a list of aircraft objects that have changed since the last update.
+Emitted when aircraft positions or telemetry change.
 
 ```json
 {
@@ -79,12 +87,12 @@ Emitted when aircraft positions or telemetry change. The payload contains a list
   ],
   "timestamp": "2024-01-15T12:00:00Z"
 }
-
 ```
 
-### `aircraft_new`
+  </Tab>
+  <Tab title="aircraft_new">
 
-Emitted when a new aircraft enters the coverage area.
+Emitted when a new aircraft enters coverage.
 
 ```json
 {
@@ -93,24 +101,24 @@ Emitted when a new aircraft enters the coverage area.
   ],
   "timestamp": "2024-01-15T12:00:05Z"
 }
-
 ```
 
-### `aircraft_remove`
+  </Tab>
+  <Tab title="aircraft_remove">
 
-Emitted when an aircraft leaves the coverage area or signals are lost.
+Emitted when aircraft leave coverage or signal is lost.
 
 ```json
 {
   "icaos": ["A12345"],
   "timestamp": "2024-01-15T12:05:00Z"
 }
-
 ```
 
-### `safety_event`
+  </Tab>
+  <Tab title="safety_event">
 
-Emitted when the safety monitoring engine detects a conflict (TCAS RA, proximity, etc.).
+Emitted when the safety engine detects a conflict.
 
 ```json
 {
@@ -127,12 +135,12 @@ Emitted when the safety monitoring engine detects a conflict (TCAS RA, proximity
   },
   "timestamp": "2024-01-15T12:00:00Z"
 }
-
 ```
 
-### `alert_triggered`
+  </Tab>
+  <Tab title="alert_triggered">
 
-Emitted when a user-defined custom alert rule is matched.
+Emitted when a custom alert rule matches.
 
 ```json
 {
@@ -149,12 +157,12 @@ Emitted when a user-defined custom alert rule is matched.
     "lon": -122.3
   }
 }
-
 ```
 
-### `acars_message`
+  </Tab>
+  <Tab title="acars_message">
 
-Emitted when a new text message is decoded from ACARS or VDL2.
+Emitted when an ACARS/VDL2 message is decoded.
 
 ```json
 {
@@ -168,28 +176,177 @@ Emitted when a new text message is decoded from ACARS or VDL2.
   "signal_level": -15.0,
   "timestamp": "2024-01-15T12:10:00Z"
 }
-
 ```
 
-### `heartbeat`
+  </Tab>
+  <Tab title="heartbeat">
 
-Emitted periodically (approx. every 30 seconds) to keep the connection alive and sync aircraft counts.
+Emitted every ~30 seconds to keep the connection alive.
 
 ```json
 {
   "count": 45,
   "timestamp": "2024-01-15T12:00:30Z"
 }
-
 ```
 
-## Service Status
+  </Tab>
+</Tabs>
 
-You can check the status of the SSE broadcaster, including subscriber counts and mode (Memory vs. Redis), via the status endpoint.
+## Client Examples
 
-**Endpoint**: `GET /api/v1/map/sse/status`
+<Tabs>
+  <Tab title="JavaScript">
 
-**Response:**
+```javascript
+const stream = new EventSource('/api/v1/map/sse?replay_history=true');
+const aircraft = new Map();
+
+stream.addEventListener('aircraft_update', (e) => {
+  const data = JSON.parse(e.data);
+  data.aircraft.forEach(a => aircraft.set(a.hex, { ...aircraft.get(a.hex), ...a }));
+});
+
+stream.addEventListener('aircraft_new', (e) => {
+  const data = JSON.parse(e.data);
+  data.aircraft.forEach(a => aircraft.set(a.hex, a));
+});
+
+stream.addEventListener('aircraft_remove', (e) => {
+  const data = JSON.parse(e.data);
+  data.icaos.forEach(hex => aircraft.delete(hex));
+});
+
+stream.onerror = () => {
+  console.error('Connection lost, reconnecting...');
+  // EventSource auto-reconnects
+};
+```
+
+  </Tab>
+  <Tab title="React Hook">
+
+```typescript
+import { useEffect, useState } from 'react';
+
+interface Aircraft {
+  hex: string;
+  flight?: string;
+  lat: number;
+  lon: number;
+  alt: number;
+}
+
+export function useSkySpySSE(url = '/api/v1/map/sse?replay_history=true') {
+  const [aircraft, setAircraft] = useState<Map<string, Aircraft>>(new Map());
+  const [connected, setConnected] = useState(false);
+
+  useEffect(() => {
+    const stream = new EventSource(url);
+
+    stream.onopen = () => setConnected(true);
+    stream.onerror = () => setConnected(false);
+
+    stream.addEventListener('aircraft_update', (e) => {
+      const data = JSON.parse(e.data);
+      setAircraft(prev => {
+        const next = new Map(prev);
+        data.aircraft.forEach((a: Aircraft) => {
+          next.set(a.hex, { ...next.get(a.hex), ...a });
+        });
+        return next;
+      });
+    });
+
+    stream.addEventListener('aircraft_new', (e) => {
+      const data = JSON.parse(e.data);
+      setAircraft(prev => {
+        const next = new Map(prev);
+        data.aircraft.forEach((a: Aircraft) => next.set(a.hex, a));
+        return next;
+      });
+    });
+
+    stream.addEventListener('aircraft_remove', (e) => {
+      const data = JSON.parse(e.data);
+      setAircraft(prev => {
+        const next = new Map(prev);
+        data.icaos.forEach((hex: string) => next.delete(hex));
+        return next;
+      });
+    });
+
+    return () => stream.close();
+  }, [url]);
+
+  return { aircraft: Array.from(aircraft.values()), connected };
+}
+```
+
+  </Tab>
+  <Tab title="Python">
+
+```python
+import json
+import sseclient
+import requests
+
+def stream_aircraft():
+    url = 'http://localhost:5000/api/v1/map/sse?replay_history=true'
+    response = requests.get(url, stream=True)
+    client = sseclient.SSEClient(response)
+
+    for event in client.events():
+        data = json.loads(event.data)
+
+        if event.event == 'aircraft_update':
+            for aircraft in data['aircraft']:
+                print(f"{aircraft.get('flight', aircraft['hex'])}: {aircraft.get('alt')}ft")
+
+        elif event.event == 'safety_event':
+            print(f"⚠️ {data['message']}")
+
+if __name__ == '__main__':
+    stream_aircraft()
+```
+
+Install: `pip install sseclient-py requests`
+
+  </Tab>
+  <Tab title="curl">
+
+```bash
+curl -N http://localhost:5000/api/v1/map/sse
+```
+
+Use `-N` to disable buffering and see events in real-time.
+
+  </Tab>
+</Tabs>
+
+## Error Handling
+
+SSE connections automatically reconnect on failure. Handle the `onerror` event to update UI state:
+
+```javascript
+stream.onerror = (err) => {
+  console.error('SSE connection error:', err);
+  // Update UI to show reconnecting state
+  // EventSource will auto-reconnect
+};
+```
+
+> 🚧 Cross-Origin Requests
+>
+> If connecting from a different origin, ensure CORS is configured on the API. The SSE endpoint supports CORS by default.
+
+## Status Endpoint
+
+Check SSE broadcaster status including subscriber counts and Redis mode:
+
+```bash
+curl http://localhost:5000/api/v1/map/sse/status
+```
 
 ```json
 {
@@ -202,8 +359,14 @@ You can check the status of the SSE broadcaster, including subscriber counts and
   "history": {
     "size": 500,
     "max_size": 5000
-  },
-  "timestamp": "2024-01-15T12:00:01Z"
+  }
 }
-
 ```
+
+| Field | Description |
+| :--- | :--- |
+| `mode` | `memory` or `redis` |
+| `subscribers` | Total connected clients |
+| `subscribers_local` | Clients on this worker |
+| `tracked_aircraft` | Currently tracked aircraft |
+| `history.size` | Buffered events for replay |

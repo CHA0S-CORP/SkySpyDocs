@@ -1,104 +1,82 @@
 ---
 title: "Real-Time API"
 slug: "real-time-api"
-excerpt: "Comprehensive guide to the SkySpy Socket.IO streaming API, including events, topics, and on-demand data requests."
+excerpt: "Stream live aircraft data, safety alerts, and aviation weather via Socket.IO."
 hidden: false
 ---
 
-The SkySpy Real-Time API is built on **Socket.IO**, providing a robust, bi-directional communication channel for streaming aircraft data, safety alerts, and aviation intelligence.
+The SkySpy Real-Time API uses Socket.IO to stream aircraft positions, safety events, and aviation data to your application in real-time.
 
-## Connection
+## Quick Start
 
-To connect to the real-time stream, establish a Socket.IO connection to the API server.
+Install the Socket.IO client and connect:
 
-| Setting | Value |
-| :--- | :--- |
-| **Base URL** | `http://<host>:5000` |
-| **Path** | `/socket.io/socket.io` |
-| **Transports** | `websocket`, `polling` |
-| **Query Params** | `topics` (comma-separated list of rooms to join) |
+```bash
+npm install socket.io-client
+```
 
-### Client Implementation
-
-#### Vanilla JavaScript
 ```javascript
 import { io } from 'socket.io-client';
 
 const socket = io('http://localhost:5000', {
   path: '/socket.io/socket.io',
-  query: { topics: 'aircraft,safety,alerts' },
+  query: { topics: 'aircraft,safety' },
   transports: ['websocket', 'polling']
 });
 
-socket.on('connect', () => {
-  console.log('Connected with ID:', socket.id);
+socket.on('aircraft:update', (data) => {
+  console.log('Aircraft update:', data.aircraft);
 });
 
+socket.on('safety:event', (event) => {
+  console.log('Safety alert:', event.message);
+});
 ```
 
-#### React Hook Example
+## Connection Settings
+
+| Setting | Value |
+| :--- | :--- |
+| **URL** | `http://<host>:5000` |
+| **Path** | `/socket.io/socket.io` |
+| **Transports** | `websocket`, `polling` |
+| **Query: topics** | Comma-separated list of topics to subscribe |
+
+## Topics
+
+Subscribe to specific data streams via the `topics` query parameter or dynamically after connecting.
+
+| Topic | Events | Description |
+| :--- | :--- | :--- |
+| `aircraft` | `aircraft:snapshot`, `aircraft:update`, `aircraft:remove` | Live positions and metadata |
+| `safety` | `safety:event` | TCAS, proximity, and emergency alerts |
+| `alerts` | `alert:triggered` | Custom alert rule matches |
+| `airspace` | `airspace:*` | G-AIRMET advisories |
+| `acars` | `acars:message` | ACARS/VDL2 messages |
+| `all` | All events | Subscribe to everything |
+
+<Accordion title="Change subscriptions dynamically">
 
 ```javascript
-import { useEffect, useState } from 'react';
-import { io } from 'socket.io-client';
+// Add a subscription
+socket.emit('subscribe', { topics: ['acars'] });
 
-export function useSkySpySocket(topics = 'all') {
-  const [connected, setConnected] = useState(false);
-
-  useEffect(() => {
-    const socket = io('http://localhost:5000', {
-      path: '/socket.io/socket.io',
-      query: { topics },
-      transports: ['websocket', 'polling']
-    });
-
-    socket.on('connect', () => setConnected(true));
-    socket.on('disconnect', () => setConnected(false));
-
-    return () => socket.disconnect();
-  }, [topics]);
-
-  return { connected };
-}
-
+// Remove a subscription
+socket.emit('unsubscribe', { topics: ['safety'] });
 ```
 
----
+</Accordion>
 
-## Subscription Topics
-
-You can subscribe to specific data streams to optimize bandwidth. These can be set via the `topics` query parameter or dynamically using `subscribe` events.
-
-| Topic | Events Included | Description |
-| --- | --- | --- |
-| `aircraft` | `aircraft:*` | Live positions, metadata updates, and removals. |
-| `safety` | `safety:event` | TCAS conflicts, proximity warnings, and extreme vertical rates. |
-| `alerts` | `alert:triggered` | User-defined custom alert rule matches. |
-| `airspace` | `airspace:*` | G-AIRMET advisories and airspace boundary definitions. |
-| `acars` | `acars:message` | Real-time ACARS and VDL2 text messages. |
-| `all` | *All Events* | Subscribes to all available rooms. |
-
-> 📘 Dynamic Subscription
-> You can change subscriptions after connecting:
-> ```javascript
-> socket.emit('subscribe', { topics: ['acars'] });
-> socket.emit('unsubscribe', { topics: ['safety'] });
-> 
-> ```
-> 
-> 
-
----
-
-## Event Reference
+## Events
 
 ### Aircraft Events
 
-These events are broadcast to the `aircraft` topic.
+Subscribe to `aircraft` topic.
 
-#### `aircraft:snapshot`
+<Tabs>
+  <Tab title="aircraft:snapshot">
 
-Sent immediately upon connection or topic subscription. Contains the full state of all currently tracked aircraft.
+Sent immediately on connection. Contains all currently tracked aircraft.
 
 ```json
 {
@@ -122,12 +100,12 @@ Sent immediately upon connection or topic subscription. Contains the full state 
   "count": 1,
   "timestamp": "2024-01-15T12:00:00Z"
 }
-
 ```
 
-#### `aircraft:update`
+  </Tab>
+  <Tab title="aircraft:update">
 
-Emitted when tracking data changes (position, altitude, speed, etc.).
+Emitted when aircraft data changes. Contains only changed fields.
 
 ```json
 {
@@ -140,32 +118,54 @@ Emitted when tracking data changes (position, altitude, speed, etc.).
   ],
   "timestamp": "2024-01-15T12:00:01Z"
 }
-
 ```
 
-#### `aircraft:remove`
+  </Tab>
+  <Tab title="aircraft:remove">
 
-Emitted when aircraft leave coverage or signal is lost.
+Emitted when aircraft leave coverage.
 
 ```json
 {
   "icaos": ["A12345", "B67890"],
   "timestamp": "2024-01-15T12:05:00Z"
 }
-
 ```
+
+  </Tab>
+</Tabs>
+
+#### Aircraft Object Fields
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `hex` | string | ICAO 24-bit address |
+| `flight` | string | Callsign (if available) |
+| `lat`, `lon` | number | Position coordinates |
+| `alt` | number | Altitude in feet |
+| `gs` | number | Ground speed in knots |
+| `track` | number | Track heading in degrees |
+| `vr` | number | Vertical rate in ft/min |
+| `squawk` | string | Transponder code |
+| `category` | string | Aircraft size category |
+| `type` | string | ICAO aircraft type code |
+| `military` | boolean | Military aircraft flag |
+| `emergency` | boolean | Emergency squawk detected |
 
 ### Safety Events
 
-Broadcast to the `safety` topic when the monitoring engine detects a conflict.
+Subscribe to `safety` topic.
 
 #### `safety:event`
 
-| Field | Type | Description |
-| --- | --- | --- |
+| Field | Type | Values |
+| :--- | :--- | :--- |
 | `event_type` | string | `proximity_conflict`, `tcas_ra_detected`, `extreme_vertical_rate`, `emergency_squawk` |
-| `severity` | string | `warning` or `critical` |
-| `details` | object | Context specific to the event type. |
+| `severity` | string | `warning`, `critical` |
+| `icao` | string | Primary aircraft ICAO |
+| `icao_2` | string | Secondary aircraft (for conflicts) |
+| `message` | string | Human-readable description |
+| `details` | object | Event-specific context |
 
 ```json
 {
@@ -181,12 +181,11 @@ Broadcast to the `safety` topic when the monitoring engine detects a conflict.
   },
   "timestamp": "2024-01-15T12:00:00Z"
 }
-
 ```
 
 ### Alert Events
 
-Broadcast to the `alerts` topic when a custom user rule is matched.
+Subscribe to `alerts` topic. Fired when custom alert rules match.
 
 #### `alert:triggered`
 
@@ -205,12 +204,11 @@ Broadcast to the `alerts` topic when a custom user rule is matched.
     "lon": -122.3
   }
 }
-
 ```
 
 ### ACARS Events
 
-Broadcast to the `acars` topic.
+Subscribe to `acars` topic. Requires ACARS receiver configured.
 
 #### `acars:message`
 
@@ -224,65 +222,194 @@ Broadcast to the `acars` topic.
   "frequency": 130.025,
   "signal_level": -42.5
 }
-
 ```
-
----
 
 ## Request/Response API
 
-SkySpy supports an RPC-style Request/Response pattern over Socket.IO. This allows the frontend to fetch heavy aviation data (like weather or airspace boundaries) on-demand without managing separate HTTP endpoints.
+Fetch on-demand data (weather, airspace, aircraft info) using an RPC-style pattern over the same Socket.IO connection.
 
-### Usage Pattern
-
-1. **Emit** a `request` event with a unique `request_id`.
-2. **Listen** for a `response` (success) or `error` event matching that ID.
-
-### Sending a Request
+### Making Requests
 
 ```javascript
-const requestId = 'req-12345';
+import { v4 as uuid } from 'uuid';
 
-socket.emit('request', {
-  type: 'pireps',
-  request_id: requestId,
-  params: { 
-    lat: 47.5, 
-    lon: -122.3, 
-    radius: 150 
-  }
+function request(socket, type, params) {
+  return new Promise((resolve, reject) => {
+    const request_id = uuid();
+
+    const onResponse = (data) => {
+      if (data.request_id === request_id) {
+        socket.off('response', onResponse);
+        socket.off('error', onError);
+        resolve(data.data);
+      }
+    };
+
+    const onError = (err) => {
+      if (err.request_id === request_id) {
+        socket.off('response', onResponse);
+        socket.off('error', onError);
+        reject(new Error(err.error));
+      }
+    };
+
+    socket.on('response', onResponse);
+    socket.on('error', onError);
+    socket.emit('request', { type, request_id, params });
+  });
+}
+
+// Usage
+const pireps = await request(socket, 'pireps', {
+  lat: 47.5,
+  lon: -122.3,
+  radius: 150
 });
-
 ```
 
-### Receiving Data
+### Available Requests
 
-```javascript
-socket.on('response', (data) => {
-  if (data.request_id === 'req-12345') {
-    console.log('Received PIREPs:', data.data);
-  }
-});
+<Tabs>
+  <Tab title="Weather">
 
-socket.on('error', (err) => {
-  if (err.request_id === 'req-12345') {
-    console.error('Request failed:', err.error);
-  }
-});
+| Type | Required | Optional | Description |
+| :--- | :--- | :--- | :--- |
+| `metars` | `lat`, `lon` | `radius`, `hours`, `limit` | METARs for airports in area |
+| `metar` | `station` | `hours` | Single station METAR |
+| `taf` | `station` | — | Terminal Aerodrome Forecast |
+| `pireps` | `lat`, `lon` | `radius`, `hours` | Pilot Reports (turbulence, icing) |
+| `sigmets` | — | `hazard`, `lat`, `lon`, `radius` | Active SIGMETs |
 
+  </Tab>
+  <Tab title="Airspace">
+
+| Type | Required | Optional | Description |
+| :--- | :--- | :--- | :--- |
+| `airspaces` | `lat`, `lon` | `hazard` | G-AIRMET advisories for location |
+| `airspace-boundaries` | — | `lat`, `lon`, `radius`, `class` | Static airspace geometry |
+
+  </Tab>
+  <Tab title="Navigation">
+
+| Type | Required | Optional | Description |
+| :--- | :--- | :--- | :--- |
+| `airports` | `lat`, `lon` | `radius`, `limit` | Nearby airports |
+| `navaids` | `lat`, `lon` | `radius`, `limit`, `type` | Nearby VORs/NDBs |
+
+  </Tab>
+  <Tab title="Aircraft">
+
+| Type | Required | Optional | Description |
+| :--- | :--- | :--- | :--- |
+| `aircraft-info` | `icao` | — | Static database info (registration, type, operator) |
+
+  </Tab>
+</Tabs>
+
+## React Integration
+
+<Accordion title="useSkySpySocket hook">
+
+```typescript
+import { useEffect, useState, useCallback, useRef } from 'react';
+import { io, Socket } from 'socket.io-client';
+
+interface Aircraft {
+  hex: string;
+  flight?: string;
+  lat: number;
+  lon: number;
+  alt: number;
+  gs: number;
+  track: number;
+  vr: number;
+}
+
+interface UseSkySpySocketOptions {
+  url?: string;
+  topics?: string;
+}
+
+export function useSkySpySocket(options: UseSkySpySocketOptions = {}) {
+  const { url = 'http://localhost:5000', topics = 'aircraft' } = options;
+  const [connected, setConnected] = useState(false);
+  const [aircraft, setAircraft] = useState<Map<string, Aircraft>>(new Map());
+  const socketRef = useRef<Socket | null>(null);
+
+  useEffect(() => {
+    const socket = io(url, {
+      path: '/socket.io/socket.io',
+      query: { topics },
+      transports: ['websocket', 'polling']
+    });
+
+    socketRef.current = socket;
+
+    socket.on('connect', () => setConnected(true));
+    socket.on('disconnect', () => setConnected(false));
+
+    socket.on('aircraft:snapshot', (data) => {
+      setAircraft(new Map(data.aircraft.map((a: Aircraft) => [a.hex, a])));
+    });
+
+    socket.on('aircraft:update', (data) => {
+      setAircraft((prev) => {
+        const next = new Map(prev);
+        for (const a of data.aircraft) {
+          const existing = next.get(a.hex);
+          next.set(a.hex, { ...existing, ...a });
+        }
+        return next;
+      });
+    });
+
+    socket.on('aircraft:remove', (data) => {
+      setAircraft((prev) => {
+        const next = new Map(prev);
+        for (const icao of data.icaos) {
+          next.delete(icao);
+        }
+        return next;
+      });
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, [url, topics]);
+
+  return {
+    connected,
+    aircraft: Array.from(aircraft.values()),
+    socket: socketRef.current
+  };
+}
 ```
 
-### Supported Request Types
+</Accordion>
 
-| Request Type | Required Params | Optional Params | Description |
-| --- | --- | --- | --- |
-| `airspaces` | `lat`, `lon` | `hazard` | Get G-AIRMET advisories for a location. |
-| `airspace-boundaries` | - | `lat`, `lon`, `radius`, `class` | Get static airspace boundary geometry. |
-| `pireps` | `lat`, `lon` | `radius`, `hours` | Get Pilot Reports (turbulence, icing). |
-| `metars` | `lat`, `lon` | `radius`, `hours`, `limit` | Get METARs for airports in area. |
-| `metar` | `station` | `hours` | Get specific station METAR. |
-| `taf` | `station` | - | Get Terminal Aerodrome Forecast. |
-| `sigmets` | - | `hazard`, `lat`, `lon`, `radius` | Get active SIGMETs. |
-| `airports` | `lat`, `lon` | `radius`, `limit` | Get nearby airport info. |
-| `navaids` | `lat`, `lon` | `radius`, `limit`, `type` | Get nearby VORs/NDBs. |
-| `aircraft-info` | `icao` | - | Get static database info for an ICAO. |
+<Accordion title="Usage example">
+
+```tsx
+function AircraftList() {
+  const { connected, aircraft } = useSkySpySocket({
+    topics: 'aircraft,safety'
+  });
+
+  if (!connected) {
+    return <div>Connecting...</div>;
+  }
+
+  return (
+    <ul>
+      {aircraft.map((a) => (
+        <li key={a.hex}>
+          {a.flight || a.hex} - {a.alt}ft @ {a.gs}kts
+        </li>
+      ))}
+    </ul>
+  );
+}
+```
+
+</Accordion>
