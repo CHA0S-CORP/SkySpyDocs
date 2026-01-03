@@ -11,9 +11,42 @@ SkySpy is configured via environment variables in your `.env` file. Copy the sam
 cp .env.test.sample .env
 ```
 
+## Configuration Overview
+
+```mermaid
+flowchart TB
+    subgraph Required["🔴 Required"]
+        DB[DATABASE_URL]
+        UF[ULTRAFEEDER_HOST]
+        LAT[FEEDER_LAT/LON]
+    end
+
+    subgraph Core["🟡 Core Settings"]
+        POLL[Polling Intervals]
+        SAFE[Safety Thresholds]
+    end
+
+    subgraph Optional["🟢 Optional"]
+        NOTIFY[Notifications]
+        UAT[UAT 978MHz]
+        REDIS[Redis Pub/Sub]
+        ACARS[ACARS Messages]
+        PHOTO[Photo Cache]
+    end
+
+    Required --> Core
+    Core --> Optional
+
+    style Required fill:#ffebee
+    style Core fill:#fff3e0
+    style Optional fill:#e8f5e9
+```
+
 ## Required Settings
 
-These variables must be set for SkySpy to function:
+<Warning>
+These variables **must** be set for SkySpy to function properly.
+</Warning>
 
 | Variable | Description | Example |
 | :--- | :--- | :--- |
@@ -23,7 +56,7 @@ These variables must be set for SkySpy to function:
 | `FEEDER_LAT` | Your receiver's latitude | `47.9377` |
 | `FEEDER_LON` | Your receiver's longitude | `-121.9687` |
 
-> 🚧 Coordinates Required
+> 🚧 **Coordinates Required**
 >
 > `FEEDER_LAT` and `FEEDER_LON` are used for distance calculations and proximity alerts. Make sure these match your receiver's actual location.
 
@@ -36,9 +69,20 @@ Control how frequently SkySpy fetches data and writes to the database:
 | `POLLING_INTERVAL` | `2` | Seconds between aircraft data fetches |
 | `DB_STORE_INTERVAL` | `10` | Seconds between database writes |
 
-> 📘 Performance Tip
->
-> Lower `POLLING_INTERVAL` values provide more responsive tracking but increase CPU and network usage. The default of 2 seconds works well for most setups.
+```mermaid
+flowchart LR
+    subgraph Timing["⏱️ Data Flow Timing"]
+        direction LR
+        RX[Receiver] -->|2s| API[API]
+        API -->|10s| DB[(Database)]
+    end
+
+    style Timing fill:#e3f2fd
+```
+
+<Info>
+**Performance Tip** — Lower `POLLING_INTERVAL` values provide more responsive tracking but increase CPU and network usage. The default of 2 seconds works well for most setups.
+</Info>
 
 ## Safety Monitoring
 
@@ -50,9 +94,45 @@ Configure the safety analysis engine that detects TCAS events, proximity alerts,
 | `SAFETY_PROXIMITY_NM` | `1.0` | Proximity alert threshold (nautical miles) |
 | `SAFETY_ALTITUDE_DIFF_FT` | `1000` | Vertical separation threshold (feet) |
 
+```mermaid
+flowchart TB
+    subgraph Safety["🛡️ Safety Engine"]
+        direction TB
+        PROX["Proximity Check<br/>< 1.0 NM horizontal"]
+        ALT["Altitude Check<br/>< 1000 ft vertical"]
+        TCAS["TCAS Detection<br/>RA/TA flags"]
+        EMER["Emergency Squawks<br/>7700/7600/7500"]
+    end
+
+    PROX --> ALERT[Alert Triggered]
+    ALT --> ALERT
+    TCAS --> ALERT
+    EMER --> ALERT
+
+    style Safety fill:#fff3e0
+    style ALERT fill:#ffcdd2
+```
+
 ## Notifications
 
-SkySpy uses [Apprise](https://github.com/caronc/apprise) for push notifications, supporting 80+ services. Configure multiple services by separating URLs with semicolons:
+SkySpy uses [Apprise](https://github.com/caronc/apprise) for push notifications, supporting 80+ services.
+
+<CardGroup cols={4}>
+  <Card title="Pushover" icon="bell">
+    iOS/Android push
+  </Card>
+  <Card title="Telegram" icon="paper-plane">
+    Bot messages
+  </Card>
+  <Card title="Discord" icon="hashtag">
+    Webhook alerts
+  </Card>
+  <Card title="Slack" icon="slack">
+    Channel posts
+  </Card>
+</CardGroup>
+
+Configure multiple services by separating URLs with semicolons:
 
 ```bash
 APPRISE_URLS="pushover://user_key@app_token;tgram://bot_token/chat_id"
@@ -64,19 +144,45 @@ NOTIFICATION_COOLDOWN=300
 | `APPRISE_URLS` | — | Semicolon-separated list of Apprise URLs |
 | `NOTIFICATION_COOLDOWN` | `300` | Minimum seconds between repeat notifications for the same alert |
 
-<Accordion title="Common Apprise URL formats">
+<AccordionGroup>
+  <Accordion title="Pushover Setup" icon="mobile">
+    1. Create an app at [pushover.net](https://pushover.net)
+    2. Copy your User Key and API Token
+    3. Add to `.env`:
+       ```bash
+       APPRISE_URLS="pushover://USER_KEY@API_TOKEN"
+       ```
+  </Accordion>
 
-| Service | URL Format |
-| :--- | :--- |
-| Pushover | `pushover://user_key@app_token` |
-| Telegram | `tgram://bot_token/chat_id` |
-| Discord | `discord://webhook_id/webhook_token` |
-| Slack | `slack://token_a/token_b/token_c` |
-| Email | `mailto://user:pass@smtp.example.com?to=you@example.com` |
+  <Accordion title="Telegram Setup" icon="paper-plane">
+    1. Create a bot via [@BotFather](https://t.me/botfather)
+    2. Get your chat ID from [@userinfobot](https://t.me/userinfobot)
+    3. Add to `.env`:
+       ```bash
+       APPRISE_URLS="tgram://BOT_TOKEN/CHAT_ID"
+       ```
+  </Accordion>
 
-See the [Apprise documentation](https://github.com/caronc/apprise/wiki) for the full list of supported services.
+  <Accordion title="Discord Setup" icon="hashtag">
+    1. Create a webhook in your Discord channel settings
+    2. Copy the webhook URL
+    3. Add to `.env`:
+       ```bash
+       APPRISE_URLS="discord://WEBHOOK_ID/WEBHOOK_TOKEN"
+       ```
+  </Accordion>
 
-</Accordion>
+  <Accordion title="Slack Setup" icon="slack">
+    1. Create an incoming webhook in Slack
+    2. Copy the webhook URL tokens
+    3. Add to `.env`:
+       ```bash
+       APPRISE_URLS="slack://TOKEN_A/TOKEN_B/TOKEN_C"
+       ```
+  </Accordion>
+</AccordionGroup>
+
+See the [Apprise documentation](https://github.com/caronc/apprise/wiki) for the full list of 80+ supported services.
 
 ## Advanced Integrations
 
@@ -89,6 +195,10 @@ Receive traffic from 978MHz UAT broadcasts (common for GA aircraft in the US):
 | `DUMP978_HOST` | — | Hostname of your dump978 receiver |
 | `DUMP978_PORT` | `30979` | Port for dump978 JSON output |
 
+<Info>
+UAT is primarily used by general aviation aircraft in the United States below 18,000 feet. Adding a 978MHz receiver significantly increases coverage of small aircraft.
+</Info>
+
 ### Redis
 
 Enable Redis for pub/sub messaging in multi-worker deployments:
@@ -96,6 +206,36 @@ Enable Redis for pub/sub messaging in multi-worker deployments:
 | Variable | Default | Description |
 | :--- | :--- | :--- |
 | `REDIS_URL` | — | Redis connection string (e.g., `redis://localhost:6379`) |
+
+```mermaid
+flowchart LR
+    subgraph Workers["Multiple API Workers"]
+        W1[Worker 1]
+        W2[Worker 2]
+        W3[Worker 3]
+    end
+
+    subgraph Redis["Redis Pub/Sub"]
+        R[(Redis)]
+    end
+
+    subgraph Clients["SSE Clients"]
+        C1[Client A]
+        C2[Client B]
+        C3[Client C]
+    end
+
+    W1 --> R
+    W2 --> R
+    W3 --> R
+    R --> C1
+    R --> C2
+    R --> C3
+
+    style Workers fill:#e3f2fd
+    style Redis fill:#ffcdd2
+    style Clients fill:#e8f5e9
+```
 
 ### ACARS/VDL2 Messages
 
@@ -114,3 +254,73 @@ Cache aircraft photos locally to reduce API calls:
 | :--- | :--- | :--- |
 | `PHOTO_CACHE_ENABLED` | `false` | Enable local photo caching |
 | `PHOTO_CACHE_DIR` | `/data/photos` | Directory to store cached images |
+
+## Complete Configuration Example
+
+<Accordion title="Full .env example" icon="file-code" defaultOpen>
+
+```bash
+# ===================
+# Required Settings
+# ===================
+DATABASE_URL=postgresql://skyspy:password@postgres:5432/skyspy
+ULTRAFEEDER_HOST=ultrafeeder
+ULTRAFEEDER_PORT=80
+FEEDER_LAT=47.9377
+FEEDER_LON=-121.9687
+
+# ===================
+# Polling & Storage
+# ===================
+POLLING_INTERVAL=2
+DB_STORE_INTERVAL=10
+
+# ===================
+# Safety Monitoring
+# ===================
+SAFETY_MONITORING_ENABLED=true
+SAFETY_PROXIMITY_NM=1.0
+SAFETY_ALTITUDE_DIFF_FT=1000
+
+# ===================
+# Notifications
+# ===================
+APPRISE_URLS=pushover://user@token;tgram://bot/chat
+NOTIFICATION_COOLDOWN=300
+
+# ===================
+# Optional: UAT 978MHz
+# ===================
+# DUMP978_HOST=dump978
+# DUMP978_PORT=30979
+
+# ===================
+# Optional: Redis
+# ===================
+# REDIS_URL=redis://redis:6379
+
+# ===================
+# Optional: ACARS
+# ===================
+# ACARS_ENABLED=true
+# ACARS_PORT=5555
+
+# ===================
+# Optional: Photo Cache
+# ===================
+# PHOTO_CACHE_ENABLED=true
+# PHOTO_CACHE_DIR=/data/photos
+```
+
+</Accordion>
+
+## Next Steps
+
+<Cards columns={2}>
+  <Card title="Safety & Alerts" icon="bell" href="/docs/safety-and-alerts">
+    Configure custom alert rules and notification triggers
+  </Card>
+  <Card title="Real-Time API" icon="bolt" href="/docs/real-time-api">
+    Connect to live data streams via Socket.IO
+  </Card>
+</Cards>

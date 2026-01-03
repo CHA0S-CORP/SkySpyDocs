@@ -7,91 +7,153 @@ hidden: false
 
 Deploy SkySpy using Docker Compose in under 5 minutes.
 
+```mermaid
+flowchart LR
+    A[Clone Repo] --> B[Configure .env]
+    B --> C[Docker Compose Up]
+    C --> D[Open Dashboard]
+
+    style A fill:#e3f2fd
+    style B fill:#fff3e0
+    style C fill:#e8f5e9
+    style D fill:#f3e5f5
+```
+
 ## Prerequisites
 
-Before you begin, make sure you have:
+<Check>
+**Docker & Docker Compose** — [Install Docker](https://docs.docker.com/get-docker/)
+</Check>
 
-- **Docker & Docker Compose** — [Install Docker](https://docs.docker.com/get-docker/)
-- **An ADS-B receiver** — Running [Ultrafeeder](https://github.com/sdr-enthusiasts/docker-adsb-ultrafeeder), readsb, or dump1090 on your network
+<Check>
+**An ADS-B receiver** — Running [Ultrafeeder](https://github.com/sdr-enthusiasts/docker-adsb-ultrafeeder), readsb, or dump1090 on your network
+</Check>
 
 ## Installation
 
-### 1. Clone the repository
+<Steps>
+  <Step title="Clone the repository">
+    ```bash
+    git clone https://github.com/your-org/skyspy.git
+    cd skyspy
+    ```
+  </Step>
 
-```bash
-git clone https://github.com/your-org/skyspy.git
-cd skyspy
-```
+  <Step title="Configure environment">
+    Copy the sample environment file and edit it with your settings:
 
-### 2. Configure environment
+    ```bash
+    cp .env.test.sample .env
+    ```
 
-Copy the sample environment file and edit it with your settings:
+    Open `.env` and set these required variables:
 
-```bash
-cp .env.test.sample .env
-```
+    | Variable | Description | Example |
+    | :--- | :--- | :--- |
+    | `FEEDER_LAT` | Your receiver's latitude | `47.9377` |
+    | `FEEDER_LON` | Your receiver's longitude | `-121.9687` |
+    | `ULTRAFEEDER_HOST` | Hostname or IP of your ADS-B receiver | `ultrafeeder` or `192.168.1.100` |
 
-Open `.env` and set these required variables:
+    > 📘 **Finding your coordinates**
+    >
+    > Use [Google Maps](https://maps.google.com) — right-click your location and copy the coordinates.
+  </Step>
 
-| Variable | Description | Example |
-| :--- | :--- | :--- |
-| `FEEDER_LAT` | Your receiver's latitude | `47.9377` |
-| `FEEDER_LON` | Your receiver's longitude | `-121.9687` |
-| `ULTRAFEEDER_HOST` | Hostname or IP of your ADS-B receiver | `ultrafeeder` or `192.168.1.100` |
+  <Step title="Start the services">
+    ```bash
+    docker compose up -d
+    ```
 
-> 📘 Finding your coordinates
->
-> Use [Google Maps](https://maps.google.com) — right-click your location and copy the coordinates.
+    Wait for the containers to start (usually 10-30 seconds), then verify they're running:
 
-### 3. Start the services
-
-```bash
-docker compose up -d
-```
-
-Wait for the containers to start (usually 10-30 seconds), then verify they're running:
-
-```bash
-docker compose ps
-```
+    ```bash
+    docker compose ps
+    ```
+  </Step>
+</Steps>
 
 ## Access the Dashboard
 
-| Service | URL | Description |
-| :--- | :--- | :--- |
-| **Web Dashboard** | [http://localhost:3000](http://localhost:3000) | Interactive aircraft map |
-| **API Docs** | [http://localhost:5000/docs](http://localhost:5000/docs) | Swagger/OpenAPI reference |
+Once the containers are running, you can access:
 
-> ✅ Success
->
-> You should see aircraft appearing on the map within a few seconds if your receiver is working properly.
+<CardGroup cols={2}>
+  <Card title="Web Dashboard" icon="map" href="http://localhost:3000">
+    Interactive aircraft radar at **localhost:3000**
+  </Card>
+  <Card title="API Documentation" icon="code" href="http://localhost:5000/docs">
+    Swagger/OpenAPI reference at **localhost:5000/docs**
+  </Card>
+</CardGroup>
+
+<Success>
+**You should see aircraft appearing on the map within a few seconds** if your receiver is working properly.
+</Success>
+
+## What You'll See
+
+```mermaid
+flowchart TB
+    subgraph Dashboard["🖥️ Web Dashboard"]
+        direction LR
+        RADAR[Radar Display]
+        LIST[Aircraft List]
+        DETAIL[Aircraft Details]
+    end
+
+    subgraph Data["📡 Live Data"]
+        POS[Position Updates]
+        SAFE[Safety Alerts]
+        WX[Weather Data]
+    end
+
+    Data --> Dashboard
+
+    style Dashboard fill:#e8f5e9
+    style Data fill:#e3f2fd
+```
+
+The dashboard shows:
+- **Radar Display** — Aircraft positions on an interactive map
+- **Aircraft List** — Sortable table of all tracked aircraft
+- **Detail Panel** — Click any aircraft for photos, flight info, and track history
+- **Safety Alerts** — Real-time notifications for TCAS, proximity, and emergencies
 
 ## Troubleshooting
 
-<Accordion title="No aircraft appearing on the map">
+<AccordionGroup>
+  <Accordion title="No aircraft appearing on the map" icon="plane-slash">
+    1. Verify your receiver is running and accessible:
+       ```bash
+       curl http://ULTRAFEEDER_HOST/tar1090/data/aircraft.json
+       ```
+    2. Check that `ULTRAFEEDER_HOST` in your `.env` matches your receiver's address
+    3. View the API logs for connection errors:
+       ```bash
+       docker compose logs adsb-api
+       ```
+  </Accordion>
 
-1. Verify your receiver is running and accessible:
-   ```bash
-   curl http://ULTRAFEEDER_HOST/tar1090/data/aircraft.json
-   ```
-2. Check that `ULTRAFEEDER_HOST` in your `.env` matches your receiver's address
-3. View the API logs for connection errors:
-   ```bash
-   docker compose logs adsb-api
-   ```
+  <Accordion title="Container fails to start" icon="triangle-exclamation">
+    1. Check the logs for the failing container:
+       ```bash
+       docker compose logs <service-name>
+       ```
+    2. Verify your `.env` file has all required variables set
+    3. Ensure ports 3000 and 5000 are not in use by other services
+  </Accordion>
 
-</Accordion>
-
-<Accordion title="Container fails to start">
-
-1. Check the logs for the failing container:
-   ```bash
-   docker compose logs <service-name>
-   ```
-2. Verify your `.env` file has all required variables set
-3. Ensure ports 3000 and 5000 are not in use by other services
-
-</Accordion>
+  <Accordion title="Database connection errors" icon="database">
+    1. Ensure PostgreSQL container is running:
+       ```bash
+       docker compose ps postgres
+       ```
+    2. Check database logs:
+       ```bash
+       docker compose logs postgres
+       ```
+    3. Verify `DATABASE_URL` in your `.env` matches the Docker service name
+  </Accordion>
+</AccordionGroup>
 
 ## Local Development
 
@@ -99,24 +161,31 @@ For contributors who want to run services without Docker:
 
 <Tabs>
   <Tab title="Backend">
-
-  ```bash
-  cd adsb-api
-  pip install -e ".[dev]"
-  uvicorn app.main:app --host 0.0.0.0 --port 5000 --reload
-  ```
-
+    ```bash
+    cd adsb-api
+    pip install -e ".[dev]"
+    uvicorn app.main:app --host 0.0.0.0 --port 5000 --reload
+    ```
   </Tab>
   <Tab title="Frontend">
-
-  ```bash
-  cd web
-  npm install
-  npm run dev
-  ```
-
+    ```bash
+    cd web
+    npm install
+    npm run dev
+    ```
   </Tab>
 </Tabs>
+
+## Deployment Checklist
+
+<Checklist>
+  - [ ] Docker and Docker Compose installed
+  - [ ] ADS-B receiver accessible on network
+  - [ ] `.env` file configured with coordinates
+  - [ ] Ports 3000 and 5000 available
+  - [ ] Containers running (`docker compose ps`)
+  - [ ] Aircraft visible on dashboard
+</Checklist>
 
 ## Next Steps
 

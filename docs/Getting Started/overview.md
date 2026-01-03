@@ -11,25 +11,130 @@ SkySpy is a real-time aircraft tracking platform that captures ADS-B position da
 
 ## What You Can Do with SkySpy
 
-| Capability | Description |
-| :--- | :--- |
-| **Track Aircraft** | Monitor live positions with distance, altitude, speed, and climb rate from your ADS-B receiver |
-| **Detect Safety Events** | Get alerts for TCAS RA/TA, proximity warnings, and emergency squawks (7700/7600/7500) |
-| **Create Custom Alerts** | Build rules with AND/OR logic on ICAO, callsign, squawk, altitude, distance, and more |
-| **View Weather Data** | Access METARs, TAFs, PIREPs, SIGMETs, and G-AIRMETs for your area |
-| **Receive Notifications** | Push alerts via 80+ services including Pushover, Telegram, Slack, and Discord |
-| **Explore Aircraft Data** | Look up registrations, photos, airframe details, and operator information |
+<CardGroup cols={2}>
+  <Card title="Track Aircraft" icon="plane">
+    Monitor live positions with distance, altitude, speed, and climb rate from your ADS-B receiver
+  </Card>
+  <Card title="Detect Safety Events" icon="triangle-exclamation">
+    Get alerts for TCAS RA/TA, proximity warnings, and emergency squawks (7700/7600/7500)
+  </Card>
+  <Card title="Create Custom Alerts" icon="bell">
+    Build rules with AND/OR logic on ICAO, callsign, squawk, altitude, distance, and more
+  </Card>
+  <Card title="View Weather Data" icon="cloud-sun">
+    Access METARs, TAFs, PIREPs, SIGMETs, and G-AIRMETs for your area
+  </Card>
+  <Card title="Receive Notifications" icon="mobile">
+    Push alerts via 80+ services including Pushover, Telegram, Slack, and Discord
+  </Card>
+  <Card title="Explore Aircraft Data" icon="database">
+    Look up registrations, photos, airframe details, and operator information
+  </Card>
+</CardGroup>
 
 ## Architecture
 
-SkySpy consists of two main components:
+SkySpy consists of two main components that work together to provide real-time aircraft tracking:
 
-- **Backend API** — Python/FastAPI service that processes ADS-B data, manages alerts, and provides REST/SSE endpoints
-- **Web Dashboard** — React-based frontend with an interactive canvas radar display
+```mermaid
+flowchart TB
+    subgraph Receivers["📡 Data Sources"]
+        UF[Ultrafeeder<br/>1090MHz ADS-B]
+        D978[dump978<br/>978MHz UAT]
+        ACARS[ACARS/VDL2<br/>Decoder]
+    end
 
-> 📘 Data Sources
+    subgraph External["🌐 External APIs"]
+        OSN[OpenSky Network]
+        AWC[Aviation Weather Center]
+        PS[planespotters.net]
+    end
+
+    subgraph Backend["⚙️ Backend API"]
+        direction TB
+        API[FastAPI Server]
+        SAFETY[Safety Engine]
+        ALERTS[Alert Engine]
+        DB[(PostgreSQL)]
+        REDIS[(Redis Pub/Sub)]
+    end
+
+    subgraph Frontend["🖥️ Web Dashboard"]
+        REACT[React App]
+        MAP[Canvas Radar Display]
+    end
+
+    subgraph Notifications["📬 Notifications"]
+        APPRISE[Apprise]
+        PUSH[Pushover / Telegram<br/>Slack / Discord]
+    end
+
+    UF --> API
+    D978 --> API
+    ACARS --> API
+    OSN --> API
+    AWC --> API
+    PS --> API
+
+    API --> SAFETY
+    API --> ALERTS
+    API --> DB
+    API --> REDIS
+
+    REDIS --> REACT
+    API --> REACT
+    REACT --> MAP
+
+    ALERTS --> APPRISE
+    SAFETY --> APPRISE
+    APPRISE --> PUSH
+
+    style Receivers fill:#e1f5fe
+    style External fill:#fff3e0
+    style Backend fill:#f3e5f5
+    style Frontend fill:#e8f5e9
+    style Notifications fill:#fce4ec
+```
+
+> 📘 **Data Sources**
 >
 > SkySpy integrates with [Ultrafeeder](https://github.com/sdr-enthusiasts/docker-adsb-ultrafeeder) (readsb/dump1090) for ADS-B data, dump978 for UAT data, and external APIs like OpenSky Network and Aviation Weather Center for enriched metadata.
+
+## How It Works
+
+```mermaid
+sequenceDiagram
+    participant R as ADS-B Receiver
+    participant A as SkySpy API
+    participant S as Safety Engine
+    participant D as Database
+    participant W as Web Dashboard
+    participant N as Notifications
+
+    R->>A: Aircraft JSON (every 2s)
+    A->>S: Analyze traffic
+    A->>D: Store positions
+
+    alt Safety Event Detected
+        S->>A: Proximity/TCAS alert
+        A->>N: Push notification
+        A->>W: Real-time event
+    end
+
+    A->>W: SSE/Socket.IO stream
+    W->>W: Update radar display
+```
+
+## Key Features at a Glance
+
+| Feature | Description | Learn More |
+| :--- | :--- | :--- |
+| **Live Tracking** | Real-time positions updated every 2 seconds | [Real-Time API](/docs/real-time-api) |
+| **Safety Monitoring** | TCAS, proximity, and emergency detection | [Safety & Alerts](/docs/safety-and-alerts) |
+| **Custom Rules** | Flexible AND/OR condition builder | [Safety & Alerts](/docs/safety-and-alerts#custom-alert-rules) |
+| **Multi-Protocol** | SSE and Socket.IO streaming options | [SSE API](/docs/sse) |
+| **Weather Integration** | METARs, TAFs, PIREPs from AWC | [Real-Time API](/docs/real-time-api#request-response-api) |
+| **Photo Lookup** | Aircraft photos via planespotters.net | [Configuration](/docs/configuration#photo-cache) |
 
 ## Next Steps
 
@@ -47,3 +152,9 @@ SkySpy consists of two main components:
     Connect to the SSE stream for live aircraft data
   </Card>
 </Cards>
+
+---
+
+<Info>
+**New to ADS-B?** ADS-B (Automatic Dependent Surveillance-Broadcast) is a surveillance technology where aircraft broadcast their position, altitude, and velocity. With a simple SDR receiver, you can track aircraft within 200+ miles of your location.
+</Info>
