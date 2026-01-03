@@ -37,36 +37,37 @@ SkySpy is a real-time aircraft tracking platform that captures ADS-B position da
 SkySpy consists of two main components that work together to provide real-time aircraft tracking:
 
 ```mermaid
+%%{init: {'theme': 'dark', 'themeVariables': { 'primaryColor': '#1e3a5f', 'primaryTextColor': '#fff', 'primaryBorderColor': '#3b82f6', 'lineColor': '#60a5fa', 'secondaryColor': '#1e3a5f', 'tertiaryColor': '#1e3a5f'}}}%%
 flowchart TB
     subgraph Receivers["📡 Data Sources"]
-        UF[Ultrafeeder<br/>1090MHz ADS-B]
-        D978[dump978<br/>978MHz UAT]
-        ACARS[ACARS/VDL2<br/>Decoder]
+        UF["📻 Ultrafeeder<br/>1090MHz ADS-B"]
+        D978["📻 dump978<br/>978MHz UAT"]
+        ACARS["💬 ACARS/VDL2<br/>Decoder"]
     end
 
     subgraph External["🌐 External APIs"]
-        OSN[OpenSky Network]
-        AWC[Aviation Weather Center]
-        PS[planespotters.net]
+        OSN["🔍 OpenSky Network"]
+        AWC["🌦️ Aviation Weather"]
+        PS["📸 planespotters.net"]
     end
 
     subgraph Backend["⚙️ Backend API"]
         direction TB
-        API[FastAPI Server]
-        SAFETY[Safety Engine]
-        ALERTS[Alert Engine]
-        DB[(PostgreSQL)]
-        REDIS[(Redis Pub/Sub)]
+        API["🚀 FastAPI Server"]
+        SAFETY["🛡️ Safety Engine"]
+        ALERTS["🔔 Alert Engine"]
+        DB[("🗄️ PostgreSQL")]
+        REDIS[("⚡ Redis Pub/Sub")]
     end
 
     subgraph Frontend["🖥️ Web Dashboard"]
-        REACT[React App]
-        MAP[Canvas Radar Display]
+        REACT["⚛️ React App"]
+        MAP["🗺️ Canvas Radar"]
     end
 
     subgraph Notifications["📬 Notifications"]
-        APPRISE[Apprise]
-        PUSH[Pushover / Telegram<br/>Slack / Discord]
+        APPRISE["📤 Apprise"]
+        PUSH["📱 Pushover / Telegram<br/>Slack / Discord"]
     end
 
     UF --> API
@@ -89,11 +90,11 @@ flowchart TB
     SAFETY --> APPRISE
     APPRISE --> PUSH
 
-    style Receivers fill:#e1f5fe
-    style External fill:#fff3e0
-    style Backend fill:#f3e5f5
-    style Frontend fill:#e8f5e9
-    style Notifications fill:#fce4ec
+    style Receivers fill:#0d4f8b,stroke:#3b82f6,stroke-width:2px,color:#fff
+    style External fill:#7c4a03,stroke:#f59e0b,stroke-width:2px,color:#fff
+    style Backend fill:#5b2168,stroke:#a855f7,stroke-width:2px,color:#fff
+    style Frontend fill:#065f46,stroke:#10b981,stroke-width:2px,color:#fff
+    style Notifications fill:#831843,stroke:#ec4899,stroke-width:2px,color:#fff
 ```
 
 > 📘 **Data Sources**
