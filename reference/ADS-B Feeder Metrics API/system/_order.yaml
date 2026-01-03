@@ -6,3 +6,11 @@
 - get_photo_cache_status_api_v1_photos_cache_get
 - get_opensky_db_status_api_v1_opensky_stats_get
 - opensky_lookup_api_v1_opensky_lookup__icao_hex__get
+- health_check_api_v1_health_get-1
+- get_status_api_v1_status_get-1
+- api_info_api_v1__get-1
+- get_ws_status_api_v1_ws_status_get-1
+- get_config_api_v1_config_get-1
+- get_photo_cache_status_api_v1_photos_cache_get-1
+- get_opensky_db_status_api_v1_opensky_stats_get-1
+- opensky_lookup_api_v1_opensky_lookup__icao_hex__get-1

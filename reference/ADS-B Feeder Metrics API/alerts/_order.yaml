@@ -6,3 +6,11 @@
 - toggle_rule_api_v1_alerts_rules__rule_id__toggle_post
 - get_history_api_v1_alerts_history_get
 - clear_history_api_v1_alerts_history_delete
+- get_rules_api_v1_alerts_rules_get-1
+- create_rule_api_v1_alerts_rules_post-1
+- get_rule_api_v1_alerts_rules__rule_id__get-1
+- update_rule_api_v1_alerts_rules__rule_id__put-1
+- delete_rule_api_v1_alerts_rules__rule_id__delete-1
+- toggle_rule_api_v1_alerts_rules__rule_id__toggle_post-1
+- get_history_api_v1_alerts_history_get-1
+- clear_history_api_v1_alerts_history_delete-1
