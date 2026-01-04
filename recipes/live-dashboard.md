@@ -150,39 +150,29 @@ export function useSkySpySSE(url = 'http://localhost:5000/api/v1/map/sse') {
 {"aircraft": [{"hex": "A12345", "flight": "UAL123", "type": "B738", "alt": 35000, "gs": 450}], "count": 1, "connected": true}
 ```
 
-# step1
+# Set Up Project
 
-<!-- shell@ -->
-<!-- go@ -->
-<!-- python@ -->
-<!-- javascript@ -->
+<!-- shell@1-3 -->
+<!-- go@1-12 -->
+<!-- python@1-8 -->
+<!-- javascript@1-6 -->
 
-Build a custom aircraft monitoring dashboard that displays live data from SkySpy using Server-Sent Events (SSE). The React version uses a custom hook for real-time updates.
+Create a new project and set up the basic structure. The React version uses Vite with TypeScript, while Go and Python create simple HTTP servers.
 
-# step2
+# Connect to SSE Stream
 
-The dashboard displays:
-- Live aircraft count
-- Sortable aircraft list with callsign, type, altitude, speed
-- Connection status indicator
-- Safety event notifications
+<!-- shell@4 -->
+<!-- go@29-43 -->
+<!-- python@22-31 -->
+<!-- javascript@8-21 -->
 
-<!-- shell@ -->
-<!-- go@ -->
-<!-- python@ -->
-<!-- javascript@ -->
+Establish a connection to SkySpy's SSE endpoint. Aircraft data updates in real-time as new events arrive from the stream.
 
-# step3
+# Render Dashboard UI
 
-To extend with a map view:
+<!-- shell@4 -->
+<!-- go@45-55 -->
+<!-- python@33-35 -->
+<!-- javascript@23-25 -->
 
-```shell
-npm install leaflet react-leaflet
-```
-
-Then add aircraft markers using the lat/lon coordinates from the SSE stream.
-
-<!-- shell@ -->
-<!-- go@ -->
-<!-- python@ -->
-<!-- javascript@ -->
+Display the aircraft data in a table format. The dashboard auto-refreshes to show the latest aircraft positions and details.

@@ -128,38 +128,29 @@ es.addEventListener('aircraft_update', async (e) => {
 {"embeds": [{"title": "🎖️ Military: RCH419", "color": 5793266, "fields": [{"name": "Type", "value": "C17"}, {"name": "Altitude", "value": "28,000 ft"}]}]}
 ```
 
-# step1
+# Install Dependencies & Configure
 
-<!-- shell@ -->
-<!-- go@ -->
-<!-- python@ -->
-<!-- javascript@ -->
+<!-- shell@1-3 -->
+<!-- go@1-12 -->
+<!-- python@1-6 -->
+<!-- javascript@1-5 -->
 
-Build a Discord bot that sends aircraft alerts to your server in real-time. Create a Discord webhook first: Right-click channel → Edit Channel → Integrations → Webhooks → New Webhook.
+Install the required packages and set your Discord webhook URL. Create a webhook by right-clicking your Discord channel → Edit Channel → Integrations → Webhooks → New Webhook.
 
-# step2
+# Connect to SSE Stream
 
-The bot connects to SkySpy's SSE stream and sends rich embeds for matching aircraft. Customize the filter conditions to alert on military aircraft, emergencies, or specific callsigns.
+<!-- shell@3 -->
+<!-- go@14-18 -->
+<!-- python@8-11 -->
+<!-- javascript@7-9 -->
 
-<!-- shell@ -->
-<!-- go@ -->
-<!-- python@ -->
-<!-- javascript@ -->
+Connect to SkySpy's Server-Sent Events stream to receive real-time aircraft updates. The bot will process each event as it arrives.
 
-# step3
+# Send Discord Embeds
 
-To run as a background service, use systemd (Linux) or Docker:
+<!-- shell@3 -->
+<!-- go@24-35 -->
+<!-- python@18-27 -->
+<!-- javascript@12-25 -->
 
-```shell
-# Systemd
-sudo systemctl enable skyspy-discord
-sudo systemctl start skyspy-discord
-
-# Docker
-docker run -d -e DISCORD_WEBHOOK_URL="..." skyspy-discord
-```
-
-<!-- shell@ -->
-<!-- go@ -->
-<!-- python@ -->
-<!-- javascript@ -->
+When an aircraft matches your filter (military in this example), create a rich Discord embed with aircraft details and send it via the webhook.

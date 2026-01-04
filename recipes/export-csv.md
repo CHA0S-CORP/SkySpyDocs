@@ -124,40 +124,29 @@ es.addEventListener('aircraft_update', (e) => {
 {"timestamp": "2024-01-15T14:32:18", "hex": "A12345", "flight": "UAL123", "type": "B738", "alt": 35000, "gs": 450, "distance": 12.4, "military": false}
 ```
 
-# step1
+# Create CSV File & Headers
 
-<!-- shell@ -->
-<!-- go@ -->
-<!-- python@ -->
-<!-- javascript@ -->
+<!-- shell@1-2 -->
+<!-- go@14-17 -->
+<!-- python@9-12 -->
+<!-- javascript@4-6 -->
 
-Create a logging system that records all aircraft sightings to CSV files. This is useful for analysis, record-keeping, and building historical datasets.
+Create the CSV file and write the header row with column names for timestamp, aircraft identifier, flight info, and position data.
 
-# step2
+# Connect to SSE Stream
 
-Example CSV output:
+<!-- shell@2 -->
+<!-- go@19-21 -->
+<!-- python@14-16 -->
+<!-- javascript@8-9 -->
 
-```csv
-timestamp,hex,flight,type,lat,lon,alt,gs,distance,military,emergency
-2024-01-15T14:32:18,A12345,UAL123,B738,47.6062,-122.3321,35000,450,12.4,False,False
-2024-01-15T14:32:18,AE1234,RCH419,C17,47.5500,-122.4000,28000,420,18.2,True,False
-```
+Connect to SkySpy's Server-Sent Events endpoint to receive real-time aircraft updates. The stream will push new data as aircraft are detected.
 
-<!-- shell@ -->
-<!-- go@ -->
-<!-- python@ -->
-<!-- javascript@ -->
+# Write Aircraft Data
 
-# step3
+<!-- shell@2 -->
+<!-- go@28-38 -->
+<!-- python@20-31 -->
+<!-- javascript@11-22 -->
 
-For daily log rotation, create a new file each day:
-
-```python
-from datetime import date
-filename = f"aircraft_{date.today().isoformat()}.csv"
-```
-
-<!-- shell@ -->
-<!-- go@ -->
-<!-- python@ -->
-<!-- javascript@ -->
+For each aircraft update, extract the relevant fields and write a new row to the CSV file. Flush after each write to ensure data is saved immediately.

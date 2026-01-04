@@ -99,12 +99,12 @@ fetch('http://localhost:5000/api/alerts/rules', {
 {"id": 1, "name": "Emergency Squawk Monitor", "enabled": true, "priority": "critical"}
 ```
 
-# step1
+# Create Emergency Monitor Rule
 
-<!-- shell@ -->
-<!-- go@ -->
-<!-- python@ -->
-<!-- javascript@ -->
+<!-- shell@1-16 -->
+<!-- go@1-19 -->
+<!-- python@1-14 -->
+<!-- javascript@1-18 -->
 
 Set up real-time monitoring for aircraft broadcasting emergency squawk codes. Emergency codes indicate serious aviation emergencies:
 
@@ -112,26 +112,20 @@ Set up real-time monitoring for aircraft broadcasting emergency squawk codes. Em
 - **7600** - Radio Failure (NORDO)
 - **7500** - Hijack
 
-# step2
+# Configure Squawk Conditions
 
-Enable built-in safety monitoring in your `.env` file:
+<!-- shell@7-14 -->
+<!-- go@10-15 -->
+<!-- python@6-12 -->
+<!-- javascript@6-13 -->
 
-```shell
-SAFETY_MONITORING_ENABLED=true
-```
+The rule uses an OR operator to match any of the three emergency squawk codes. When any aircraft broadcasts 7700, 7600, or 7500, you'll receive an alert.
 
-When enabled, emergency squawks trigger dashboard alerts and push notifications automatically.
+# Enable Notifications
 
-<!-- shell@ -->
-<!-- go@ -->
-<!-- python@ -->
-<!-- javascript@ -->
+<!-- shell@15-16 -->
+<!-- go@16-18 -->
+<!-- python@13-14 -->
+<!-- javascript@14-17 -->
 
-# step3
-
-Note: Pilots occasionally squawk emergency codes accidentally or during training. If you observe a real emergency, do not attempt to contact the aircraft - ATC and first responders are already handling it.
-
-<!-- shell@ -->
-<!-- go@ -->
-<!-- python@ -->
-<!-- javascript@ -->
+Set `notification_enabled` to true to receive push notifications when emergency squawks are detected. Make sure Apprise is configured in your SkySpy settings.

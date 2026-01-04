@@ -91,59 +91,29 @@ fetch('http://localhost:5000/api/alerts/rules', {
 {"id": 1, "name": "Track N12345", "enabled": true, "created_at": "2024-01-15T12:00:00Z"}
 ```
 
-# step1
+# Create Alert Rule
 
-<!-- shell@ -->
-<!-- go@ -->
-<!-- python@ -->
-<!-- javascript@ -->
+<!-- shell@1-14 -->
+<!-- go@1-18 -->
+<!-- python@1-15 -->
+<!-- javascript@1-17 -->
 
-Set up alerts to track specific aircraft whenever they appear in your receiver's coverage area. You can track by ICAO hex code (permanent identifier) or callsign (can change between flights).
+Create an alert rule to track a specific aircraft by its ICAO hex code. The rule will trigger whenever this aircraft appears in your receiver's coverage area.
 
-# step2
+# Set ICAO Condition
 
-To track multiple aircraft, use OR conditions:
+<!-- shell@7-11 -->
+<!-- go@10-13 -->
+<!-- python@6-11 -->
+<!-- javascript@8-13 -->
 
-```shell
-curl -X POST http://localhost:5000/api/alerts/rules \
-  -H "Content-Type: application/json" \
-  -d '{
-    "name": "Friends Fleet",
-    "conditions": {
-      "operator": "OR",
-      "conditions": [
-        { "field": "icao", "operator": "eq", "value": "A12345" },
-        { "field": "icao", "operator": "eq", "value": "A67890" }
-      ]
-    },
-    "notification_enabled": true
-  }'
-```
+The `icao` field matches the aircraft's 24-bit ICAO hex address (e.g., A12345). This is a permanent identifier - unlike callsigns which can change between flights.
 
-<!-- shell@ -->
-<!-- go@ -->
-<!-- python@ -->
-<!-- javascript@ -->
+# Enable Notifications
 
-# step3
+<!-- shell@12-13 -->
+<!-- go@14-15 -->
+<!-- python@12-14 -->
+<!-- javascript@14-16 -->
 
-To track by callsign prefix (e.g., all United flights):
-
-```shell
-curl -X POST http://localhost:5000/api/alerts/rules \
-  -H "Content-Type: application/json" \
-  -d '{
-    "name": "United Airlines",
-    "conditions": {
-      "operator": "AND",
-      "conditions": [
-        { "field": "callsign", "operator": "startswith", "value": "UAL" }
-      ]
-    }
-  }'
-```
-
-<!-- shell@ -->
-<!-- go@ -->
-<!-- python@ -->
-<!-- javascript@ -->
+Set `notification_enabled` to true to receive push notifications when your tracked aircraft is detected. Configure Apprise in SkySpy settings for push alerts.

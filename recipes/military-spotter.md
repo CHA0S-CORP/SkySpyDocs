@@ -91,52 +91,29 @@ fetch('http://localhost:5000/api/alerts/rules', {
 {"id": 1, "name": "Military Aircraft", "enabled": true, "priority": "high"}
 ```
 
-# step1
+# Create Military Alert Rule
 
-<!-- shell@ -->
-<!-- go@ -->
-<!-- python@ -->
-<!-- javascript@ -->
+<!-- shell@1-14 -->
+<!-- go@1-18 -->
+<!-- python@1-15 -->
+<!-- javascript@1-17 -->
 
-Set up alerts to track military aircraft in your receiver's coverage area. SkySpy detects military aircraft through ADS-B category flags, ICAO hex ranges, and known military callsign patterns.
+Create an alert rule to get notified when military aircraft enter your coverage area. SkySpy detects military aircraft through ADS-B category flags, ICAO hex ranges, and callsign patterns.
 
-# step2
+# Set Military Condition
 
-To filter military aircraft within a specific distance (e.g., 25 nautical miles):
+<!-- shell@7-11 -->
+<!-- go@10-13 -->
+<!-- python@6-11 -->
+<!-- javascript@8-13 -->
 
-```shell
-curl -X POST http://localhost:5000/api/alerts/rules \
-  -H "Content-Type: application/json" \
-  -d '{
-    "name": "Military Nearby",
-    "priority": "high",
-    "conditions": {
-      "operator": "AND",
-      "conditions": [
-        { "field": "military", "operator": "eq", "value": true },
-        { "field": "distance", "operator": "lt", "value": 25 }
-      ]
-    },
-    "notification_enabled": true
-  }'
-```
+The `military` field is a boolean that SkySpy automatically sets based on aircraft identification. Set it to `true` to match all military aircraft.
 
-<!-- shell@ -->
-<!-- go@ -->
-<!-- python@ -->
-<!-- javascript@ -->
+# Enable Push Notifications
 
-# step3
+<!-- shell@12-13 -->
+<!-- go@14-15 -->
+<!-- python@12-14 -->
+<!-- javascript@14-16 -->
 
-Common military aircraft types you may see:
-
-- **F16, F15** - Fighter jets
-- **C17, C130** - Transport aircraft
-- **KC135** - Tanker
-- **B52** - Bomber
-- **TYPHOON, RAFALE, TORNADO** - NATO fighters
-
-<!-- shell@ -->
-<!-- go@ -->
-<!-- python@ -->
-<!-- javascript@ -->
+With `notification_enabled` set to true, you'll receive alerts on your phone or other configured notification channels when military aircraft are detected.
