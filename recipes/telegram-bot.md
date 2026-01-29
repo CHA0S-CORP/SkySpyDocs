@@ -264,8 +264,6 @@ es.addEventListener('aircraft_update', async (e) => {
 
 ## Create Telegram Bot
 
-<!-- shell@1-4 -->
-
 1. Message [@BotFather](https://t.me/botfather) on Telegram
 2. Send `/newbot` and follow the prompts
 3. Copy the bot token (looks like `123456789:ABC-DEF...`)
@@ -273,16 +271,9 @@ es.addEventListener('aircraft_update', async (e) => {
 
 ## Connect and Monitor
 
-<!-- go@20-50 -->
-<!-- python@30-55 -->
-<!-- javascript@25-50 -->
-
 Connect to SkySpy's SSE stream and monitor for aircraft matching your criteria. When a match is found, format and send a Telegram message.
 
 ## Add Inline Keyboards
-
-<!-- python@35-45 -->
-<!-- javascript@35-45 -->
 
 Inline keyboards add interactive buttons to your messages. Users can tap to view the aircraft on external tracking sites.
 
@@ -349,6 +340,5 @@ await asyncio.sleep(0.5)  # Wait between messages
 ## Related Recipes
 
 - [Discord Alert Bot](/docs/discord-alert-bot) - Send to Discord
-- [Slack Integration](/docs/slack-integration) - Send to Slack
-- [Pushover Notifications](/docs/pushover-notifications) - Mobile push
 - [Military Aircraft Spotter](/docs/military-spotter) - Built-in alerts
+- [Emergency Alert Monitor](/docs/emergency-monitor) - Track emergencies
