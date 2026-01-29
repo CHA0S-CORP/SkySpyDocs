@@ -1,7 +1,7 @@
 ---
 title: Military Aircraft Spotter
 description: Get notified when military aircraft are in your area.
-hidden: true
+hidden: false
 recipe:
   color: '#6366F1'
   icon: 🎖️
