@@ -35,6 +35,9 @@ Send aircraft alerts to messaging platforms and notification services.
 | [Webhook Notifications](/docs/webhook-notifications) | Generic webhook POST | 🟢 Beginner |
 | [Military Aircraft Spotter](/docs/military-spotter) | Built-in military alerts | 🟢 Beginner |
 | [Emergency Alert Monitor](/docs/emergency-monitor) | Track 7700/7600/7500 squawks | 🟢 Beginner |
+| [Microsoft Teams Integration](/docs/teams-integration) | Adaptive Cards to Teams channels | 🟢 Beginner |
+| [IFTTT Applets](/docs/ifttt-integration) | Trigger IFTTT automations | 🟢 Beginner |
+| [Gotify Notifications](/docs/gotify-notifications) | Self-hosted push with Gotify | 🟢 Beginner |
 
 ---
 
@@ -49,6 +52,11 @@ Store, query, and analyze aircraft data.
 | [SQLite Local DB](/docs/sqlite-db) | Lightweight local storage | 🟢 Beginner |
 | [Grafana Dashboard](/docs/grafana-dashboard) | Real-time metrics visualization | 🟡 Intermediate |
 | [Prometheus Metrics](/docs/prometheus-metrics) | Expose metrics for Prometheus | 🟡 Intermediate |
+| [InfluxDB Logging](/docs/influxdb-logging) | Time-series data storage | 🟡 Intermediate |
+| [Redis Cache](/docs/redis-cache) | Real-time cache for fast lookups | 🟡 Intermediate |
+| [PostgreSQL Archive](/docs/postgresql-archive) | Persistent aircraft history | 🟡 Intermediate |
+| [MongoDB Storage](/docs/mongodb-storage) | NoSQL aircraft logging | 🟡 Intermediate |
+| [Aircraft Statistics](/docs/aircraft-statistics) | Daily and weekly flight reports | 🟡 Intermediate |
 
 ---
 
@@ -61,6 +69,10 @@ Filter aircraft by location and other criteria.
 | [Bounding Box Filter](/docs/bounding-box-filter) | Aircraft within lat/lon bounds | 🟢 Beginner |
 | [Radius Filter](/docs/radius-filter) | Aircraft within X miles of point | 🟢 Beginner |
 | [Track Specific Aircraft](/docs/track-aircraft) | Monitor specific tail numbers | 🟢 Beginner |
+| [Altitude Band Filter](/docs/altitude-filter) | Filter by altitude ranges | 🟢 Beginner |
+| [Speed Filtering](/docs/speed-filter) | Detect fast or slow aircraft | 🟢 Beginner |
+| [Geofence Alerts](/docs/geofence-alerts) | Enter/exit zone notifications | 🟡 Intermediate |
+| [Airport Proximity Monitor](/docs/airport-proximity) | Track arrivals and departures | 🟡 Intermediate |
 
 ---
 
@@ -70,9 +82,11 @@ Display aircraft data in various formats.
 
 | Recipe | Description | Difficulty |
 |--------|-------------|------------|
-| [Build a Live Dashboard](/docs/live-dashboard) | React dashboard with live updates | 🟡 Intermediate |
 | [Leaflet.js Map](/docs/leaflet-map) | Interactive web map | 🟢 Beginner |
 | [Terminal Dashboard](/docs/terminal-dashboard) | CLI aircraft display | 🟢 Beginner |
+| [OBS Browser Overlay](/docs/obs-overlay) | Stream overlay for OBS | 🟢 Beginner |
+| [Build a Live Dashboard](/docs/live-dashboard) | React dashboard with live updates | 🟡 Intermediate |
+| [MapLibre Dashboard](/docs/maplibre-dashboard) | Open-source map visualization | 🟡 Intermediate |
 
 ---
 
@@ -82,8 +96,10 @@ Integrate with home automation systems.
 
 | Recipe | Description | Difficulty |
 |--------|-------------|------------|
+| [Philips Hue Alerts](/docs/philips-hue) | Flash smart lights on events | 🟢 Beginner |
 | [Home Assistant](/docs/home-assistant) | HA sensors and automations | 🟡 Intermediate |
 | [MQTT Publisher](/docs/mqtt-publisher) | Publish to MQTT brokers | 🟡 Intermediate |
+| [Node-RED Flows](/docs/node-red-flows) | Visual automation flows | 🟡 Intermediate |
 
 ---
 
@@ -94,6 +110,8 @@ Unique use cases and specialized tracking.
 | Recipe | Description | Difficulty |
 |--------|-------------|------------|
 | [VIP Aircraft Tracker](/docs/vip-tracker) | Track known VIP tail numbers | 🟢 Beginner |
+| [Helicopter Watch](/docs/helicopter-watch) | Dedicated helicopter monitoring | 🟢 Beginner |
+| [Rare Aircraft Spotter](/docs/rare-spotter) | Alert on unusual aircraft types | 🟡 Intermediate |
 
 ---
 
