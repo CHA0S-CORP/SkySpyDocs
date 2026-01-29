@@ -4,7 +4,7 @@ excerpt: Daily and weekly flight statistics and reports.
 hidden: false
 recipe:
   color: '#6366F1'
-  icon: "\U0001F4CA"
+  icon: "📊"
 difficulty: intermediate
 tags: [data, statistics, analytics, reports]
 ---

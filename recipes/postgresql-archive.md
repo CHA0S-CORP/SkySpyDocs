@@ -4,7 +4,7 @@ excerpt: Persistent aircraft history with PostgreSQL
 hidden: false
 recipe:
   color: '#336791'
-  icon: "\U0001F418"
+  icon: "🐘"
 difficulty: intermediate
 tags: [data, postgresql, database, analytics]
 ---

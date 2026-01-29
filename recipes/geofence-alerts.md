@@ -4,7 +4,7 @@ excerpt: Enter/exit zone notifications for aircraft.
 hidden: false
 recipe:
   color: '#8B5CF6'
-  icon: "\U0001F532"
+  icon: "🔲"
 difficulty: intermediate
 tags: [geographic, geofence, alerts, filtering]
 ---

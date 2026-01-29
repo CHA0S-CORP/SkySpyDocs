@@ -4,7 +4,7 @@ excerpt: NoSQL aircraft logging with MongoDB
 hidden: false
 recipe:
   color: '#47A248'
-  icon: "\U0001F343"
+  icon: "🍃"
 difficulty: intermediate
 tags: [data, mongodb, database, nosql]
 ---

@@ -4,7 +4,7 @@ excerpt: Self-hosted push notifications with Gotify
 hidden: false
 recipe:
   color: '#2196F3'
-  icon: "\U0001F514"
+  icon: "🔔"
 difficulty: beginner
 tags: [notifications, gotify, self-hosted, push]
 ---

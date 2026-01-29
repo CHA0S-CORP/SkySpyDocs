@@ -4,7 +4,7 @@ excerpt: Voice announcements via Amazon Echo devices.
 hidden: false
 recipe:
   color: '#00CAFF'
-  icon: "\U0001F50A"
+  icon: "🔊"
 difficulty: intermediate
 tags: [iot, alexa, voice, smart-home]
 ---

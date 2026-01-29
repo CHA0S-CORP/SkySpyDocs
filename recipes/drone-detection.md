@@ -4,7 +4,7 @@ excerpt: Low and slow target alerts for potential drones
 hidden: false
 recipe:
   color: '#DC2626'
-  icon: "\U0001F3AF"
+  icon: "🎯"
 difficulty: intermediate
 tags: [specialty, drone, security, monitoring]
 ---

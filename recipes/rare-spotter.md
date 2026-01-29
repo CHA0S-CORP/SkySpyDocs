@@ -4,7 +4,7 @@ excerpt: Alert on unusual and rare aircraft types.
 hidden: false
 recipe:
   color: '#EC4899'
-  icon: "\U0001F48E"
+  icon: "💎"
 difficulty: intermediate
 tags: [specialty, rare, tracking, alerts]
 ---

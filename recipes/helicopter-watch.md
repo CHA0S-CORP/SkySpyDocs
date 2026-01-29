@@ -4,7 +4,7 @@ excerpt: Dedicated monitoring for helicopter traffic
 hidden: false
 recipe:
   color: '#059669'
-  icon: "\U0001F681"
+  icon: "🚁"
 difficulty: beginner
 tags: [specialty, helicopter, monitoring, filtering]
 ---
