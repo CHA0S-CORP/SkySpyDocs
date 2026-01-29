@@ -17,6 +17,7 @@
 - redis-cache
 - json-lines-logging
 - csv-export
+- csv-stream
 - mqtt-publisher
 - home-assistant
 - node-red-flow
@@ -28,7 +29,9 @@
 - speed-filter
 - terminal-dashboard
 - leaflet-map
+- live-dashboard
 - flight-tracker
+- track-aircraft
 - helicopter-watch
 - vip-tracker
 - rare-aircraft

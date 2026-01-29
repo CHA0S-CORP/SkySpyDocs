@@ -1,6 +1,6 @@
 ---
-title: Export to CSV
-description: Log aircraft sightings to CSV files for analysis and record-keeping.
+title: CSV Stream Logger
+description: Continuously log aircraft sightings to CSV via SSE stream.
 hidden: false
 recipe:
   color: '#10B981'
