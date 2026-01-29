@@ -1,3 +1,4 @@
+- terminal-dashboard
 - prometheus-metrics
 - emergency-monitor
 - military-spotter
@@ -22,7 +23,6 @@
 - geofence-alerts
 - altitude-filter
 - speed-filter
-- terminal-dashboard
 - leaflet-map
 - helicopter-watch
 - vip-tracker
