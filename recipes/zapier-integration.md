@@ -492,5 +492,5 @@ curl -X POST "$ZAPIER_WEBHOOK_URL" \
 
 - [IFTTT Applets](/docs/ifttt-integration) - Simpler automation alternative
 - [Webhook Notifications](/docs/webhook-notifications) - Generic webhooks
-- [Slack Alert Bot](/docs/slack-alert-bot) - Direct Slack integration
+- [Slack Integration](/docs/slack-integration) - Direct Slack integration
 - [Email Alerts](/docs/email-alerts) - Direct SMTP email

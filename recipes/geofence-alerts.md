@@ -733,4 +733,3 @@ def cleanup_stale_aircraft():
 - [Bounding Box Filter](/docs/bounding-box-filter) - Rectangular area monitoring
 - [Radius Filter](/docs/radius-filter) - Simple circular filter
 - [Airport Proximity](/docs/airport-proximity) - Track arrivals/departures
-- [Multi-Zone Monitoring](/docs/multi-zone-monitoring) - Advanced zone management

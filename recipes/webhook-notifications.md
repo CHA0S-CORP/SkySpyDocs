@@ -457,5 +457,3 @@ app.listen(3000);
 
 - [IFTTT Applets](/docs/ifttt-integration) - IFTTT webhooks
 - [Zapier Webhooks](/docs/zapier-integration) - Zapier automation
-- [n8n Workflow](/docs/n8n-workflow) - Self-hosted automation
-- [REST API Wrapper](/docs/rest-api-wrapper) - API client

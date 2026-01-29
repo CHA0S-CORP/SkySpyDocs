@@ -515,4 +515,3 @@ csvsort -c alt -r aircraft_2024-01-15.csv | head
 - [JSON Lines Logging](/docs/jsonl-logging) - Alternative format
 - [SQLite Local DB](/docs/sqlite-db) - Queryable storage
 - [InfluxDB Logging](/docs/influxdb-logging) - Time-series database
-- [Parquet Export](/docs/parquet-export) - Columnar format for analytics

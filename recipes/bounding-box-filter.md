@@ -375,4 +375,4 @@ Bounding Box:
 - [Radius Filter](/docs/radius-filter) - Circular geographic filter
 - [Geofence Alerts](/docs/geofence-alerts) - Enter/exit notifications
 - [Airport Proximity](/docs/airport-proximity) - Track arrivals/departures
-- [Multi-Zone Monitoring](/docs/multi-zone-monitoring) - Multiple areas
+- [Geofence Alerts](/docs/geofence-alerts) - Multiple areas and enter/exit notifications

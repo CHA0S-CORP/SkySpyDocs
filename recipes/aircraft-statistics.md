@@ -692,4 +692,4 @@ The HTML report provides a styled dashboard with:
 - [Export to CSV](/docs/export-csv) - Raw data logging
 - [SQLite Local DB](/docs/sqlite-db) - Persistent statistics storage
 - [Grafana Dashboard](/docs/grafana-dashboard) - Real-time visualization
-- [Discord Notifications](/docs/discord-notifications) - Alert on milestones
+- [Discord Alert Bot](/docs/discord-alert-bot) - Alert on milestones

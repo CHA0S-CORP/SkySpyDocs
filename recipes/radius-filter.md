@@ -436,4 +436,4 @@ for aircraft in aircraft_list:
 - [Bounding Box Filter](/docs/bounding-box-filter) - Rectangular area
 - [Geofence Alerts](/docs/geofence-alerts) - Enter/exit zones
 - [Airport Proximity](/docs/airport-proximity) - Track arrivals
-- [Altitude Bands](/docs/altitude-bands) - Vertical filtering
+- [Altitude Filter](/docs/altitude-filter) - Vertical filtering

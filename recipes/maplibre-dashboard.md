@@ -625,5 +625,4 @@ if (!hasWebGL) {
 
 - [Leaflet.js Map](/docs/leaflet-map) - Lighter weight alternative
 - [Build a Live Dashboard](/docs/live-dashboard) - Full dashboard with table
-- [Deck.gl 3D View](/docs/deckgl-3d) - 3D visualization
 - [OBS Browser Source](/docs/obs-overlay) - Stream overlay

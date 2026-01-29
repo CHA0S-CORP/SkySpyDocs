@@ -90,5 +90,4 @@ How to verify the recipe is working correctly:
 
 ## Related Recipes
 
-- [Related Recipe 1](/docs/related-1) - Brief description
-- [Related Recipe 2](/docs/related-2) - Brief description
+<!-- Add links to related recipes here -->

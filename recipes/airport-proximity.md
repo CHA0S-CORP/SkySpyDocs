@@ -495,6 +495,6 @@ Status         Flight   |  Dist |      Alt |      V/S |    GS
 ## Related Recipes
 
 - [Radius Filter](/docs/radius-filter) - General proximity monitoring
-- [Altitude Bands](/docs/altitude-bands) - Vertical filtering
-- [Flight Tracker](/docs/flight-tracker) - Track specific flights
+- [Altitude Filter](/docs/altitude-filter) - Vertical filtering
+- [Track Aircraft](/docs/track-aircraft) - Track specific flights
 - [Geofence Alerts](/docs/geofence-alerts) - Enter/exit zones

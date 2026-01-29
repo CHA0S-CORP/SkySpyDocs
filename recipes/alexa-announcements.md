@@ -429,5 +429,5 @@ Customize which events trigger announcements:
 
 - [Home Assistant Integration](/docs/home-assistant) - Full HA integration
 - [Pushover Notifications](/docs/pushover-notifications) - Mobile push alerts
-- [Discord Bot](/docs/discord-bot) - Discord notifications
+- [Discord Alert Bot](/docs/discord-alert-bot) - Discord notifications
 - [Telegram Bot](/docs/telegram-bot) - Telegram alerts

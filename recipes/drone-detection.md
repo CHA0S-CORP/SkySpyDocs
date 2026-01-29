@@ -829,6 +829,6 @@ This limits alerts to within 3nm and adds a 10-minute cooldown per aircraft.
 ## Related Recipes
 
 - [Helicopter Watch](/docs/helicopter-watch) - Monitor helicopter traffic (exclude from drone alerts)
-- [Low Altitude Alert](/docs/low-altitude) - General low-flying aircraft detection
-- [Geofence Monitor](/docs/geofence) - Monitor specific geographic areas
+- [Altitude Filter](/docs/altitude-filter) - General low-flying aircraft detection
+- [Geofence Alerts](/docs/geofence-alerts) - Monitor specific geographic areas
 - [Emergency Alert Monitor](/docs/emergency-monitor) - Track emergency squawks

@@ -472,4 +472,3 @@ if cols < 80:
 - [Build a Live Dashboard](/docs/live-dashboard) - Web dashboard
 - [Leaflet.js Map](/docs/leaflet-map) - Map display
 - [OBS Browser Source](/docs/obs-overlay) - Stream overlay
-- [E-Ink Display](/docs/eink-display) - Low-power display

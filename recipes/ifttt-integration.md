@@ -424,7 +424,6 @@ curl -X POST "https://maker.ifttt.com/trigger/test/with/key/$IFTTT_KEY" \
 
 For faster/more reliable automations:
 - [Zapier](/docs/zapier-integration) - More powerful, paid
-- [n8n](/docs/n8n-workflow) - Self-hosted
 - [Webhook Notifications](/docs/webhook-notifications) - Direct webhooks
 
 ## Related Recipes

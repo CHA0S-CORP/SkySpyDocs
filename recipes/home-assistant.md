@@ -435,5 +435,5 @@ severity:
 
 - [Node-RED Flows](/docs/node-red-flows) - Visual automation
 - [MQTT Publisher](/docs/mqtt-publisher) - MQTT integration
-- [Philips Hue Alerts](/docs/hue-alerts) - Light automation
+- [Philips Hue](/docs/philips-hue) - Light automation
 - [Alexa Announcements](/docs/alexa-announcements) - Voice alerts

@@ -724,4 +724,4 @@ python -m http.server 8080
 - [Terminal Dashboard](/docs/terminal-dashboard) - CLI terminal interface
 - [Leaflet.js Map](/docs/leaflet-map) - Interactive web map
 - [Build a Live Dashboard](/docs/live-dashboard) - Full web dashboard
-- [Discord Notifications](/docs/discord-notifications) - Alert notifications
+- [Discord Alert Bot](/docs/discord-alert-bot) - Alert notifications

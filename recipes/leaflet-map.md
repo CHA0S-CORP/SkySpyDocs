@@ -412,5 +412,5 @@ python -m http.server 8080
 
 - [Build a Live Dashboard](/docs/live-dashboard) - Full dashboard with table
 - [MapLibre Dashboard](/docs/maplibre-dashboard) - Vector tiles
-- [Deck.gl 3D View](/docs/deckgl-3d) - 3D visualization
+- [MapLibre Dashboard](/docs/maplibre-dashboard) - Vector tiles and advanced mapping
 - [OBS Browser Source](/docs/obs-overlay) - Stream overlay

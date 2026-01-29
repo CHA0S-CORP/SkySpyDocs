@@ -425,5 +425,5 @@ curl https://$HUE_BRIDGE_IP/api/$HUE_USERNAME/groups --insecure | jq
 
 - [Home Assistant Integration](/docs/home-assistant) - Full HA integration
 - [MQTT Publisher](/docs/mqtt-publisher) - MQTT integration
-- [Discord Notifications](/docs/discord-notifications) - Alert notifications
+- [Discord Alert Bot](/docs/discord-alert-bot) - Alert notifications
 - [Telegram Bot](/docs/telegram-bot) - Mobile alerts

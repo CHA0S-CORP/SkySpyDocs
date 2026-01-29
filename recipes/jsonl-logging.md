@@ -309,4 +309,3 @@ with open("aircraft.jsonl") as f:
 - [Export to CSV](/docs/export-csv) - Traditional format
 - [SQLite Local DB](/docs/sqlite-db) - Queryable storage
 - [InfluxDB Logging](/docs/influxdb-logging) - Time-series
-- [Parquet Export](/docs/parquet-export) - Analytics format
