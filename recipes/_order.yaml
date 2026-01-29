@@ -1,6 +1,3 @@
-- rare-aircraft
-- terminal-dashboard
-- prometheus-metrics
 - emergency-monitor
 - military-spotter
 - discord-alert-bot
@@ -11,7 +8,11 @@
 - webhook-notifications
 - pushover-notifications
 - ntfy-notifications
+- gotify-notifications
+- apprise-multi
 - grafana-dashboard
+- prometheus-metrics
+- postgresql-archive
 - sqlite-logging
 - redis-cache
 - json-lines-logging
@@ -22,9 +23,13 @@
 - bounding-box-filter
 - radius-filter
 - geofence-alerts
+- airport-proximity
 - altitude-filter
 - speed-filter
+- terminal-dashboard
 - leaflet-map
+- flight-tracker
 - helicopter-watch
 - vip-tracker
+- rare-aircraft
 - aircraft-statistics
