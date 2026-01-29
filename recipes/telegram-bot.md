@@ -115,51 +115,53 @@ const CHAT_ID = process.env.TELEGRAM_CHAT_ID;
 const alerted = new Set();
 
 async function sendTelegram(text) {
-  await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ chat_id: CHAT_ID, text, parse_mode: 'Markdown' })
-  });
+    await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ chat_id: CHAT_ID, text, parse_mode: 'Markdown' })
+    });
 }
 
 const es = new EventSource(`${SKYSPY_URL}/api/v1/map/sse`);
 
 es.addEventListener('aircraft_update', async (e) => {
-  const data = JSON.parse(e.data);
-  for (const aircraft of data.aircraft || []) {
-    if (alerted.has(aircraft.hex)) continue;
-    if (aircraft.military) {
-      const msg = `🎖️ *Military: ${aircraft.flight || aircraft.hex}*\nType: ${aircraft.type}\nAlt: ${aircraft.alt?.toLocaleString()} ft`;
-      await sendTelegram(msg);
-      alerted.add(aircraft.hex);
+    const data = JSON.parse(e.data);
+    for (const aircraft of data.aircraft || []) {
+        if (alerted.has(aircraft.hex)) continue;
+        if (aircraft.military) {
+            const msg = `🎖️ *Military: ${aircraft.flight || aircraft.hex}*\nType: ${aircraft.type}\nAlt: ${aircraft.alt?.toLocaleString()} ft`;
+            await sendTelegram(msg);
+            alerted.add(aircraft.hex);
+        }
     }
-  }
 });
 ```
 
 ```json Response Example
-{"ok": true, "result": {"message_id": 123, "text": "🎖️ Military: RCH419\nType: C17\nAlt: 28,000 ft"}}
+{"ok": true, "result": {"message_id": 123, "chat": {"id": 123456789}, "text": "🎖️ Military: RCH419"}}
 ```
 
-# Install & Configure
+# Install Dependencies & Configure
 
 <!-- shell@1-4 -->
-<!-- go@1-5 -->
+<!-- go@1-11 -->
+<!-- python@1-8 -->
+<!-- javascript@1-6 -->
 
-Install dependencies and set your Telegram bot token and chat ID. Get a bot token from @BotFather and your chat ID from @userinfobot.
+Install the required packages and set your Telegram credentials. Get a bot token from [@BotFather](https://t.me/botfather) and your chat ID from [@userinfobot](https://t.me/userinfobot).
 
 # Connect to SSE Stream
 
-<!-- shell@15-22 -->
-<!-- go@10-12 -->
-<!-- python@10-12 -->
+<!-- go@22-26 -->
+<!-- python@14-16 -->
+<!-- javascript@16-17 -->
 
-Connect to SkySpy's Server-Sent Events stream to receive real-time aircraft updates.
+Connect to SkySpy's Server-Sent Events stream to receive real-time aircraft updates. The connection stays open and receives events as aircraft data changes.
 
-# Send Telegram Messages
+# Filter & Send Alerts
 
-<!-- shell@28-38 -->
-<!-- go@18-24 -->
-<!-- python@14-20 -->
+<!-- go@30-42 -->
+<!-- python@18-28 -->
+<!-- javascript@18-28 -->
 
-When an aircraft matches your filter, format and send a message via the Telegram Bot API.
+When an aircraft matches your filter (military in this example), format a message with flight details and send it via the Telegram Bot API.
