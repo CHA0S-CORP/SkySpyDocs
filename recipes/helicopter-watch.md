@@ -403,13 +403,13 @@ The classification function analyzes callsigns, type codes, and registration pat
 
 | Classification | Icon | Detection Method |
 |----------------|------|------------------|
-| Medical | \U0001F3E5 | Callsigns containing MEDEVAC, LIFEFLIGHT, AIREVAC, MERCY, REACH, LIFE, CARE, MED |
-| Police | \U0001F694 | Callsigns containing POLICE, NPAS, EAGLE, LAPD, NYPD, SHERIFF |
-| Fire/SAR | \U0001F692 | Callsigns containing FIRE, RESCUE, SAR, GUARD, USCG |
-| News | \U0001F4FA | Callsigns containing NEWS, COPTER, SKY, CHOPPER |
-| Military | \U0001F396\uFE0F | Type codes UH60, AH64, CH47, UH1 |
-| Tour | \U0001F39F\uFE0F | Registration pattern matching tour operators |
-| Civil | \U0001F681 | Default classification for unmatched helicopters |
+| Medical | 🏥 | Callsigns containing MEDEVAC, LIFEFLIGHT, AIREVAC, MERCY, REACH, LIFE, CARE, MED |
+| Police | 🚔 | Callsigns containing POLICE, NPAS, EAGLE, LAPD, NYPD, SHERIFF |
+| Fire/SAR | 🚒 | Callsigns containing FIRE, RESCUE, SAR, GUARD, USCG |
+| News | 📺 | Callsigns containing NEWS, COPTER, SKY, CHOPPER |
+| Military | 🎖️ | Type codes UH60, AH64, CH47, UH1 |
+| Tour | 🎟️ | Registration pattern matching tour operators |
+| Civil | 🚁 | Default classification for unmatched helicopters |
 
 ## Configuration
 

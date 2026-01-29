@@ -614,11 +614,11 @@ The classification function analyzes multiple data points to determine the likel
 
 | Classification | Icon | Detection Method |
 |----------------|------|------------------|
-| Confirmed | \U0001F6A8 | Remote ID broadcast present or UA type field populated |
-| Likely | \U0001F3AF | Low altitude + slow speed + small aircraft category |
-| Possible | \U00002753 | Low altitude + very slow/hovering + no category match |
-| Unlikely | \U00002714\uFE0F | Does not match drone profile criteria |
-| Excluded | \U0000274C | Matches known airline/GA aircraft patterns |
+| Confirmed | 🚨 | Remote ID broadcast present or UA type field populated |
+| Likely | 🎯 | Low altitude + slow speed + small aircraft category |
+| Possible | ❓ | Low altitude + very slow/hovering + no category match |
+| Unlikely | ✔️ | Does not match drone profile criteria |
+| Excluded | ❌ | Matches known airline/GA aircraft patterns |
 
 ## Threat Assessment
 
