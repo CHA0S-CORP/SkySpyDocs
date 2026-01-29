@@ -15,6 +15,7 @@
 - gotify-notifications
 - webhook-notifications
 - ifttt-integration
+- zapier-integration
 - military-spotter
 - emergency-monitor
 
@@ -51,8 +52,10 @@
 - mqtt-publisher
 - node-red-flows
 - philips-hue
+- alexa-announcements
 
 # Specialty & Fun
 - vip-tracker
 - helicopter-watch
 - rare-spotter
+- drone-detection

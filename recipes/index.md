@@ -37,6 +37,7 @@ Send aircraft alerts to messaging platforms and notification services.
 | [Emergency Alert Monitor](/docs/emergency-monitor) | Track 7700/7600/7500 squawks | 🟢 Beginner |
 | [Microsoft Teams Integration](/docs/teams-integration) | Adaptive Cards to Teams channels | 🟢 Beginner |
 | [IFTTT Applets](/docs/ifttt-integration) | Trigger IFTTT automations | 🟢 Beginner |
+| [Zapier Webhooks](/docs/zapier-integration) | Connect to 5000+ apps via Zapier | 🟢 Beginner |
 | [Gotify Notifications](/docs/gotify-notifications) | Self-hosted push with Gotify | 🟢 Beginner |
 
 ---
@@ -100,6 +101,7 @@ Integrate with home automation systems.
 | [Home Assistant](/docs/home-assistant) | HA sensors and automations | 🟡 Intermediate |
 | [MQTT Publisher](/docs/mqtt-publisher) | Publish to MQTT brokers | 🟡 Intermediate |
 | [Node-RED Flows](/docs/node-red-flows) | Visual automation flows | 🟡 Intermediate |
+| [Alexa Announcements](/docs/alexa-announcements) | Voice alerts via Echo devices | 🟡 Intermediate |
 
 ---
 
@@ -112,6 +114,7 @@ Unique use cases and specialized tracking.
 | [VIP Aircraft Tracker](/docs/vip-tracker) | Track known VIP tail numbers | 🟢 Beginner |
 | [Helicopter Watch](/docs/helicopter-watch) | Dedicated helicopter monitoring | 🟢 Beginner |
 | [Rare Aircraft Spotter](/docs/rare-spotter) | Alert on unusual aircraft types | 🟡 Intermediate |
+| [Drone Detection](/docs/drone-detection) | Low and slow target alerts | 🟡 Intermediate |
 
 ---
 
@@ -141,4 +144,4 @@ Each recipe includes:
 
 ## Contributing Recipes
 
-Have a recipe idea? We welcome contributions! Check the [template](/docs/recipes/_template) for the standard format.
+Have a recipe idea? We welcome contributions! Each recipe should follow the standard format with Prerequisites, What You'll Build, code examples in multiple languages, Configuration, Testing, and Troubleshooting sections.

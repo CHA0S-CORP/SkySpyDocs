@@ -1,12 +1,12 @@
 ---
 title: Recipe Name
 excerpt: One-line description of what this recipe does.
-hidden: false
+hidden: true
 recipe:
-  color: '#HEX'
-  icon: EMOJI
-difficulty: beginner|intermediate|advanced
-tags: [notifications, data, integration]
+  color: '#6366F1'
+  icon: '📝'
+difficulty: beginner
+tags: [template]
 ---
 
 ## Prerequisites
