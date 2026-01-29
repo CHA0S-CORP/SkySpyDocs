@@ -1,7 +1,7 @@
 ---
 title: Telegram Bot
 description: Send aircraft alerts to Telegram with inline keyboards.
-hidden: true
+hidden: false
 recipe:
   color: '#0088CC'
   icon: 📱
@@ -144,22 +144,22 @@ es.addEventListener('aircraft_update', async (e) => {
 # Install & Configure
 
 <!-- shell@1-4 -->
-<!-- python@1-5 -->
+<!-- go@1-5 -->
 
 Install dependencies and set your Telegram bot token and chat ID. Get a bot token from @BotFather and your chat ID from @userinfobot.
 
 # Connect to SSE Stream
 
-<!-- go@15-22 -->
+<!-- shell@15-22 -->
+<!-- go@10-12 -->
 <!-- python@10-12 -->
-<!-- javascript@10-12 -->
 
 Connect to SkySpy's Server-Sent Events stream to receive real-time aircraft updates.
 
 # Send Telegram Messages
 
-<!-- go@28-38 -->
-<!-- python@18-24 -->
-<!-- javascript@14-20 -->
+<!-- shell@28-38 -->
+<!-- go@18-24 -->
+<!-- python@14-20 -->
 
 When an aircraft matches your filter, format and send a message via the Telegram Bot API.
