@@ -1,7 +1,7 @@
 ---
 title: Track Specific Aircraft
 description: Monitor specific aircraft by tail number, ICAO hex code, or callsign.
-hidden: true
+hidden: false
 recipe:
   color: '#018FF4'
   icon: ✈️
