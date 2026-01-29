@@ -1,5 +1,29 @@
+# Alerts & Notifications
 - emergency-monitor
+- military-spotter
 - discord-alert-bot
 - telegram-bot
-- recipe-title
-- recipe-title-1
+- slack-integration
+- email-alerts
+- webhook-notifications
+- pushover-notifications
+- ntfy-notifications
+
+# Data & Logging
+- grafana-dashboard
+- sqlite-logging
+- json-lines-logging
+- mqtt-publisher
+
+# Smart Home
+- home-assistant
+
+# Geographic Filtering
+- bounding-box-filter
+- radius-filter
+- altitude-filter
+- speed-filter
+
+# Specialty
+- helicopter-watch
+- terminal-dashboard
