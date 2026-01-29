@@ -1,7 +1,7 @@
 ---
 title: Export to CSV
 description: Log aircraft sightings to CSV files for analysis and record-keeping.
-hidden: true
+hidden: false
 recipe:
   color: '#10B981'
   icon: 📊
