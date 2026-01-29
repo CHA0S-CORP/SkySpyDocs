@@ -25,61 +25,65 @@ sequenceDiagram
     S->>C: 👋 aircraft:remove (left coverage)
 ```
 
-<Tabs>
-  <Tab title="aircraft:snapshot">
-    Sent immediately on connection. Contains all currently tracked aircraft.
+### aircraft:snapshot
 
-    ```json
-    {
-      "aircraft": [
-        {
-          "hex": "A12345",
-          "flight": "UAL123",
-          "lat": 47.6062,
-          "lon": -122.3321,
-          "alt": 35000,
-          "gs": 450,
-          "track": 270,
-          "vr": -500,
-          "squawk": "1200",
-          "category": "A3",
-          "type": "B738",
-          "military": false,
-          "emergency": false
-        }
-      ],
-      "count": 1,
-      "timestamp": "2024-01-15T12:00:00Z"
-    }
-    ```
-  </Tab>
-  <Tab title="aircraft:update">
-    Emitted when aircraft data changes. Contains only changed fields.
+Sent immediately on connection. Contains all currently tracked aircraft.
 
-    ```json
-    {
-      "aircraft": [
-        {
-          "hex": "A12345",
-          "alt": 35100,
-          "vr": 1200
-        }
-      ],
-      "timestamp": "2024-01-15T12:00:01Z"
-    }
-    ```
-  </Tab>
-  <Tab title="aircraft:remove">
-    Emitted when aircraft leave coverage.
+> 👍 Success Response
+>
+> A successful connection returns all aircraft in coverage:
 
-    ```json
+```json
+{
+  "aircraft": [
     {
-      "icaos": ["A12345", "B67890"],
-      "timestamp": "2024-01-15T12:05:00Z"
+      "hex": "A12345",
+      "flight": "UAL123",
+      "lat": 47.6062,
+      "lon": -122.3321,
+      "alt": 35000,
+      "gs": 450,
+      "track": 270,
+      "vr": -500,
+      "squawk": "1200",
+      "category": "A3",
+      "type": "B738",
+      "military": false,
+      "emergency": false
     }
-    ```
-  </Tab>
-</Tabs>
+  ],
+  "count": 1,
+  "timestamp": "2024-01-15T12:00:00Z"
+}
+```
+
+### aircraft:update
+
+Emitted when aircraft data changes. Contains only changed fields.
+
+```json
+{
+  "aircraft": [
+    {
+      "hex": "A12345",
+      "alt": 35100,
+      "vr": 1200
+    }
+  ],
+  "timestamp": "2024-01-15T12:00:01Z"
+}
+```
+
+### aircraft:remove
+
+Emitted when aircraft leave coverage.
+
+```json
+{
+  "icaos": ["A12345", "B67890"],
+  "timestamp": "2024-01-15T12:05:00Z"
+}
+```
 
 ### Aircraft Object Fields
 
@@ -103,6 +107,10 @@ sequenceDiagram
 ## Safety Events
 
 Subscribe to `safety` topic.
+
+> ❗️ Critical Events
+>
+> Safety events with `severity: "critical"` indicate immediate hazards like TCAS RAs, close proximity conflicts, or emergency squawks.
 
 ### `safety:event`
 
@@ -179,7 +187,7 @@ Subscribe to `acars` topic. Requires ACARS receiver configured.
 
 ## Dynamic Subscriptions
 
-<Accordion title="🔄 Change subscriptions at runtime">
+### Change subscriptions at runtime
 
 ```javascript
 // Add a subscription
@@ -188,5 +196,3 @@ socket.emit('subscribe', { topics: ['acars'] });
 // Remove a subscription
 socket.emit('unsubscribe', { topics: ['safety'] });
 ```
-
-</Accordion>

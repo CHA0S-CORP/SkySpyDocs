@@ -40,35 +40,23 @@ flowchart LR
 
 The safety engine continuously analyzes live traffic and automatically detects dangerous conditions.
 
-<CardGroup cols={2}>
-  <Card title="🚨 TCAS RA" icon="circle-exclamation">
-    **Critical** — Resolution Advisory detected
-  </Card>
-  <Card title="⚠️ TCAS TA" icon="triangle-exclamation">
-    **Warning** — Traffic Advisory detected
-  </Card>
-  <Card title="🎯 Proximity Conflict" icon="arrows-to-circle">
-    **Critical** — Aircraft within threshold distance
-  </Card>
-  <Card title="↕️ Extreme Vertical Rate" icon="arrows-up-down">
-    **Warning** — Climb/descent exceeding 4,500 ft/min
-  </Card>
-  <Card title="📻 Emergency Squawk" icon="radio">
-    **Critical** — 7700, 7600, or 7500 detected
-  </Card>
-</CardGroup>
+- **TCAS RA** - **Critical** — Resolution Advisory detected
+- **TCAS TA** - **Warning** — Traffic Advisory detected
+- **Proximity Conflict** - **Critical** — Aircraft within threshold distance
+- **Extreme Vertical Rate** - **Warning** — Climb/descent exceeding 4,500 ft/min
+- **Emergency Squawk** - **Critical** — 7700, 7600, or 7500 detected
 
 ### Emergency Squawk Codes
 
-<Warning>
-These codes indicate serious aviation emergencies and trigger immediate alerts.
-</Warning>
+> ❗️ Critical
+>
+> These codes indicate serious aviation emergencies. SkySpy triggers immediate alerts when detected.
 
-| Code | Icon | Meaning |
-| :--- | :--- | :--- |
-| `7700` | 🚨 | **General Emergency** — Aircraft in distress |
-| `7600` | 📻 | **Radio Failure** — Lost communications (NORDO) |
-| `7500` | ⚠️ | **Hijack** — Unlawful interference |
+| Code | Icon | Meaning | Priority |
+| :--- | :--- | :--- | :--- |
+| `7700` | 🚨 | **General Emergency** — Aircraft in distress | Critical |
+| `7600` | 📻 | **Radio Failure** — Lost communications (NORDO) | High |
+| `7500` | ⚠️ | **Hijack** — Unlawful interference | Critical |
 
 ### Configuration
 
@@ -158,24 +146,63 @@ NOTIFICATION_COOLDOWN=300
 
 ## Implementation
 
-<Cards columns={2}>
-  <Card title="📋 Custom Rules" icon="list-check" href="/docs/safety-and-alerts/custom-rules">
-    Rule structure, conditions, and operators
-  </Card>
-  <Card title="📝 Rule Examples" icon="code" href="/docs/safety-and-alerts/examples">
-    Common rule patterns and use cases
-  </Card>
-</Cards>
+- **Custom Rules** - Rule structure, conditions, and operators. [Learn more →](/docs/safety-and-alerts/custom-rules)
+- **Rule Examples** - Common rule patterns and use cases. [Learn more →](/docs/safety-and-alerts/examples)
+
+---
+
+## Troubleshooting
+
+<Accordion title="Alerts not triggering" icon="fa-bell-slash">
+
+**Check that safety monitoring is enabled:**
+```bash
+# In your .env file
+SAFETY_MONITORING_ENABLED=true
+```
+
+**Verify the safety engine is running:**
+```bash
+curl http://localhost:5000/api/v1/safety/monitor/status
+```
+
+**Check alert rule is enabled:**
+```bash
+curl http://localhost:5000/api/alerts/rules | jq '.[] | {name, enabled}'
+```
+
+</Accordion>
+
+<Accordion title="Too many notifications" icon="fa-volume-up">
+
+**Increase the notification cooldown:**
+```bash
+# In your .env file - cooldown in seconds
+NOTIFICATION_COOLDOWN=600  # 10 minutes between repeat alerts
+```
+
+**Adjust proximity thresholds:**
+```bash
+SAFETY_PROXIMITY_NM=2.0        # Increase to 2 nautical miles
+SAFETY_ALTITUDE_DIFF_FT=2000   # Increase to 2000 feet vertical
+```
+
+</Accordion>
+
+<Accordion title="Missing emergency squawk alerts" icon="fa-exclamation-circle">
+
+Emergency squawk detection requires the aircraft to broadcast squawk codes via ADS-B. Not all aircraft transmit squawk codes.
+
+**Verify your receiver is capturing squawk data:**
+```bash
+curl http://localhost:5000/api/v1/aircraft | jq '.[] | select(.squawk != null) | {hex, squawk}'
+```
+
+</Accordion>
 
 ---
 
 ## Next Steps
 
-<Cards columns={2}>
-  <Card title="Real-Time API" icon="bolt" href="/docs/real-time-api">
-    Subscribe to safety events via Socket.IO
-  </Card>
-  <Card title="SSE Streaming" icon="signal-stream" href="/docs/sse">
-    Receive alerts via Server-Sent Events
-  </Card>
-</Cards>
+- **Real-Time API** - Subscribe to safety events via Socket.IO. [Learn more →](/docs/real-time-api)
+- **SSE Streaming** - Receive alerts via Server-Sent Events. [Learn more →](/docs/sse)

@@ -1,0 +1,16 @@
+- index
+- get_threats
+- update_location
+- activate
+- deactivate
+- list_sessions
+- active_sessions
+- end_session
+- list_patterns
+- pattern_stats
+- list_alerts
+- acknowledge_alert
+- acknowledge_all
+- known_aircraft
+- stats
+- ws

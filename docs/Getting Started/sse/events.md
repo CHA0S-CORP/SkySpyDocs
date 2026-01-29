@@ -34,124 +34,128 @@ sequenceDiagram
 
 ## Event Reference
 
-<Tabs>
-  <Tab title="✈️ aircraft_update">
-    Emitted when aircraft positions or telemetry change.
+### aircraft_update
 
-    ```json
-    {
-      "aircraft": [
-        {
-          "hex": "A12345",
-          "flight": "UAL123",
-          "lat": 47.6062,
-          "lon": -122.3321,
-          "alt": 35000,
-          "gs": 450,
-          "track": 270,
-          "vr": 0,
-          "squawk": "1200",
-          "category": "A3",
-          "type": "B738",
-          "rssi": -12.5,
-          "military": false,
-          "emergency": false
-        }
-      ],
-      "timestamp": "2024-01-15T12:00:00Z"
-    }
-    ```
-  </Tab>
-  <Tab title="🆕 aircraft_new">
-    Emitted when a new aircraft enters coverage.
+Emitted when aircraft positions or telemetry change.
 
-    ```json
+```json
+{
+  "aircraft": [
     {
-      "aircraft": [
-        { "hex": "B67890", "flight": "DAL88" }
-      ],
-      "timestamp": "2024-01-15T12:00:05Z"
+      "hex": "A12345",
+      "flight": "UAL123",
+      "lat": 47.6062,
+      "lon": -122.3321,
+      "alt": 35000,
+      "gs": 450,
+      "track": 270,
+      "vr": 0,
+      "squawk": "1200",
+      "category": "A3",
+      "type": "B738",
+      "rssi": -12.5,
+      "military": false,
+      "emergency": false
     }
-    ```
-  </Tab>
-  <Tab title="👋 aircraft_remove">
-    Emitted when aircraft leave coverage or signal is lost.
+  ],
+  "timestamp": "2024-01-15T12:00:00Z"
+}
+```
 
-    ```json
-    {
-      "icaos": ["A12345"],
-      "timestamp": "2024-01-15T12:05:00Z"
-    }
-    ```
-  </Tab>
-  <Tab title="🛡️ safety_event">
-    Emitted when the safety engine detects a conflict.
+### aircraft_new
 
-    ```json
-    {
-      "event_type": "proximity_conflict",
-      "severity": "critical",
-      "icao": "A12345",
-      "icao_2": "B67890",
-      "callsign": "UAL123",
-      "callsign_2": "DAL456",
-      "message": "Proximity conflict: 0.5nm lateral, 500ft vertical",
-      "details": {
-        "distance_nm": 0.5,
-        "altitude_diff_ft": 500
-      },
-      "timestamp": "2024-01-15T12:00:00Z"
-    }
-    ```
-  </Tab>
-  <Tab title="🔔 alert_triggered">
-    Emitted when a custom alert rule matches.
+Emitted when a new aircraft enters coverage.
 
-    ```json
-    {
-      "rule_id": 1,
-      "rule_name": "Low Altitude",
-      "icao": "A12345",
-      "callsign": "UAL123",
-      "message": "Aircraft below 3000ft",
-      "priority": "warning",
-      "aircraft_data": {
-        "hex": "A12345",
-        "alt": 2500,
-        "lat": 47.5,
-        "lon": -122.3
-      }
-    }
-    ```
-  </Tab>
-  <Tab title="📡 acars_message">
-    Emitted when an ACARS/VDL2 message is decoded.
+```json
+{
+  "aircraft": [
+    { "hex": "B67890", "flight": "DAL88" }
+  ],
+  "timestamp": "2024-01-15T12:00:05Z"
+}
+```
 
-    ```json
-    {
-      "source": "acars",
-      "icao_hex": "A12345",
-      "registration": "N12345",
-      "callsign": "UAL123",
-      "label": "H1",
-      "text": "CONFIRM DEPARTURE",
-      "frequency": 130.025,
-      "signal_level": -15.0,
-      "timestamp": "2024-01-15T12:10:00Z"
-    }
-    ```
-  </Tab>
-  <Tab title="💓 heartbeat">
-    Emitted every ~30 seconds to keep the connection alive.
+### aircraft_remove
 
-    ```json
-    {
-      "count": 45,
-      "timestamp": "2024-01-15T12:00:30Z"
-    }
-    ```
-  </Tab>
-</Tabs>
+Emitted when aircraft leave coverage or signal is lost.
+
+```json
+{
+  "icaos": ["A12345"],
+  "timestamp": "2024-01-15T12:05:00Z"
+}
+```
+
+### safety_event
+
+Emitted when the safety engine detects a conflict.
+
+```json
+{
+  "event_type": "proximity_conflict",
+  "severity": "critical",
+  "icao": "A12345",
+  "icao_2": "B67890",
+  "callsign": "UAL123",
+  "callsign_2": "DAL456",
+  "message": "Proximity conflict: 0.5nm lateral, 500ft vertical",
+  "details": {
+    "distance_nm": 0.5,
+    "altitude_diff_ft": 500
+  },
+  "timestamp": "2024-01-15T12:00:00Z"
+}
+```
+
+### alert_triggered
+
+Emitted when a custom alert rule matches.
+
+```json
+{
+  "rule_id": 1,
+  "rule_name": "Low Altitude",
+  "icao": "A12345",
+  "callsign": "UAL123",
+  "message": "Aircraft below 3000ft",
+  "priority": "warning",
+  "aircraft_data": {
+    "hex": "A12345",
+    "alt": 2500,
+    "lat": 47.5,
+    "lon": -122.3
+  }
+}
+```
+
+### acars_message
+
+Emitted when an ACARS/VDL2 message is decoded.
+
+```json
+{
+  "source": "acars",
+  "icao_hex": "A12345",
+  "registration": "N12345",
+  "callsign": "UAL123",
+  "label": "H1",
+  "text": "CONFIRM DEPARTURE",
+  "frequency": 130.025,
+  "signal_level": -15.0,
+  "timestamp": "2024-01-15T12:10:00Z"
+}
+```
+
+### heartbeat
+
+Emitted every ~30 seconds to keep the connection alive.
+
+```json
+{
+  "count": 45,
+  "timestamp": "2024-01-15T12:00:30Z"
+}
+```
 
 ---
 
@@ -185,9 +189,13 @@ flowchart LR
     style Error fill:#7c4a03,stroke:#f59e0b,stroke-width:2px,color:#fff
 ```
 
-<Warning>
-**Cross-Origin Requests** — If connecting from a different origin, ensure CORS is configured on the API. The SSE endpoint supports CORS by default.
-</Warning>
+> 🚧 Warning
+>
+> **Cross-Origin Requests** — If connecting from a different origin, ensure CORS is configured on the API. The SSE endpoint supports CORS by default.
+
+> 📘 Note
+>
+> **Cannonball Mode** uses a dedicated WebSocket at `/ws/cannonball/` instead of SSE, as it requires bi-directional communication for GPS position updates. See [Cannonball Mode](/docs/real-time-api/cannonball) for details.
 
 ---
 

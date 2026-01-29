@@ -1,6 +1,6 @@
 ---
 title: Emergency Alert Monitor
-description: Monitor emergency squawks (7700, 7600, 7500) in your area.
+excerpt: Monitor emergency squawks (7700, 7600, 7500) in your area.
 hidden: true
 recipe:
   color: '#EF4444'
@@ -129,7 +129,9 @@ When enabled, emergency squawks trigger dashboard alerts and push notifications 
 
 # step3
 
-Note: Pilots occasionally squawk emergency codes accidentally or during training. If you observe a real emergency, do not attempt to contact the aircraft - ATC and first responders are already handling it.
+> ❗️ Important
+>
+> **Do not interfere with emergency operations.** Pilots occasionally squawk emergency codes accidentally or during training. If you observe a real emergency, do not attempt to contact the aircraft — ATC and first responders are already handling it.
 
 <!-- shell@ -->
 <!-- go@ -->

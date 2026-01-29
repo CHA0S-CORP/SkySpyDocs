@@ -155,6 +155,6 @@ pip install sseclient-py requests
 curl -N http://localhost:5000/api/v1/map/sse
 ```
 
-<Tip>
-Use `-N` to disable buffering and see events in real-time.
-</Tip>
+> 💡 Tip
+>
+> Use `-N` to disable buffering and see events in real-time.

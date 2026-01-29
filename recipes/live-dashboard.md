@@ -1,6 +1,6 @@
 ---
 title: Build a Live Dashboard
-description: Create a real-time aircraft monitoring dashboard with React and SSE.
+excerpt: Create a real-time aircraft monitoring dashboard with React and SSE.
 hidden: true
 recipe:
   color: '#10B981'

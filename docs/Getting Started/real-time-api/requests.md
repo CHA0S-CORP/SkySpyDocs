@@ -63,31 +63,32 @@ const pireps = await request(socket, 'pireps', {
 
 ## Available Requests
 
-<Tabs>
-  <Tab title="🌦️ Weather">
-    | Type | Required | Optional | Description |
-    | :--- | :--- | :--- | :--- |
-    | `metars` | `lat`, `lon` | `radius`, `hours`, `limit` | METARs for airports in area |
-    | `metar` | `station` | `hours` | Single station METAR |
-    | `taf` | `station` | — | Terminal Aerodrome Forecast |
-    | `pireps` | `lat`, `lon` | `radius`, `hours` | Pilot Reports (turbulence, icing) |
-    | `sigmets` | — | `hazard`, `lat`, `lon`, `radius` | Active SIGMETs |
-  </Tab>
-  <Tab title="🗺️ Airspace">
-    | Type | Required | Optional | Description |
-    | :--- | :--- | :--- | :--- |
-    | `airspaces` | `lat`, `lon` | `hazard` | G-AIRMET advisories for location |
-    | `airspace-boundaries` | — | `lat`, `lon`, `radius`, `class` | Static airspace geometry |
-  </Tab>
-  <Tab title="🧭 Navigation">
-    | Type | Required | Optional | Description |
-    | :--- | :--- | :--- | :--- |
-    | `airports` | `lat`, `lon` | `radius`, `limit` | Nearby airports |
-    | `navaids` | `lat`, `lon` | `radius`, `limit`, `type` | Nearby VORs/NDBs |
-  </Tab>
-  <Tab title="✈️ Aircraft">
-    | Type | Required | Optional | Description |
-    | :--- | :--- | :--- | :--- |
-    | `aircraft-info` | `icao` | — | Static database info (registration, type, operator) |
-  </Tab>
-</Tabs>
+### Weather
+
+| Type | Required | Optional | Description |
+| :--- | :--- | :--- | :--- |
+| `metars` | `lat`, `lon` | `radius`, `hours`, `limit` | METARs for airports in area |
+| `metar` | `station` | `hours` | Single station METAR |
+| `taf` | `station` | — | Terminal Aerodrome Forecast |
+| `pireps` | `lat`, `lon` | `radius`, `hours` | Pilot Reports (turbulence, icing) |
+| `sigmets` | — | `hazard`, `lat`, `lon`, `radius` | Active SIGMETs |
+
+### Airspace
+
+| Type | Required | Optional | Description |
+| :--- | :--- | :--- | :--- |
+| `airspaces` | `lat`, `lon` | `hazard` | G-AIRMET advisories for location |
+| `airspace-boundaries` | — | `lat`, `lon`, `radius`, `class` | Static airspace geometry |
+
+### Navigation
+
+| Type | Required | Optional | Description |
+| :--- | :--- | :--- | :--- |
+| `airports` | `lat`, `lon` | `radius`, `limit` | Nearby airports |
+| `navaids` | `lat`, `lon` | `radius`, `limit`, `type` | Nearby VORs/NDBs |
+
+### Aircraft
+
+| Type | Required | Optional | Description |
+| :--- | :--- | :--- | :--- |
+| `aircraft-info` | `icao` | — | Static database info (registration, type, operator) |

@@ -1,6 +1,6 @@
 ---
 title: Emergency Alert Monitor
-description: Monitor emergency squawks (7700, 7600, 7500) in your area.
+excerpt: Monitor emergency squawks (7700, 7600, 7500) in your area.
 hidden: true
 recipe:
   color: '#EF4444'

@@ -66,136 +66,125 @@ hidden: false
 
 Use `AND` and `OR` operators to build complex rules. You can nest condition groups.
 
-<Tabs>
-  <Tab title="✅ AND (all must match)">
-    Alert when a military aircraft is below 10,000ft within 25nm:
+### AND (all must match)
 
-    ```json
+Alert when a military aircraft is below 10,000ft within 25nm:
+
+```json
+{
+  "operator": "AND",
+  "conditions": [
+    { "field": "military", "operator": "eq", "value": true },
+    { "field": "altitude", "operator": "lt", "value": 10000 },
+    { "field": "distance", "operator": "lt", "value": 25 }
+  ]
+}
+```
+
+```mermaid
+%%{init: {'theme': 'dark', 'themeVariables': { 'primaryColor': '#1e3a5f', 'primaryTextColor': '#fff', 'primaryBorderColor': '#3b82f6', 'lineColor': '#60a5fa'}}}%%
+flowchart LR
+    M["Military = true"] --> AND{"AND"}
+    A["Altitude < 10000"] --> AND
+    D["Distance < 25"] --> AND
+    AND --> ALERT["Alert!"]
+
+    style AND fill:#7c4a03,stroke:#f59e0b,stroke-width:2px,color:#fff
+    style ALERT fill:#065f46,stroke:#10b981,stroke-width:2px,color:#fff
+```
+
+### OR (any must match)
+
+Alert for any emergency squawk:
+
+```json
+{
+  "operator": "OR",
+  "conditions": [
+    { "field": "squawk", "operator": "eq", "value": "7700" },
+    { "field": "squawk", "operator": "eq", "value": "7600" },
+    { "field": "squawk", "operator": "eq", "value": "7500" }
+  ]
+}
+```
+
+```mermaid
+%%{init: {'theme': 'dark', 'themeVariables': { 'primaryColor': '#1e3a5f', 'primaryTextColor': '#fff', 'primaryBorderColor': '#3b82f6', 'lineColor': '#60a5fa'}}}%%
+flowchart LR
+    S1["Squawk = 7700"] --> OR{"OR"}
+    S2["Squawk = 7600"] --> OR
+    S3["Squawk = 7500"] --> OR
+    OR --> ALERT["Alert!"]
+
+    style OR fill:#0d4f8b,stroke:#3b82f6,stroke-width:2px,color:#fff
+    style ALERT fill:#065f46,stroke:#10b981,stroke-width:2px,color:#fff
+```
+
+### Nested Logic
+
+Alert for specific callsigns OR any military within 10nm:
+
+```json
+{
+  "operator": "OR",
+  "conditions": [
+    { "field": "callsign", "operator": "startswith", "value": "AFR" },
     {
       "operator": "AND",
       "conditions": [
         { "field": "military", "operator": "eq", "value": true },
-        { "field": "altitude", "operator": "lt", "value": 10000 },
-        { "field": "distance", "operator": "lt", "value": 25 }
+        { "field": "distance", "operator": "lt", "value": 10 }
       ]
     }
-    ```
+  ]
+}
+```
 
-    ```mermaid
-    %%{init: {'theme': 'dark', 'themeVariables': { 'primaryColor': '#1e3a5f', 'primaryTextColor': '#fff', 'primaryBorderColor': '#3b82f6', 'lineColor': '#60a5fa'}}}%%
-    flowchart LR
-        M["🎖️ Military = true"] --> AND{"✅ AND"}
-        A["📏 Altitude < 10000"] --> AND
-        D["📍 Distance < 25"] --> AND
-        AND --> ALERT["🔔 Alert!"]
+```mermaid
+%%{init: {'theme': 'dark', 'themeVariables': { 'primaryColor': '#1e3a5f', 'primaryTextColor': '#fff', 'primaryBorderColor': '#3b82f6', 'lineColor': '#60a5fa'}}}%%
+flowchart TB
+    CALL["Callsign starts with AFR"] --> OR{"OR"}
 
-        style AND fill:#7c4a03,stroke:#f59e0b,stroke-width:2px,color:#fff
-        style ALERT fill:#065f46,stroke:#10b981,stroke-width:2px,color:#fff
-    ```
-  </Tab>
-  <Tab title="☑️ OR (any must match)">
-    Alert for any emergency squawk:
+    subgraph Nested["Nested AND"]
+        MIL["Military = true"] --> AND{"AND"}
+        DIST["Distance < 10"] --> AND
+    end
 
-    ```json
-    {
-      "operator": "OR",
-      "conditions": [
-        { "field": "squawk", "operator": "eq", "value": "7700" },
-        { "field": "squawk", "operator": "eq", "value": "7600" },
-        { "field": "squawk", "operator": "eq", "value": "7500" }
-      ]
-    }
-    ```
+    AND --> OR
+    OR --> ALERT["Alert!"]
 
-    ```mermaid
-    %%{init: {'theme': 'dark', 'themeVariables': { 'primaryColor': '#1e3a5f', 'primaryTextColor': '#fff', 'primaryBorderColor': '#3b82f6', 'lineColor': '#60a5fa'}}}%%
-    flowchart LR
-        S1["🚨 Squawk = 7700"] --> OR{"☑️ OR"}
-        S2["📻 Squawk = 7600"] --> OR
-        S3["⚠️ Squawk = 7500"] --> OR
-        OR --> ALERT["🔔 Alert!"]
-
-        style OR fill:#0d4f8b,stroke:#3b82f6,stroke-width:2px,color:#fff
-        style ALERT fill:#065f46,stroke:#10b981,stroke-width:2px,color:#fff
-    ```
-  </Tab>
-  <Tab title="🔀 Nested Logic">
-    Alert for specific callsigns OR any military within 10nm:
-
-    ```json
-    {
-      "operator": "OR",
-      "conditions": [
-        { "field": "callsign", "operator": "startswith", "value": "AFR" },
-        {
-          "operator": "AND",
-          "conditions": [
-            { "field": "military", "operator": "eq", "value": true },
-            { "field": "distance", "operator": "lt", "value": 10 }
-          ]
-        }
-      ]
-    }
-    ```
-
-    ```mermaid
-    %%{init: {'theme': 'dark', 'themeVariables': { 'primaryColor': '#1e3a5f', 'primaryTextColor': '#fff', 'primaryBorderColor': '#3b82f6', 'lineColor': '#60a5fa'}}}%%
-    flowchart TB
-        CALL["🏷️ Callsign starts with AFR"] --> OR{"☑️ OR"}
-
-        subgraph Nested["🔀 Nested AND"]
-            MIL["🎖️ Military = true"] --> AND{"✅ AND"}
-            DIST["📍 Distance < 10"] --> AND
-        end
-
-        AND --> OR
-        OR --> ALERT["🔔 Alert!"]
-
-        style OR fill:#0d4f8b,stroke:#3b82f6,stroke-width:2px,color:#fff
-        style Nested fill:#7c4a03,stroke:#f59e0b,stroke-width:2px,color:#fff
-        style ALERT fill:#065f46,stroke:#10b981,stroke-width:2px,color:#fff
-    ```
-  </Tab>
-</Tabs>
+    style OR fill:#0d4f8b,stroke:#3b82f6,stroke-width:2px,color:#fff
+    style Nested fill:#7c4a03,stroke:#f59e0b,stroke-width:2px,color:#fff
+    style ALERT fill:#065f46,stroke:#10b981,stroke-width:2px,color:#fff
+```
 
 ---
 
 ## Creating Rules
 
-<Tabs>
-  <Tab title="🖥️ Dashboard">
-    <Steps>
-      <Step title="Open Alert Rules">
-        Navigate to **Settings** → **Alert Rules** in the dashboard
-      </Step>
-      <Step title="Create New Rule">
-        Click **New Rule** to open the rule builder
-      </Step>
-      <Step title="Configure Conditions">
-        Add conditions using the visual builder and set priority
-      </Step>
-      <Step title="Enable Notifications">
-        Toggle push notifications if desired
-      </Step>
-    </Steps>
-  </Tab>
-  <Tab title="🔌 API">
-    ```bash
-    curl -X POST http://localhost:5000/api/alerts/rules \
-      -H "Content-Type: application/json" \
-      -d '{
-        "name": "Military Aircraft Nearby",
-        "enabled": true,
-        "priority": "high",
-        "conditions": {
-          "operator": "AND",
-          "conditions": [
-            { "field": "military", "operator": "eq", "value": true },
-            { "field": "distance", "operator": "lt", "value": 50 }
-          ]
-        },
-        "notification_enabled": true
-      }'
-    ```
-  </Tab>
-</Tabs>
+### Dashboard
+
+1. **Open Alert Rules** - Navigate to **Settings** → **Alert Rules** in the dashboard
+2. **Create New Rule** - Click **New Rule** to open the rule builder
+3. **Configure Conditions** - Add conditions using the visual builder and set priority
+4. **Enable Notifications** - Toggle push notifications if desired
+
+### API
+
+```bash
+curl -X POST http://localhost:5000/api/alerts/rules \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Military Aircraft Nearby",
+    "enabled": true,
+    "priority": "high",
+    "conditions": {
+      "operator": "AND",
+      "conditions": [
+        { "field": "military", "operator": "eq", "value": true },
+        { "field": "distance", "operator": "lt", "value": 50 }
+      ]
+    },
+    "notification_enabled": true
+  }'
+```

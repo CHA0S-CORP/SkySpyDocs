@@ -7,26 +7,12 @@ hidden: false
 
 Recipes are practical, copy-paste examples that solve real-world problems. Each recipe walks you through a specific integration or use case with working code.
 
-<CardGroup cols={2}>
-  <Card title="Discord Alert Bot" icon="discord" href="/docs/discord-alert-bot">
-    Send aircraft alerts to your Discord server
-  </Card>
-  <Card title="Track Specific Aircraft" icon="plane" href="/docs/track-aircraft">
-    Monitor specific tail numbers or ICAO codes
-  </Card>
-  <Card title="Build a Live Dashboard" icon="chart-line" href="/docs/live-dashboard">
-    Create a real-time aircraft monitoring dashboard
-  </Card>
-  <Card title="Military Aircraft Spotter" icon="jet-fighter" href="/docs/military-spotter">
-    Get notified when military aircraft are nearby
-  </Card>
-  <Card title="Emergency Alert Monitor" icon="triangle-exclamation" href="/docs/emergency-monitor">
-    Track emergency squawks in your area
-  </Card>
-  <Card title="Export to CSV" icon="file-csv" href="/docs/export-csv">
-    Log aircraft sightings to a CSV file
-  </Card>
-</CardGroup>
+- **Discord Alert Bot** - Send aircraft alerts to your Discord server. [Learn more →](/docs/discord-alert-bot)
+- **Track Specific Aircraft** - Monitor specific tail numbers or ICAO codes. [Learn more →](/docs/track-aircraft)
+- **Build a Live Dashboard** - Create a real-time aircraft monitoring dashboard. [Learn more →](/docs/live-dashboard)
+- **Military Aircraft Spotter** - Get notified when military aircraft are nearby. [Learn more →](/docs/military-spotter)
+- **Emergency Alert Monitor** - Track emergency squawks in your area. [Learn more →](/docs/emergency-monitor)
+- **Export to CSV** - Log aircraft sightings to a CSV file. [Learn more →](/docs/export-csv)
 
 ## Recipe Categories
 
@@ -44,17 +30,7 @@ Recipes are practical, copy-paste examples that solve real-world problems. Each 
 
 Each recipe includes:
 
-<Steps>
-  <Step title="Prerequisites">
-    What you need before starting
-  </Step>
-  <Step title="Step-by-Step Code">
-    Annotated code with explanations
-  </Step>
-  <Step title="Configuration">
-    How to customize for your needs
-  </Step>
-  <Step title="Testing">
-    How to verify it's working
-  </Step>
-</Steps>
+1. **Prerequisites** - What you need before starting
+2. **Step-by-Step Code** - Annotated code with explanations
+3. **Configuration** - How to customize for your needs
+4. **Testing** - How to verify it's working

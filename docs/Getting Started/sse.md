@@ -30,15 +30,15 @@ flowchart LR
     style Clients fill:#065f46,stroke:#10b981,stroke-width:2px,color:#fff
 ```
 
-<Info>
-**When to use SSE vs Socket.IO** — Use **SSE** for simple, read-only clients (dashboards, monitors). Use **[Socket.IO](/docs/real-time-api)** when you need bi-directional communication or the request/response API for weather data.
-</Info>
+> 📘 Info
+>
+> **When to use SSE vs Socket.IO** — Use **SSE** for simple, read-only clients (dashboards, monitors). Use **[Socket.IO](/docs/real-time-api)** when you need bi-directional communication or the request/response API for weather data.
 
 ## Quick Start
 
-Connect using the native browser `EventSource` API — no libraries required:
+Connect to the SSE stream using your preferred language:
 
-```javascript
+```javascript JavaScript
 const stream = new EventSource('http://localhost:5000/api/v1/map/sse');
 
 stream.addEventListener('aircraft_update', (event) => {
@@ -50,6 +50,23 @@ stream.addEventListener('safety_event', (event) => {
   const alert = JSON.parse(event.data);
   console.warn('Safety:', alert.message);
 });
+```
+```python Python
+import sseclient
+import requests
+
+url = 'http://localhost:5000/api/v1/map/sse'
+response = requests.get(url, stream=True)
+client = sseclient.SSEClient(response)
+
+for event in client.events():
+    if event.event == 'aircraft_update':
+        print('Aircraft:', event.data)
+    elif event.event == 'safety_event':
+        print('Safety:', event.data)
+```
+```bash curl
+curl -N http://localhost:5000/api/v1/map/sse
 ```
 
 ## Connection
@@ -65,34 +82,20 @@ stream.addEventListener('safety_event', (event) => {
 | :--- | :--- | :--- | :--- |
 | `replay_history` | boolean | `false` | 📜 Replay buffered events on connect |
 
-<Tip>
-Use `replay_history=true` to receive recent events immediately upon connection—useful for populating a dashboard with current state.
-</Tip>
+> 💡 Tip
+>
+> Use `replay_history=true` to receive recent events immediately upon connection—useful for populating a dashboard with current state.
 
 ---
 
 ## Events
 
-<CardGroup cols={3}>
-  <Card title="✈️ aircraft_update" icon="plane">
-    Position/telemetry changes
-  </Card>
-  <Card title="🛬 aircraft_new" icon="plane-arrival">
-    New aircraft in coverage
-  </Card>
-  <Card title="🛫 aircraft_remove" icon="plane-departure">
-    Aircraft left coverage
-  </Card>
-  <Card title="🛡️ safety_event" icon="shield-exclamation">
-    TCAS, proximity, emergencies
-  </Card>
-  <Card title="🔔 alert_triggered" icon="bell">
-    Custom rule matched
-  </Card>
-  <Card title="📡 acars_message" icon="message">
-    ACARS/VDL2 decoded
-  </Card>
-</CardGroup>
+- **aircraft_update** - Position/telemetry changes
+- **aircraft_new** - New aircraft in coverage
+- **aircraft_remove** - Aircraft left coverage
+- **safety_event** - TCAS, proximity, emergencies
+- **alert_triggered** - Custom rule matched
+- **acars_message** - ACARS/VDL2 decoded
 
 ---
 
@@ -110,24 +113,12 @@ Use `replay_history=true` to receive recent events immediately upon connection�
 
 ## Implementation
 
-<Cards columns={2}>
-  <Card title="📤 Events" icon="signal-stream" href="/docs/sse/events">
-    Event types and JSON payloads
-  </Card>
-  <Card title="💻 Client Examples" icon="code" href="/docs/sse/client-examples">
-    JavaScript, React, Python, and curl
-  </Card>
-</Cards>
+- **Events** - Event types and JSON payloads. [Learn more →](/docs/sse/events)
+- **Client Examples** - JavaScript, React, Python, and curl. [Learn more →](/docs/sse/client-examples)
 
 ---
 
 ## Next Steps
 
-<Cards columns={2}>
-  <Card title="Real-Time API" icon="bolt" href="/docs/real-time-api">
-    Full-featured Socket.IO streaming with request/response
-  </Card>
-  <Card title="Safety & Alerts" icon="bell" href="/docs/safety-and-alerts">
-    Configure custom alert rules
-  </Card>
-</Cards>
+- **Real-Time API** - Full-featured Socket.IO streaming with request/response. [Learn more →](/docs/real-time-api)
+- **Safety & Alerts** - Configure custom alert rules. [Learn more →](/docs/safety-and-alerts)

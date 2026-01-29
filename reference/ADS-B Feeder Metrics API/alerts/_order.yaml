@@ -1,3 +1,4 @@
+- index
 - get_rules_api_v1_alerts_rules_get-1
 - create_rule_api_v1_alerts_rules_post-1
 - get_rule_api_v1_alerts_rules__rule_id__get-1

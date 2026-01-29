@@ -13,9 +13,9 @@ cp .env.test.sample .env
 
 ## Required Settings
 
-<Warning>
-These variables **must** be set for SkySpy to function properly.
-</Warning>
+> 🚧 Warning
+>
+> These variables **must** be set for SkySpy to function properly.
 
 | Variable | Description | Example |
 | :--- | :--- | :--- |
@@ -50,9 +50,9 @@ flowchart LR
     style Timing fill:#0d4f8b,stroke:#3b82f6,stroke-width:2px,color:#fff
 ```
 
-<Info>
-**Performance Tip** — Lower `POLLING_INTERVAL` values provide more responsive tracking but increase CPU and network usage. The default of 2 seconds works well for most setups.
-</Info>
+> 📘 Info
+>
+> **Performance Tip** — Lower `POLLING_INTERVAL` values provide more responsive tracking but increase CPU and network usage. The default of 2 seconds works well for most setups.
 
 ## Safety Monitoring
 
@@ -88,20 +88,10 @@ flowchart TB
 
 SkySpy uses [Apprise](https://github.com/caronc/apprise) for push notifications, supporting 80+ services.
 
-<CardGroup cols={4}>
-  <Card title="Pushover" icon="bell">
-    iOS/Android push
-  </Card>
-  <Card title="Telegram" icon="paper-plane">
-    Bot messages
-  </Card>
-  <Card title="Discord" icon="hashtag">
-    Webhook alerts
-  </Card>
-  <Card title="Slack" icon="slack">
-    Channel posts
-  </Card>
-</CardGroup>
+- **Pushover** - iOS/Android push
+- **Telegram** - Bot messages
+- **Discord** - Webhook alerts
+- **Slack** - Channel posts
 
 Configure multiple services by separating URLs with semicolons:
 
@@ -115,49 +105,55 @@ NOTIFICATION_COOLDOWN=300
 | `APPRISE_URLS` | — | Semicolon-separated list of Apprise URLs |
 | `NOTIFICATION_COOLDOWN` | `300` | Minimum seconds between repeat notifications for the same alert |
 
-<AccordionGroup>
-  <Accordion title="Pushover Setup" icon="mobile">
-    1. Create an app at [pushover.net](https://pushover.net)
-    2. Copy your User Key and API Token
-    3. Add to `.env`:
-       ```bash
-       APPRISE_URLS="pushover://USER_KEY@API_TOKEN"
-       ```
-  </Accordion>
+<Accordion title="Pushover Setup" icon="fa-mobile-alt">
 
-  <Accordion title="Telegram Setup" icon="paper-plane">
-    1. Create a bot via [@BotFather](https://t.me/botfather)
-    2. Get your chat ID from [@userinfobot](https://t.me/userinfobot)
-    3. Add to `.env`:
-       ```bash
-       APPRISE_URLS="tgram://BOT_TOKEN/CHAT_ID"
-       ```
-  </Accordion>
+1. Create an app at [pushover.net](https://pushover.net)
+2. Copy your User Key and API Token
+3. Add to `.env`:
+   ```bash
+   APPRISE_URLS="pushover://USER_KEY@API_TOKEN"
+   ```
 
-  <Accordion title="Discord Setup" icon="hashtag">
-    1. Create a webhook in your Discord channel settings
-    2. Copy the webhook URL
-    3. Add to `.env`:
-       ```bash
-       APPRISE_URLS="discord://WEBHOOK_ID/WEBHOOK_TOKEN"
-       ```
-  </Accordion>
+</Accordion>
 
-  <Accordion title="Slack Setup" icon="slack">
-    1. Create an incoming webhook in Slack
-    2. Copy the webhook URL tokens
-    3. Add to `.env`:
-       ```bash
-       APPRISE_URLS="slack://TOKEN_A/TOKEN_B/TOKEN_C"
-       ```
-  </Accordion>
-</AccordionGroup>
+<Accordion title="Telegram Setup" icon="fa-paper-plane">
+
+1. Create a bot via [@BotFather](https://t.me/botfather)
+2. Get your chat ID from [@userinfobot](https://t.me/userinfobot)
+3. Add to `.env`:
+   ```bash
+   APPRISE_URLS="tgram://BOT_TOKEN/CHAT_ID"
+   ```
+
+</Accordion>
+
+<Accordion title="Discord Setup" icon="fa-discord">
+
+1. Create a webhook in your Discord channel settings
+2. Copy the webhook URL
+3. Add to `.env`:
+   ```bash
+   APPRISE_URLS="discord://WEBHOOK_ID/WEBHOOK_TOKEN"
+   ```
+
+</Accordion>
+
+<Accordion title="Slack Setup" icon="fa-slack">
+
+1. Create an incoming webhook in Slack
+2. Copy the webhook URL tokens
+3. Add to `.env`:
+   ```bash
+   APPRISE_URLS="slack://TOKEN_A/TOKEN_B/TOKEN_C"
+   ```
+
+</Accordion>
 
 See the [Apprise documentation](https://github.com/caronc/apprise/wiki) for the full list of 80+ supported services.
 
 ## Advanced Integrations
 
-### UAT 978MHz Receiver
+<Accordion title="UAT 978MHz Receiver" icon="fa-broadcast-tower">
 
 Receive traffic from 978MHz UAT broadcasts (common for GA aircraft in the US):
 
@@ -166,11 +162,13 @@ Receive traffic from 978MHz UAT broadcasts (common for GA aircraft in the US):
 | `DUMP978_HOST` | — | Hostname of your dump978 receiver |
 | `DUMP978_PORT` | `30979` | Port for dump978 JSON output |
 
-<Info>
-UAT is primarily used by general aviation aircraft in the United States below 18,000 feet. Adding a 978MHz receiver significantly increases coverage of small aircraft.
-</Info>
+> 📘 Info
+>
+> UAT is primarily used by general aviation aircraft in the United States below 18,000 feet. Adding a 978MHz receiver significantly increases coverage of small aircraft.
 
-### Redis
+</Accordion>
+
+<Accordion title="Redis Pub/Sub" icon="fa-database">
 
 Enable Redis for pub/sub messaging in multi-worker deployments:
 
@@ -209,7 +207,9 @@ flowchart LR
     style Clients fill:#065f46,stroke:#10b981,stroke-width:2px,color:#fff
 ```
 
-### ACARS/VDL2 Messages
+</Accordion>
+
+<Accordion title="ACARS/VDL2 Messages" icon="fa-comment-alt">
 
 Receive and display aircraft communication messages:
 
@@ -218,7 +218,9 @@ Receive and display aircraft communication messages:
 | `ACARS_ENABLED` | `false` | Enable ACARS message reception |
 | `ACARS_PORT` | `5555` | Port to receive ACARS JSON messages |
 
-### Photo Cache
+</Accordion>
+
+<Accordion title="Photo Cache" icon="fa-images">
 
 Cache aircraft photos locally to reduce API calls:
 
@@ -227,9 +229,11 @@ Cache aircraft photos locally to reduce API calls:
 | `PHOTO_CACHE_ENABLED` | `false` | Enable local photo caching |
 | `PHOTO_CACHE_DIR` | `/data/photos` | Directory to store cached images |
 
+</Accordion>
+
 ## Complete Configuration Example
 
-<Accordion title="Full .env example" icon="file-code" defaultOpen>
+### Full .env example
 
 ```bash
 # ===================
@@ -284,15 +288,7 @@ NOTIFICATION_COOLDOWN=300
 # PHOTO_CACHE_DIR=/data/photos
 ```
 
-</Accordion>
-
 ## Next Steps
 
-<Cards columns={2}>
-  <Card title="Safety & Alerts" icon="bell" href="/docs/safety-and-alerts">
-    Configure custom alert rules and notification triggers
-  </Card>
-  <Card title="Real-Time API" icon="bolt" href="/docs/real-time-api">
-    Connect to live data streams via Socket.IO
-  </Card>
-</Cards>
+- **Safety & Alerts** - Configure custom alert rules and notification triggers. [Learn more →](/docs/safety-and-alerts)
+- **Real-Time API** - Connect to live data streams via Socket.IO. [Learn more →](/docs/real-time-api)

@@ -1,6 +1,6 @@
 ---
 title: Discord Alert Bot
-description: Send real-time aircraft alerts to your Discord server using webhooks.
+excerpt: Send real-time aircraft alerts to your Discord server using webhooks.
 hidden: true
 recipe:
   color: '#5865F2'

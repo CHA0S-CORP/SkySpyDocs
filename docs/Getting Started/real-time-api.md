@@ -32,32 +32,50 @@ flowchart LR
 
 ## Quick Start
 
-<Steps>
-  <Step title="Install Socket.IO client">
-    ```bash
-    npm install socket.io-client
-    ```
-  </Step>
-  <Step title="Connect and subscribe">
-    ```javascript
-    import { io } from 'socket.io-client';
+**1. Install the client library**
 
-    const socket = io('http://localhost:5000', {
-      path: '/socket.io/socket.io',
-      query: { topics: 'aircraft,safety' },
-      transports: ['websocket', 'polling']
-    });
+```bash npm
+npm install socket.io-client
+```
+```bash pip
+pip install python-socketio
+```
 
-    socket.on('aircraft:update', (data) => {
-      console.log('Aircraft update:', data.aircraft);
-    });
+**2. Connect and subscribe**
 
-    socket.on('safety:event', (event) => {
-      console.log('Safety alert:', event.message);
-    });
-    ```
-  </Step>
-</Steps>
+```javascript JavaScript
+import { io } from 'socket.io-client';
+
+const socket = io('http://localhost:5000', {
+  path: '/socket.io/socket.io',
+  query: { topics: 'aircraft,safety' },
+  transports: ['websocket', 'polling']
+});
+
+socket.on('aircraft:update', (data) => {
+  console.log('Aircraft update:', data.aircraft);
+});
+
+socket.on('safety:event', (event) => {
+  console.log('Safety alert:', event.message);
+});
+```
+```python Python
+import socketio
+
+sio = socketio.Client()
+
+@sio.on('aircraft:update')
+def on_aircraft_update(data):
+    print('Aircraft update:', data['aircraft'])
+
+@sio.on('safety:event')
+def on_safety_event(event):
+    print('Safety alert:', event['message'])
+
+sio.connect('http://localhost:5000', socketio_path='/socket.io/socket.io')
+sio.wait()
+```
 
 ## Connection Settings
 
@@ -70,30 +88,62 @@ flowchart LR
 
 ## Topics
 
-<CardGroup cols={3}>
-  <Card title="✈️ aircraft" icon="plane">
-    Live positions and metadata
-  </Card>
-  <Card title="🛡️ safety" icon="shield">
-    TCAS, proximity, emergencies
-  </Card>
-  <Card title="🔔 alerts" icon="bell">
-    Custom rule matches
-  </Card>
-  <Card title="🗺️ airspace" icon="map">
-    G-AIRMET advisories
-  </Card>
-  <Card title="📡 acars" icon="message">
-    ACARS/VDL2 messages
-  </Card>
-  <Card title="🌍 all" icon="globe">
-    Subscribe to everything
-  </Card>
-</CardGroup>
+- **aircraft** - Live positions and metadata
+- **safety** - TCAS, proximity, emergencies
+- **alerts** - Custom rule matches
+- **airspace** - G-AIRMET advisories
+- **acars** - ACARS/VDL2 messages
+- **cannonball** - Mobile threat detection
+- **all** - Subscribe to everything
 
 ---
 
-## Comparison: Socket.IO vs SSE
+## Socket.IO vs SSE
+
+SkySpy offers two streaming options. Choose based on your use case:
+
+<Tabs>
+  <Tab title="Socket.IO">
+
+**Best for:** Full-featured apps, mobile clients, bi-directional communication
+
+**Advantages:**
+- ✅ Bi-directional communication
+- ✅ Request/Response API for weather, aircraft info
+- ✅ Automatic reconnection with fallback
+- ✅ Room-based subscriptions
+
+**Quick Example:**
+```javascript
+import { io } from 'socket.io-client';
+const socket = io('http://localhost:5000', {
+  path: '/socket.io/socket.io',
+  query: { topics: 'aircraft,safety' }
+});
+socket.on('aircraft:update', (data) => console.log(data));
+```
+
+  </Tab>
+  <Tab title="SSE (Server-Sent Events)">
+
+**Best for:** Simple dashboards, read-only monitoring, lightweight clients
+
+**Advantages:**
+- ✅ Native browser support (no libraries)
+- ✅ Simpler implementation
+- ✅ Lower overhead
+- ✅ Works through proxies easily
+
+**Quick Example:**
+```javascript
+const stream = new EventSource('/api/v1/map/sse');
+stream.addEventListener('aircraft_update', (e) => {
+  console.log(JSON.parse(e.data));
+});
+```
+
+  </Tab>
+</Tabs>
 
 | Feature | Socket.IO | SSE |
 | :--- | :--- | :--- |
@@ -103,35 +153,18 @@ flowchart LR
 | **Browser Support** | Requires library | Native `EventSource` |
 | **Best For** | Full-featured apps | Simple dashboards |
 
-<Info>
-Use **Socket.IO** when you need the request/response API for weather data or bi-directional communication. Use **[SSE](/docs/sse)** for simple, read-only monitoring.
-</Info>
-
 ---
 
 ## Implementation
 
-<Cards columns={2}>
-  <Card title="📤 Events" icon="signal-stream" href="/docs/real-time-api/events">
-    Aircraft, safety, alert, and ACARS events
-  </Card>
-  <Card title="🔄 Request/Response" icon="arrows-rotate" href="/docs/real-time-api/requests">
-    Fetch weather, airspace, and aircraft info
-  </Card>
-  <Card title="⚛️ React Hook" icon="react" href="/docs/real-time-api/react-hook">
-    useSkySpySocket hook for React apps
-  </Card>
-</Cards>
+- **Events** - Aircraft, safety, alert, and ACARS events. [Learn more →](/docs/real-time-api/events)
+- **Request/Response** - Fetch weather, airspace, and aircraft info. [Learn more →](/docs/real-time-api/requests)
+- **React Hook** - useSkySpySocket hook for React apps. [Learn more →](/docs/real-time-api/react-hook)
+- **Cannonball Mode** - Mobile threat detection WebSocket. [Learn more →](/docs/real-time-api/cannonball)
 
 ---
 
 ## Next Steps
 
-<Cards columns={2}>
-  <Card title="SSE Streaming" icon="signal-stream" href="/docs/sse">
-    Lightweight alternative using Server-Sent Events
-  </Card>
-  <Card title="Safety & Alerts" icon="bell" href="/docs/safety-and-alerts">
-    Configure custom alert rules
-  </Card>
-</Cards>
+- **SSE Streaming** - Lightweight alternative using Server-Sent Events. [Learn more →](/docs/sse)
+- **Safety & Alerts** - Configure custom alert rules. [Learn more →](/docs/safety-and-alerts)
