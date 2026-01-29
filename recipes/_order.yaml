@@ -4,6 +4,7 @@
 - discord-alert-bot
 - telegram-bot
 - slack-integration
+- microsoft-teams
 - email-alerts
 - webhook-notifications
 - pushover-notifications
@@ -11,19 +12,30 @@
 
 # Data & Logging
 - grafana-dashboard
+- prometheus-metrics
 - sqlite-logging
+- redis-cache
 - json-lines-logging
+- csv-export
 - mqtt-publisher
 
-# Smart Home
+# Smart Home & Automation
 - home-assistant
+- node-red-flow
 
 # Geographic Filtering
 - bounding-box-filter
 - radius-filter
+- geofence-alerts
 - altitude-filter
 - speed-filter
 
+# Visualization
+- terminal-dashboard
+- leaflet-map
+
 # Specialty
 - helicopter-watch
-- terminal-dashboard
+- vip-tracker
+- rare-aircraft
+- aircraft-statistics
