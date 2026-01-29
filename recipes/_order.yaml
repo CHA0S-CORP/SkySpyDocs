@@ -1,3 +1,4 @@
+- rare-aircraft
 - terminal-dashboard
 - prometheus-metrics
 - emergency-monitor
@@ -26,5 +27,4 @@
 - leaflet-map
 - helicopter-watch
 - vip-tracker
-- rare-aircraft
 - aircraft-statistics
