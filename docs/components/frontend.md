@@ -181,29 +181,12 @@ graph TB
 
 #### 🎨 Map Display Modes
 
-[block:parameters]
-{
-  "data": {
-    "h-0": "Mode",
-    "h-1": "Description",
-    "h-2": "Preview",
-    "0-0": "`radar`",
-    "0-1": "Traditional radar display with sweep animation",
-    "0-2": "🟢",
-    "1-0": "`crt`",
-    "1-1": "Retro CRT-style phosphor display",
-    "1-2": "🟡",
-    "2-0": "`pro`",
-    "2-1": "Professional ATC-style with customizable themes",
-    "2-2": "🔵",
-    "3-0": "`map`",
-    "3-1": "Standard map with satellite/terrain options",
-    "3-2": "🟠"
-  },
-  "cols": 3,
-  "rows": 4
-}
-[/block]
+| Mode | Description | Preview |
+|:-----|:------------|:-------:|
+| `radar` | Traditional radar display with sweep animation | 🟢 |
+| `crt` | Retro CRT-style phosphor display | 🟡 |
+| `pro` | Professional ATC-style with customizable themes | 🔵 |
+| `map` | Standard map with satellite/terrain options | 🟠 |
 
 **Pro Mode Theme Colors:**
 - 🔵 **Classic Cyan** — Default professional look
@@ -272,13 +255,8 @@ graph TB
 
 #### 🎯 Alert Condition Types
 
-[block:callout]
-{
-  "type": "info",
-  "title": "Supported Alert Conditions",
-  "body": "Create complex rules using AND/OR logic with these condition types:"
-}
-[/block]
+> ℹ️ **Supported Alert Conditions**
+> Create complex rules using AND/OR logic with these condition types:
 
 | Category | Conditions |
 |:---------|:-----------|
@@ -378,17 +356,27 @@ flowchart TB
 
 ### 🔑 AuthContext API
 
-[block:code]
-{
-  "codes": [
-    {
-      "code": "const {\n  // 📊 State\n  status,           // 'loading' | 'anonymous' | 'authenticated'\n  user,             // User object with permissions\n  config,           // Auth configuration\n  error,            // Last auth error\n  isAuthenticated,  // Boolean shorthand\n\n  // 🔧 Methods\n  login,            // Username/password login\n  logout,           // Clear session\n  loginWithOIDC,    // OAuth/OIDC popup flow\n  authFetch,        // Authenticated fetch wrapper\n  hasPermission,    // Check single permission\n  hasAnyPermission, // Check any of the permissions\n  hasAllPermissions,// Check all permissions\n  canAccessFeature, // Feature-based access check\n  getAccessToken,   // Get JWT for WebSocket\n} = useAuth();",
-      "language": "javascript",
-      "name": "AuthContext Usage"
-    }
-  ]
-}
-[/block]
+```javascript
+const {
+  // 📊 State
+  status,           // 'loading' | 'anonymous' | 'authenticated'
+  user,             // User object with permissions
+  config,           // Auth configuration
+  error,            // Last auth error
+  isAuthenticated,  // Boolean shorthand
+
+  // 🔧 Methods
+  login,            // Username/password login
+  logout,           // Clear session
+  loginWithOIDC,    // OAuth/OIDC popup flow
+  authFetch,        // Authenticated fetch wrapper
+  hasPermission,    // Check single permission
+  hasAnyPermission, // Check any of the permissions
+  hasAllPermissions,// Check all permissions
+  canAccessFeature, // Feature-based access check
+  getAccessToken,   // Get JWT for WebSocket
+} = useAuth();
+```
 
 ### 🔌 WebSocket State
 
@@ -429,49 +417,27 @@ sequenceDiagram
 
 ### 📡 Data Hooks
 
-[block:parameters]
-{
-  "data": {
-    "h-0": "Hook",
-    "h-1": "Purpose",
-    "h-2": "Example",
-    "0-0": "`useApi`",
-    "0-1": "HTTP API calls with loading/error states",
-    "0-2": "`const { data, loading, error } = useApi('/api/stats')`",
-    "1-0": "`useSocketApi`",
-    "1-1": "HTTP with WebSocket fallback",
-    "1-2": "`useSocketApi('/api/aircraft', wsData)`",
-    "2-0": "`useAircraftInfo`",
-    "2-1": "Aircraft registry lookups with caching",
-    "2-2": "`const info = useAircraftInfo(icao)`",
-    "3-0": "`useAviationData`",
-    "3-1": "Aviation reference data (airports, VORs)",
-    "3-2": "`const { airports } = useAviationData()`",
-    "4-0": "`useAlertRules`",
-    "4-1": "Alert rule CRUD operations",
-    "4-2": "`const { rules, createRule } = useAlertRules()`",
-    "5-0": "`useStatsData`",
-    "5-1": "Statistics data aggregation",
-    "5-2": "`const stats = useStatsData(timeRange)`"
-  },
-  "cols": 3,
-  "rows": 6
-}
-[/block]
+| Hook | Purpose | Example |
+|:-----|:--------|:--------|
+| `useApi` | HTTP API calls with loading/error states | `const { data, loading, error } = useApi('/api/stats')` |
+| `useSocketApi` | HTTP with WebSocket fallback | `useSocketApi('/api/aircraft', wsData)` |
+| `useAircraftInfo` | Aircraft registry lookups with caching | `const info = useAircraftInfo(icao)` |
+| `useAviationData` | Aviation reference data (airports, VORs) | `const { airports } = useAviationData()` |
+| `useAlertRules` | Alert rule CRUD operations | `const { rules, createRule } = useAlertRules()` |
+| `useStatsData` | Statistics data aggregation | `const stats = useStatsData(timeRange)` |
 
 ### 🔌 WebSocket Hooks
 
-[block:code]
-{
-  "codes": [
-    {
-      "code": "// 📡 Main channels socket\nconst { aircraft, safetyEvents, acarsMessages } = useChannelsSocket();\n\n// 📍 High-frequency position updates (ref-based)\nconst positionsRef = usePositionChannels();\n\n// 🎵 Audio streaming\nconst { transmissions, isConnected } = useAudioSocket();",
-      "language": "javascript",
-      "name": "WebSocket Hooks"
-    }
-  ]
-}
-[/block]
+```javascript
+// 📡 Main channels socket
+const { aircraft, safetyEvents, acarsMessages } = useChannelsSocket();
+
+// 📍 High-frequency position updates (ref-based)
+const positionsRef = usePositionChannels();
+
+// 🎵 Audio streaming
+const { transmissions, isConnected } = useAudioSocket();
+```
 
 ### 🗺️ Map Hooks
 
@@ -485,17 +451,22 @@ sequenceDiagram
 
 ### 🎯 Cannonball Mode Hooks
 
-[block:code]
-{
-  "codes": [
-    {
-      "code": "// 📍 GPS tracking\nconst { position, accuracy, error } = useDeviceGPS();\n\n// ⚠️ Threat calculation\nconst threats = useThreatCalculation(aircraft, position);\n\n// 🔊 Voice alerts\nconst { speak, isSpeaking } = useVoiceAlerts();\n\n// 📳 Haptic feedback\nconst { vibrate } = useHapticFeedback();\n\n// 🔒 Screen wake lock\nconst { requestWakeLock, releaseWakeLock } = useWakeLock();",
-      "language": "javascript",
-      "name": "Cannonball Hooks"
-    }
-  ]
-}
-[/block]
+```javascript
+// 📍 GPS tracking
+const { position, accuracy, error } = useDeviceGPS();
+
+// ⚠️ Threat calculation
+const threats = useThreatCalculation(aircraft, position);
+
+// 🔊 Voice alerts
+const { speak, isSpeaking } = useVoiceAlerts();
+
+// 📳 Haptic feedback
+const { vibrate } = useHapticFeedback();
+
+// 🔒 Screen wake lock
+const { requestWakeLock, releaseWakeLock } = useWakeLock();
+```
 
 ---
 
@@ -503,31 +474,53 @@ sequenceDiagram
 
 ### ✈️ Aircraft Utilities
 
-[block:code]
-{
-  "codes": [
-    {
-      "code": "import { \n  icaoToNNumber,\n  getCountryFromIcao,\n  getTailNumber,\n  getCategoryName,\n  callsignsMatch,\n  getPirepType \n} from '@/utils/aircraft';\n\n// 🔢 ICAO to N-number conversion\nicaoToNNumber('A1B2C3');      // → \"N12345\"\n\n// 🌍 Country identification\ngetCountryFromIcao('A1B2C3'); // → { country: 'USA', flag: '🇺🇸' }\n\n// 📋 Category names\ngetCategoryName('A1');        // → \"Light\"\n\n// 🔀 Callsign matching (IATA/ICAO)\ncallsignsMatch('AAL123', 'AA123'); // → true",
-      "language": "javascript",
-      "name": "Aircraft Utilities"
-    }
-  ]
-}
-[/block]
+```javascript
+import {
+  icaoToNNumber,
+  getCountryFromIcao,
+  getTailNumber,
+  getCategoryName,
+  callsignsMatch,
+  getPirepType
+} from '@/utils/aircraft';
+
+// 🔢 ICAO to N-number conversion
+icaoToNNumber('A1B2C3');      // → "N12345"
+
+// 🌍 Country identification
+getCountryFromIcao('A1B2C3'); // → { country: 'USA', flag: '🇺🇸' }
+
+// 📋 Category names
+getCategoryName('A1');        // → "Light"
+
+// 🔀 Callsign matching (IATA/ICAO)
+callsignsMatch('AAL123', 'AA123'); // → true
+```
 
 ### 🔔 Alert Evaluation
 
-[block:code]
-{
-  "codes": [
-    {
-      "code": "import { \n  evaluateCondition,\n  evaluateConditionGroup,\n  evaluateRule,\n  findMatchingAircraft,\n  getMatchReasons \n} from '@/utils/alertEvaluator';\n\n// ✅ Single condition evaluation\nevaluateCondition(condition, aircraft, distanceNm);\n\n// 🔀 Group evaluation with AND/OR logic\nevaluateConditionGroup(group, aircraft, distanceNm);\n\n// 📋 Find all matching aircraft\nconst matches = findMatchingAircraft(rule, aircraftList, feederLocation);\n\n// 💬 Human-readable match reasons\nconst reasons = getMatchReasons(rule, aircraft, distanceNm);\n// → [\"Squawk 7700 (Emergency)\", \"Altitude below 1000ft\"]",
-      "language": "javascript",
-      "name": "Alert Evaluation"
-    }
-  ]
-}
-[/block]
+```javascript
+import {
+  evaluateCondition,
+  evaluateConditionGroup,
+  evaluateRule,
+  findMatchingAircraft,
+  getMatchReasons
+} from '@/utils/alertEvaluator';
+
+// ✅ Single condition evaluation
+evaluateCondition(condition, aircraft, distanceNm);
+
+// 🔀 Group evaluation with AND/OR logic
+evaluateConditionGroup(group, aircraft, distanceNm);
+
+// 📋 Find all matching aircraft
+const matches = findMatchingAircraft(rule, aircraftList, feederLocation);
+
+// 💬 Human-readable match reasons
+const reasons = getMatchReasons(rule, aircraft, distanceNm);
+// → ["Squawk 7700 (Emergency)", "Altitude below 1000ft"]
+```
 
 ---
 
@@ -556,17 +549,36 @@ styles/
 
 ### 🎨 CSS Variables Reference
 
-[block:code]
-{
-  "codes": [
-    {
-      "code": ":root {\n  /* 🎨 Colors */\n  --bg-primary: #0a0d12;      /* Main background */\n  --bg-secondary: #141922;    /* Card background */\n  --text-primary: #e5e5e5;    /* Main text */\n  --text-secondary: #9ca3af;  /* Muted text */\n  \n  /* 🌈 Accent Colors */\n  --accent-cyan: #00c8ff;     /* Primary accent */\n  --accent-green: #10b981;    /* Success states */\n  --accent-red: #ef4444;      /* Error/danger */\n  --accent-yellow: #f59e0b;   /* Warning states */\n\n  /* 📏 Spacing Scale */\n  --spacing-xs: 0.25rem;      /* 4px */\n  --spacing-sm: 0.5rem;       /* 8px */\n  --spacing-md: 1rem;         /* 16px */\n  --spacing-lg: 1.5rem;       /* 24px */\n  --spacing-xl: 2rem;         /* 32px */\n\n  /* 🔤 Typography */\n  --font-mono: 'JetBrains Mono', monospace;\n  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;\n\n  /* ⚡ Transitions */\n  --transition-fast: 150ms ease;\n  --transition-normal: 250ms ease;\n}",
-      "language": "css",
-      "name": "CSS Variables"
-    }
-  ]
+```css
+:root {
+  /* 🎨 Colors */
+  --bg-primary: #0a0d12;      /* Main background */
+  --bg-secondary: #141922;    /* Card background */
+  --text-primary: #e5e5e5;    /* Main text */
+  --text-secondary: #9ca3af;  /* Muted text */
+
+  /* 🌈 Accent Colors */
+  --accent-cyan: #00c8ff;     /* Primary accent */
+  --accent-green: #10b981;    /* Success states */
+  --accent-red: #ef4444;      /* Error/danger */
+  --accent-yellow: #f59e0b;   /* Warning states */
+
+  /* 📏 Spacing Scale */
+  --spacing-xs: 0.25rem;      /* 4px */
+  --spacing-sm: 0.5rem;       /* 8px */
+  --spacing-md: 1rem;         /* 16px */
+  --spacing-lg: 1.5rem;       /* 24px */
+  --spacing-xl: 2rem;         /* 32px */
+
+  /* 🔤 Typography */
+  --font-mono: 'JetBrains Mono', monospace;
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  /* ⚡ Transitions */
+  --transition-fast: 150ms ease;
+  --transition-normal: 250ms ease;
 }
-[/block]
+```
 
 #### 🎨 Color Palette Visual
 
@@ -599,31 +611,52 @@ graph LR
 
 ### ⚡ Vite Configuration
 
-[block:code]
-{
-  "codes": [
-    {
-      "code": "// vite.config.js\nexport default defineConfig({\n  plugins: [react()],\n  base: '/static/',           // 🗂️ Django static path\n  build: {\n    outDir: 'dist',\n    sourcemap: false,\n    minify: 'terser',\n  },\n  server: {\n    host: '0.0.0.0',\n    port: 3000,\n    proxy: {\n      '/api': {\n        target: process.env.VITE_API_TARGET || 'http://localhost:8000',\n        changeOrigin: true,\n      },\n      '/ws': {\n        target: apiTarget.replace('http', 'ws'),\n        ws: true,\n        changeOrigin: true,\n      },\n    },\n  },\n});",
-      "language": "javascript",
-      "name": "vite.config.js"
-    }
-  ]
-}
-[/block]
+```javascript
+// vite.config.js
+export default defineConfig({
+  plugins: [react()],
+  base: '/static/',           // 🗂️ Django static path
+  build: {
+    outDir: 'dist',
+    sourcemap: false,
+    minify: 'terser',
+  },
+  server: {
+    host: '0.0.0.0',
+    port: 3000,
+    proxy: {
+      '/api': {
+        target: process.env.VITE_API_TARGET || 'http://localhost:8000',
+        changeOrigin: true,
+      },
+      '/ws': {
+        target: apiTarget.replace('http', 'ws'),
+        ws: true,
+        changeOrigin: true,
+      },
+    },
+  },
+});
+```
 
 ### 🛠️ Development Commands
 
-[block:code]
-{
-  "codes": [
-    {
-      "code": "# 📦 Install dependencies\nnpm install\n\n# 🚀 Start development server\nnpm run dev\n\n# 🏗️ Build for production\nnpm run build\n\n# 👁️ Preview production build\nnpm run preview\n\n# 🔍 Lint code\nnpm run lint",
-      "language": "bash",
-      "name": "Development Commands"
-    }
-  ]
-}
-[/block]
+```bash
+# 📦 Install dependencies
+npm install
+
+# 🚀 Start development server
+npm run dev
+
+# 🏗️ Build for production
+npm run build
+
+# 👁️ Preview production build
+npm run preview
+
+# 🔍 Lint code
+npm run lint
+```
 
 ### 🌍 Environment Variables
 
@@ -638,13 +671,8 @@ graph LR
 
 ## ⚡ Performance Optimization
 
-[block:callout]
-{
-  "type": "success",
-  "title": "Performance Tips",
-  "body": "SkySpy is optimized for real-time data at 60fps. Here's how:"
-}
-[/block]
+> ✅ **Performance Tips**
+> SkySpy is optimized for real-time data at 60fps. Here's how:
 
 ### 🚀 Virtual Scrolling
 
@@ -652,31 +680,28 @@ Large lists use the `VirtualList` component to render **only visible items**, en
 
 ### 🧠 Memoization
 
-[block:code]
-{
-  "codes": [
-    {
-      "code": "// ✅ Expensive computations memoized\nconst filteredAircraft = useMemo(() => {\n  return aircraft\n    .filter(a => matchesFilters(a, filters))\n    .sort((a, b) => sortComparator(a, b, sortField));\n}, [aircraft, filters, sortField]);",
-      "language": "javascript",
-      "name": "useMemo Example"
-    }
-  ]
-}
-[/block]
+```javascript
+// ✅ Expensive computations memoized
+const filteredAircraft = useMemo(() => {
+  return aircraft
+    .filter(a => matchesFilters(a, filters))
+    .sort((a, b) => sortComparator(a, b, sortField));
+}, [aircraft, filters, sortField]);
+```
 
 ### 🔗 Ref-Based State for High-Frequency Data
 
-[block:code]
-{
-  "codes": [
-    {
-      "code": "// 🚀 Positions in ref = no React re-renders!\nconst positionsRef = useRef({});\n\n// Animation loop reads directly from ref\nrequestAnimationFrame(() => {\n  const positions = positionsRef.current;\n  // Update map markers at 60fps\n  // Zero React overhead! ⚡\n});",
-      "language": "javascript",
-      "name": "Ref-Based State"
-    }
-  ]
-}
-[/block]
+```javascript
+// 🚀 Positions in ref = no React re-renders!
+const positionsRef = useRef({});
+
+// Animation loop reads directly from ref
+requestAnimationFrame(() => {
+  const positions = positionsRef.current;
+  // Update map markers at 60fps
+  // Zero React overhead! ⚡
+});
+```
 
 ### ⏱️ Debounced Updates
 
@@ -684,31 +709,28 @@ Search and filter inputs are **debounced** to prevent excessive re-renders durin
 
 ### 📦 Lazy Loading
 
-[block:code]
-{
-  "codes": [
-    {
-      "code": "// 📦 Components loaded on-demand\nconst InfoTab = lazy(() => import('./tabs/InfoTab'));\nconst LiveTab = lazy(() => import('./tabs/LiveTab'));\nconst RadioTab = lazy(() => import('./tabs/RadioTab'));\nconst AcarsTab = lazy(() => import('./tabs/AcarsTab'));\nconst SafetyTab = lazy(() => import('./tabs/SafetyTab'));\nconst HistoryTab = lazy(() => import('./tabs/HistoryTab'));\nconst TrackTab = lazy(() => import('./tabs/TrackTab'));",
-      "language": "javascript",
-      "name": "Lazy Loading"
-    }
-  ]
-}
-[/block]
+```javascript
+// 📦 Components loaded on-demand
+const InfoTab = lazy(() => import('./tabs/InfoTab'));
+const LiveTab = lazy(() => import('./tabs/LiveTab'));
+const RadioTab = lazy(() => import('./tabs/RadioTab'));
+const AcarsTab = lazy(() => import('./tabs/AcarsTab'));
+const SafetyTab = lazy(() => import('./tabs/SafetyTab'));
+const HistoryTab = lazy(() => import('./tabs/HistoryTab'));
+const TrackTab = lazy(() => import('./tabs/TrackTab'));
+```
 
 ### 🛡️ Error Boundaries
 
-[block:code]
-{
-  "codes": [
-    {
-      "code": "// 🛡️ Prevents cascading failures\n<ErrorBoundary \n  onRetry={retry}\n  fallback={<ErrorFallback />}\n>\n  {renderTabContent()}\n</ErrorBoundary>",
-      "language": "jsx",
-      "name": "Error Boundaries"
-    }
-  ]
-}
-[/block]
+```jsx
+// 🛡️ Prevents cascading failures
+<ErrorBoundary
+  onRetry={retry}
+  fallback={<ErrorFallback />}
+>
+  {renderTabContent()}
+</ErrorBoundary>
+```
 
 ---
 
@@ -737,17 +759,19 @@ sequenceDiagram
 
 ### 🔒 Permission-Based UI
 
-[block:code]
-{
-  "codes": [
-    {
-      "code": "const { canAccessFeature } = useAuth();\n\n// 🔐 Conditional rendering based on permissions\nif (canAccessFeature('alerts', 'write')) {\n  return <AlertRuleForm />;\n}\n\n// 🛡️ Protected route wrapper\n<ProtectedRoute permission=\"audio:read\">\n  <AudioView />\n</ProtectedRoute>",
-      "language": "jsx",
-      "name": "Permission-Based UI"
-    }
-  ]
+```jsx
+const { canAccessFeature } = useAuth();
+
+// 🔐 Conditional rendering based on permissions
+if (canAccessFeature('alerts', 'write')) {
+  return <AlertRuleForm />;
 }
-[/block]
+
+// 🛡️ Protected route wrapper
+<ProtectedRoute permission="audio:read">
+  <AudioView />
+</ProtectedRoute>
+```
 
 ---
 
