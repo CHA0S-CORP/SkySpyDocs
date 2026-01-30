@@ -1,208 +1,516 @@
 ---
-title: "Overview"
-excerpt: "Introduction to SkySpy, a real-time ADS-B aircraft tracking and monitoring system."
+title: Overview & Architecture
+excerpt: >-
+  Introduction to SkySpy, a real-time ADS-B aircraft tracking and monitoring
+  system.
 ---
 
-SkySpy is a real-time aircraft tracking platform that captures ADS-B position data from 1090MHz Mode S and 978MHz UAT receivers. It displays aircraft on an interactive map, monitors safety conditions, and provides custom alerts, weather integration, and push notifications.
+# 🛩️ Project Overview and Architecture
 
-![SkySpy Demo](https://raw.githubusercontent.com/cha0s-corp/skyspy/main/docs/screenshots/aircraft-detail.gif)
+<br/>
 
-## What You Can Do with SkySpy
+> 📡 **SkySpy** is an enterprise-grade, real-time ADS-B aircraft tracking and monitoring platform built for enthusiasts, researchers, and aviation professionals.
 
-- **Track Aircraft** - Monitor live positions with distance, altitude, speed, and climb rate from your ADS-B receiver
-- **Detect Safety Events** - Get alerts for TCAS RA/TA, proximity warnings, and emergency squawks (7700/7600/7500)
-- **Create Custom Alerts** - Build rules with AND/OR logic on ICAO, callsign, squawk, altitude, distance, and more
-- **Cannonball Mode** - Law enforcement aircraft detection with pattern analysis, known LE database, and mobile threat tracking
-- **Decode ACARS Messages** - Integrated libacars support for decoding ACARS and VDL2 datalink messages
-- **View Weather Data** - Access METARs, TAFs, PIREPs, SIGMETs, and G-AIRMETs for your area
-- **Receive Notifications** - Push alerts via 80+ services including Pushover, Telegram, Slack, and Discord
-- **Explore Aircraft Data** - Look up registrations, photos, airframe details, and operator information
-- **Terminal Interface** - Native Go CLI client (skyspy-go) for headless monitoring and scripting
+<br/>
 
-## Architecture
+---
 
-SkySpy consists of two main components that work together to provide real-time aircraft tracking:
+## 🎯 What is SkySpy?
+
+SkySpy captures position data from **1090MHz Mode S** and **978MHz UAT** receivers, displays aircraft on an interactive map, monitors safety conditions, and provides advanced features like custom alerts, weather integration, ACARS message decoding, and push notifications.
+
+> 📘 **Deployment Flexibility**
+>
+> SkySpy is designed to run on hardware ranging from **Raspberry Pi edge devices** to **enterprise server infrastructure**, with configuration profiles optimized for each deployment scenario.
+
+<br/>
+
+---
+
+## ✨ Key Capabilities
+
+| Capability | Description | Status |
+|:-----------|:------------|:------:|
+| 📍 **Real-Time Tracking** | Sub-second aircraft position updates with distance, altitude, speed, and climb rate calculations | ✅ |
+| 🖥️ **Interactive Dashboard** | Canvas-based radar display with multiple visualization modes including CRT phosphor effects | ✅ |
+| 🚨 **Safety Monitoring** | TCAS RA/TA detection, proximity alerts, extreme vertical speed warnings, emergency squawk detection | ✅ |
+| 🔔 **Custom Alert Rules** | Flexible AND/OR logic conditions with **80+** notification channel integrations | ✅ |
+| 📊 **Historical Analytics** | PostgreSQL-backed sighting history with session tracking, gamification, and trend analysis | ✅ |
+| 🌤️ **Aviation Weather** | METARs, TAFs, PIREPs, SIGMETs, G-AIRMETs, and NOTAMs integration | ✅ |
+| 📻 **ACARS/VDL2 Decoding** | Aircraft communication message reception, parsing, and display with libacars integration | ✅ |
+| 💻 **Multi-Platform CLI** | Native Go terminal radar client with themes, overlays, and export capabilities | ✅ |
+
+<br/>
+
+---
+
+## 🏗️ High-Level Architecture
 
 ```mermaid
-%%{init: {'theme': 'dark', 'themeVariables': { 'primaryColor': '#1e3a5f', 'primaryTextColor': '#fff', 'primaryBorderColor': '#3b82f6', 'lineColor': '#60a5fa', 'secondaryColor': '#1e3a5f', 'tertiaryColor': '#1e3a5f'}}}%%
 flowchart TB
-    subgraph Receivers["📡 Data Sources"]
-        UF["📻 Ultrafeeder<br/>1090MHz ADS-B"]
-        D978["📻 dump978<br/>978MHz UAT"]
-        ACARS["💬 ACARS/VDL2<br/>Decoder"]
+    subgraph sources["📡 DATA SOURCES"]
+        UF["🛩️ Ultrafeeder<br/>(1090MHz ADS-B)"]
+        D978["📻 dump978<br/>(978MHz UAT)"]
+        ACARS["📨 ACARS Hub<br/>(VDL2/ACARS)"]
     end
 
-    subgraph External["🌐 External APIs"]
-        OSN["🔍 OpenSky Network"]
-        AWC["🌦️ Aviation Weather"]
-        PS["📸 planespotters.net"]
-    end
-
-    subgraph Backend["⚙️ Backend API"]
+    subgraph server["🖥️ SKYSPY DJANGO API SERVER (Daphne ASGI)"]
         direction TB
-        API["🚀 Django Server"]
-        CHANNELS["📡 Django Channels<br/>WebSocket"]
-        SAFETY["🛡️ Safety Engine"]
-        ALERTS["🔔 Alert Engine"]
-        CANNONBALL["🚔 Cannonball Engine"]
-        DB[("🗄️ PostgreSQL")]
-        REDIS[("⚡ Redis Pub/Sub")]
+        subgraph core["⚙️ Core Services"]
+            AT["Aircraft Tracking"]
+            SM["Safety Monitoring"]
+            AE["Alert Engine"]
+            WI["Weather Integration"]
+            AD["ACARS Decoder"]
+        end
+        subgraph channels["🔌 Django Channels"]
+            WS["WebSocket Consumers"]
+        end
     end
 
-    subgraph CLI["💻 CLI Client"]
-        SKYSPYGO["🖥️ skyspy-go<br/>Terminal UI"]
+    subgraph storage["💾 DATA LAYER"]
+        PG["🐘 PostgreSQL<br/>━━━━━━━━━━<br/>• Aircraft Data<br/>• Sighting History<br/>• Alert Rules<br/>• User Accounts"]
+        RD["⚡ Redis<br/>━━━━━━━━━━<br/>• Channel Layer<br/>• Cache<br/>• Message Broker<br/>• Pub/Sub"]
+        CL["🔄 Celery Workers<br/>━━━━━━━━━━<br/>• Polling Tasks<br/>• Analytics<br/>• Notifications<br/>• Transcription"]
     end
 
-    subgraph Frontend["🖥️ Web Dashboard"]
-        REACT["⚛️ React App"]
-        MAP["🗺️ Canvas Radar"]
+    subgraph clients["👥 CLIENTS"]
+        REACT["⚛️ React Frontend<br/>(Web SPA)<br/>━━━━━━━━━━<br/>• Map View<br/>• Aircraft List<br/>• Stats/History<br/>• Alerts Config"]
+        GO["🔲 Go CLI Client<br/>(skyspy-go)<br/>━━━━━━━━━━<br/>• Terminal Radar<br/>• 10+ Themes<br/>• GeoJSON Layers<br/>• Export Tools"]
+        EXT["🌐 External APIs<br/>━━━━━━━━━━<br/>• OpenSky DB<br/>• Aviation Wx<br/>• Planespotters<br/>• FAA NOTAMs<br/>• CheckWX/AVWX"]
     end
 
-    subgraph Notifications["📬 Notifications"]
-        APPRISE["📤 Apprise"]
-        PUSH["📱 Pushover / Telegram<br/>Slack / Discord"]
-    end
-
-    UF --> API
-    D978 --> API
-    ACARS --> API
-    OSN --> API
-    AWC --> API
-    PS --> API
-
-    API --> CHANNELS
-    API --> SAFETY
-    API --> ALERTS
-    API --> CANNONBALL
-    API --> DB
-    API --> REDIS
-
-    CHANNELS --> REACT
-    CHANNELS --> SKYSPYGO
-    REDIS --> REACT
-    API --> REACT
-    REACT --> MAP
-
-    ALERTS --> APPRISE
-    SAFETY --> APPRISE
-    APPRISE --> PUSH
-
-    style Receivers fill:#0d4f8b,stroke:#3b82f6,stroke-width:2px,color:#fff
-    style External fill:#7c4a03,stroke:#f59e0b,stroke-width:2px,color:#fff
-    style Backend fill:#5b2168,stroke:#a855f7,stroke-width:2px,color:#fff
-    style Frontend fill:#065f46,stroke:#10b981,stroke-width:2px,color:#fff
-    style CLI fill:#4a4a4a,stroke:#9ca3af,stroke-width:2px,color:#fff
-    style Notifications fill:#831843,stroke:#ec4899,stroke-width:2px,color:#fff
+    sources --> server
+    server --> storage
+    storage --> clients
 ```
 
-> 📘 **Data Sources**
->
-> SkySpy integrates with [Ultrafeeder](https://github.com/sdr-enthusiasts/docker-adsb-ultrafeeder) (readsb/dump1090) for ADS-B data, dump978 for UAT data, libacars for ACARS/VDL2 decoding, and external APIs like OpenSky Network and Aviation Weather Center for enriched metadata.
-
-## How It Works
-
-```mermaid
-%%{init: {'theme': 'dark', 'themeVariables': { 'primaryColor': '#3b82f6', 'primaryTextColor': '#fff', 'primaryBorderColor': '#60a5fa', 'lineColor': '#60a5fa', 'actorTextColor': '#fff', 'actorBkg': '#1e3a5f', 'actorBorder': '#3b82f6'}}}%%
-sequenceDiagram
-    participant R as 📡 ADS-B Receiver
-    participant A as 🚀 SkySpy API
-    participant S as 🛡️ Safety Engine
-    participant D as 🗄️ Database
-    participant W as 🖥️ Web Dashboard
-    participant N as 📱 Notifications
-
-    R->>A: ✈️ Aircraft JSON (every 2s)
-    A->>S: 🔍 Analyze traffic
-    A->>D: 💾 Store positions
-
-    alt 🚨 Safety Event Detected
-        S->>A: ⚠️ Proximity/TCAS alert
-        A->>N: 🔔 Push notification
-        A->>W: ⚡ Real-time event
-    end
-
-    A->>W: 📡 WebSocket/SSE stream
-    W->>W: 🗺️ Update radar display
-```
-
-## Cannonball Mode
-
-Cannonball Mode is a specialized law enforcement aircraft detection system designed for mobile situational awareness. It provides real-time monitoring and pattern analysis for LE aircraft in your vicinity.
-
-**Key Capabilities:**
-
-- **Real-time LE Aircraft Detection** - Automatic identification of law enforcement aircraft using a curated database of known ICAO addresses and registration patterns
-- **Pattern Analysis** - Detects surveillance behaviors including circling, loitering, grid search patterns, and pursuit maneuvers
-- **Mobile Threat Tracking** - WebSocket-based updates optimized for mobile devices with low-latency position streaming
-- **Multiple Display Modes** - Choose from Single aircraft focus, Grid overview, Radar sweep, or HUD overlay modes
-- **Voice Announcements** - Audio alerts for new detections, threat level changes, and pattern identification
-- **Haptic Feedback** - Vibration alerts on supported mobile devices for discreet notifications
-
-> 📘 **Cannonball Database**
->
-> The LE aircraft database includes federal, state, and local law enforcement aircraft registrations. The database is regularly updated and can be extended with custom entries.
-
-## Key Features at a Glance
-
-| Feature | Description | Learn More |
-| :--- | :--- | :--- |
-| **Live Tracking** | Real-time positions updated every 2 seconds | [Real-Time API](/docs/real-time-api) |
-| **Safety Monitoring** | TCAS, proximity, and emergency detection | [Safety & Alerts](/docs/safety-and-alerts) |
-| **Cannonball Mode** | LE aircraft detection with pattern analysis | [Cannonball Mode](/docs/cannonball-mode) |
-| **Custom Rules** | Flexible AND/OR condition builder | [Safety & Alerts](/docs/safety-and-alerts#custom-alert-rules) |
-| **WebSocket Streaming** | Real-time updates via Django Channels | [WebSocket API](/docs/websocket-api) |
-| **ACARS Decoding** | Decode datalink messages with libacars | [ACARS Integration](/docs/acars) |
-| **CLI Client** | Native Go terminal interface (skyspy-go) | [CLI Documentation](/docs/cli) |
-| **Weather Integration** | METARs, TAFs, PIREPs from AWC | [Real-Time API](/docs/real-time-api#request-response-api) |
-| **Photo Lookup** | Aircraft photos via planespotters.net | [Configuration](/docs/configuration#photo-cache) |
-
-## Components
-
-### Backend (Django)
-
-The SkySpy backend is built on Django with Django Channels for WebSocket support. It handles:
-
-- REST API endpoints for aircraft data, alerts, and configuration
-- WebSocket connections via Django Channels for real-time streaming
-- Background task processing with Celery
-- ACARS message decoding via libacars integration
-- Cannonball Mode pattern analysis engine
-
-### CLI Client (skyspy-go)
-
-A native Go terminal client that provides:
-
-- Real-time aircraft display in the terminal
-- Spectrum analyzer visualization
-- Audio monitoring with VU meters
-- Configurable themes and display modes
-- Headless operation for scripting and automation
-
-## Next Steps
-
-<Cards columns={3}>
-  <Card title="Quick Start" icon="fa-rocket" href="/docs/quick-start">
-    Deploy with Docker Compose in minutes
-  </Card>
-  <Card title="Configuration" icon="fa-cog" href="/docs/configuration">
-    Environment variables & settings
-  </Card>
-  <Card title="Safety & Alerts" icon="fa-shield-alt" href="/docs/safety-and-alerts">
-    TCAS, proximity, emergency detection
-  </Card>
-  <Card title="CLI Client" icon="fa-terminal" href="/docs/cli">
-    Terminal-based tracking with skyspy-go
-  </Card>
-  <Card title="Real-Time API" icon="fa-bolt" href="/docs/real-time-api">
-    Socket.IO & SSE streaming
-  </Card>
-  <Card title="Recipes" icon="fa-book" href="/docs/recipes">
-    Integration examples & tutorials
-  </Card>
-</Cards>
+<br/>
 
 ---
 
-> 📘 Info
+## 🔧 Technology Stack
+
+### 🐍 Backend (Django API Server)
+
+| Component | Technology | Purpose |
+|:----------|:-----------|:--------|
+| ![Django](https://img.shields.io/badge/Framework-Django%205.x-092E20?logo=django) | Django 5.x | Web framework with ORM |
+| ![Daphne](https://img.shields.io/badge/Server-Daphne-44B78B) | Daphne | WebSocket-capable async server |
+| ![DRF](https://img.shields.io/badge/API-DRF-A30000) | Django REST Framework | RESTful API with OpenAPI schema |
+| ![Channels](https://img.shields.io/badge/Realtime-Channels-44B78B) | Django Channels | WebSocket consumers and channel layers |
+| ![Celery](https://img.shields.io/badge/Tasks-Celery-37814A?logo=celery) | Celery + gevent | Background task processing with green threads |
+| ![PostgreSQL](https://img.shields.io/badge/Database-PostgreSQL%2016-4169E1?logo=postgresql) | PostgreSQL 16 | Primary data store |
+| ![Redis](https://img.shields.io/badge/Cache-Redis%207-DC382D?logo=redis) | Redis 7 | Caching, message broker, channel layer |
+| ![JWT](https://img.shields.io/badge/Auth-JWT%20+%20OIDC-000000?logo=jsonwebtokens) | SimpleJWT + OIDC | JWT tokens with SSO support |
+| ![ACARS](https://img.shields.io/badge/Decoder-libacars%202.2-blue) | libacars 2.2 | Native ACARS message decoding |
+| ![Apprise](https://img.shields.io/badge/Notifications-Apprise-orange) | Apprise | 80+ notification services |
+
+<br/>
+
+### ⚛️ Frontend (React SPA)
+
+| Component | Technology | Purpose |
+|:----------|:-----------|:--------|
+| ![React](https://img.shields.io/badge/Framework-React%2018-61DAFB?logo=react) | React 18 | Component-based UI |
+| ![Vite](https://img.shields.io/badge/Build-Vite%205-646CFF?logo=vite) | Vite 5 | Fast development and bundling |
+| ![Leaflet](https://img.shields.io/badge/Maps-Leaflet-199900?logo=leaflet) | Leaflet | Interactive mapping |
+| ![Lucide](https://img.shields.io/badge/Icons-Lucide-F56565) | Lucide React | Iconography |
+| ![CSS](https://img.shields.io/badge/Styling-CSS%20Modules-1572B6?logo=css3) | CSS Modules | Scoped component styles |
+| ![Playwright](https://img.shields.io/badge/Testing-Playwright-2EAD33?logo=playwright) | Playwright | End-to-end testing |
+
+<br/>
+
+### 🖥️ CLI Client (Go)
+
+| Component | Technology | Purpose |
+|:----------|:-----------|:--------|
+| ![Go](https://img.shields.io/badge/TUI-Bubble%20Tea-00ADD8?logo=go) | Bubble Tea | Terminal user interface |
+| ![LipGloss](https://img.shields.io/badge/Styling-Lip%20Gloss-FF69B4) | Lip Gloss | Terminal styling |
+| ![WebSocket](https://img.shields.io/badge/WebSocket-Gorilla-1F8ACB) | Gorilla WebSocket | Real-time data streaming |
+| ![Cobra](https://img.shields.io/badge/CLI-Cobra-00ADD8) | Cobra | Command-line parsing |
+| ![Auth](https://img.shields.io/badge/Auth-OIDC%20+%20API%20Keys-000000) | OIDC + API Keys | Authentication support |
+
+<br/>
+
+---
+
+## ⚙️ Core Components
+
+<br/>
+
+### 1️⃣ Aircraft Tracking Service
+
+> 💡 **Core Engine**
 >
-> **New to ADS-B?** ADS-B (Automatic Dependent Surveillance-Broadcast) is a surveillance technology where aircraft broadcast their position, altitude, and velocity. With a simple SDR receiver, you can track aircraft within 200+ miles of your location.
+> The aircraft tracking service is the heart of SkySpy, processing thousands of position updates per minute.
+
+**Responsibilities:**
+
+- 📡 Polling ADS-B receivers (Ultrafeeder/readsb/dump1090) at configurable intervals
+- 🔄 Processing and normalizing aircraft position data
+- 📐 Calculating distance and bearing from receiver location
+- ⏱️ Managing aircraft sessions (first seen, last seen, tracking quality)
+- 📢 Broadcasting updates via WebSocket to connected clients
+
+```python
+# Polling configuration (celery.py)
+'poll-aircraft-every-2s': {
+    'task': 'skyspy.tasks.aircraft.poll_aircraft',
+    'schedule': 2.0,
+    'options': {'expires': 2.0},
+}
+```
+
+<br/>
+
+### 2️⃣ Safety Monitoring Engine
+
+> ⚠️ **Critical Monitoring**
+>
+> Continuous real-time monitoring for safety-critical events that require immediate attention.
+
+| Event Type | Trigger Condition | Priority |
+|:-----------|:------------------|:--------:|
+| 🚨 Emergency Squawk | 7500, 7600, 7700 | 🔴 Critical |
+| ⚠️ TCAS RA | Resolution Advisory detected | 🔴 Critical |
+| ⚡ TCAS TA | Traffic Advisory detected | 🟠 High |
+| 📍 Proximity Alert | Aircraft within threshold distance | 🟠 High |
+| 📈 Extreme VS | Vertical speed > 6000 ft/min | 🟡 Medium |
+| 📉 VS Change | Sudden VS change > 2000 ft/min | 🟡 Medium |
+
+<br/>
+
+### 3️⃣ Alert Rule Engine
+
+> 📘 **Flexible Alerting**
+>
+> Create sophisticated alert rules using AND/OR condition logic with support for 80+ notification channels.
+
+```json
+{
+  "name": "Military Aircraft Alert",
+  "conditions": {
+    "operator": "AND",
+    "conditions": [
+      { "field": "military", "operator": "eq", "value": true },
+      { "field": "distance", "operator": "lt", "value": 50 }
+    ]
+  },
+  "actions": ["notify", "log"]
+}
+```
+
+<br/>
+
+### 4️⃣ WebSocket Consumers
+
+Django Channels provides real-time data streaming via WebSocket:
+
+| Endpoint | Purpose | Description |
+|:---------|:--------|:------------|
+| 🛩️ `/ws/aircraft/` | Aircraft Updates | Real-time position streaming |
+| 🚨 `/ws/safety/` | Safety Events | Emergency and TCAS notifications |
+| 🔔 `/ws/alerts/` | Alert Triggers | Custom rule match notifications |
+| 📻 `/ws/acars/` | ACARS Stream | Decoded message feed |
+| 📊 `/ws/stats/` | Statistics | Live metrics updates |
+| 📱 `/ws/cannonball/` | Mobile Mode | GPS-based threat detection |
+
+<br/>
+
+### 5️⃣ Celery Task System
+
+Background task processing with priority queues:
+
+| Queue | Tasks | Priority |
+|:------|:------|:--------:|
+| `polling` | Aircraft polling, stats updates | 🔴 High (time-sensitive) |
+| `default` | General background tasks | 🟡 Normal |
+| `database` | DB operations, cleanup | 🟡 Normal |
+| `notifications` | Push notification delivery | 🟡 Normal |
+| `transcription` | Audio transcription | 🔵 Low |
+| `low_priority` | Analytics, aggregation | 🔵 Low |
+
+<br/>
+
+---
+
+## 🔄 Data Flow
+
+### 📡 ADS-B Data Ingestion
+
+```mermaid
+flowchart TD
+    A["📡 ADS-B Receiver<br/>(Ultrafeeder)"] --> B["🔗 JSON API Endpoint<br/>/tar1090/data/aircraft.json"]
+    B --> C["⚙️ Celery Task<br/>poll_aircraft"]
+    C --> D["⚡ Update Redis Cache<br/>(live aircraft state)"]
+    C --> E["📢 Broadcast via<br/>Django Channels"]
+    C --> F["💾 Store to PostgreSQL<br/>(periodic snapshots)"]
+    D --> G["👥 Connected Clients"]
+    E --> G
+
+    subgraph clients["📱 Clients"]
+        G1["⚛️ Web Dashboard<br/>(React)"]
+        G2["🖥️ CLI Client<br/>(Go)"]
+        G3["📱 Mobile Apps"]
+    end
+    G --> clients
+```
+
+<br/>
+
+### 🚨 Safety Event Detection
+
+```mermaid
+flowchart TD
+    A["✈️ Aircraft Position Update"] --> B["🔍 Safety Monitoring Service"]
+
+    B --> C{"🚨 Check Emergency<br/>Squawks 7500/7600/7700"}
+    B --> D{"📐 Calculate Proximity<br/>to Other Aircraft"}
+    B --> E{"📈 Analyze Vertical<br/>Speed Changes"}
+    B --> F{"⚠️ Detect TCAS<br/>Alerts"}
+
+    C --> G{"Event Detected?"}
+    D --> G
+    E --> G
+    F --> G
+
+    G -->|Yes| H["💾 Create SafetyEvent Record"]
+    H --> I["📢 Broadcast via /ws/safety/"]
+    I --> J["🔔 Trigger Notifications<br/>(if configured)"]
+```
+
+<br/>
+
+### 🔔 Alert Rule Processing
+
+```mermaid
+flowchart TD
+    A["✈️ Aircraft Update Received"] --> B["📋 Alert Rule Cache<br/>(Redis)"]
+    B --> C["🔄 Evaluate Each Active Rule"]
+
+    C --> D["🔀 Parse AND/OR Conditions"]
+    D --> E["✅ Check Field Values<br/>Against Thresholds"]
+    E --> F["⏱️ Apply Cooldown Logic"]
+
+    F --> G{"Rule Matches?"}
+    G -->|Yes| H["💾 Create AlertHistory Record"]
+    H --> I["📤 Dispatch Notifications"]
+    I --> J["📢 Broadcast via /ws/alerts/"]
+```
+
+<br/>
+
+---
+
+## 🌟 Key Features Summary
+
+<br/>
+
+### ✈️ Aircraft Tracking
+
+- 📍 Real-time position updates from 1090MHz and 978MHz receivers
+- 🔌 Support for multiple receiver sources (Ultrafeeder, dump978)
+- 📐 Distance and bearing calculation from receiver location
+- ⏱️ Session management with first/last seen timestamps
+- 🏷️ Aircraft type classification (commercial, military, private, etc.)
+
+<br/>
+
+### 🖥️ Interactive Dashboard
+
+- 🗺️ Canvas-based map with multiple rendering modes
+- 📟 CRT radar mode with sweep animation
+- 📋 Aircraft detail panels with registration, operator, and photo
+- 📊 Real-time statistics (count, altitude distribution, closest/highest/fastest)
+- 🔍 Filter and search capabilities
+
+<br/>
+
+### 📚 Historical Data
+
+- 🕒 Sighting history with advanced filtering
+- 📈 Session analytics and tracking quality metrics
+- ✈️ Flight pattern analysis
+- 📊 Time comparison statistics (hourly, daily, weekly trends)
+- 📻 ACARS message history
+
+<br/>
+
+### 🌤️ Aviation Weather
+
+- 📍 **METAR** - Current weather observations
+- 📅 **TAF** - Terminal area forecasts
+- 👨‍✈️ **PIREPs** - Pilot reports
+- ⚠️ **SIGMETs/AIRMETs** - Hazardous weather
+- 📋 **NOTAMs** - Notices to airmen
+
+<br/>
+
+### 🔔 Notification System
+
+> 📘 **80+ Channels Supported**
+>
+> Pushover, Telegram, Slack, Discord, email, and many more via Apprise integration.
+
+- 📝 Rich message formatting with aircraft details
+- ⏱️ Cooldown management to prevent spam
+- ⚙️ Per-rule notification configuration
+
+<br/>
+
+### 🔐 Authentication & Authorization
+
+| Mode | Description | Icon |
+|:-----|:------------|:----:|
+| `public` | No authentication required | 🌐 |
+| `private` | Authentication required for all endpoints | 🔒 |
+| `hybrid` | Per-feature access control **(default)** | 🔓 |
+
+**Supported Auth Methods:**
+
+- 🔑 Local username/password authentication
+- 🔗 API key authentication for integrations
+- 🌐 OIDC/SSO support (Keycloak, Authentik, Azure AD, Okta)
+- 👥 Role-based access control (viewer, operator, analyst, admin)
+
+<br/>
+
+### 📱 Mobile Features (Cannonball Mode)
+
+- 📍 GPS-based threat detection
+- 📺 Edge-to-edge radar display
+- 📐 Real-time proximity calculations
+- 🔊 Audio/haptic alerts
+- 🎬 Session recording and playback
+
+<br/>
+
+---
+
+## 🚀 Deployment Options
+
+### 🐳 Docker Compose (Recommended)
+
+```bash
+# Production deployment
+docker-compose up -d
+
+# With ACARS listener
+docker-compose --profile acars up -d
+```
+
+<br/>
+
+### 🏛️ Services Architecture
+
+| Service | Container | Port | Status |
+|:--------|:----------|:-----|:------:|
+| 🌐 `api` | skyspy-api | `8000` | ✅ |
+| ⚙️ `celery-worker` | skyspy-celery-worker | - | ✅ |
+| ⏰ `celery-beat` | skyspy-celery-beat | - | ✅ |
+| 🐘 `postgres` | skyspy-postgres | `5432` | ✅ |
+| ⚡ `redis` | skyspy-redis | `6379` | ✅ |
+| 📻 `acars-listener` | skyspy-acars-listener | `5555/udp`, `5556/udp` | ✅ |
+
+<br/>
+
+### 🍓 Raspberry Pi Optimization
+
+> 💡 **Edge Deployment**
+>
+> SkySpy includes optimized settings specifically tuned for Raspberry Pi 4/5 deployment.
+
+```python
+# settings_rpi.py
+POLLING_INTERVAL = 3  # Reduced polling frequency
+RPI_TASK_INTERVALS = {
+    'stats_cache': 90.0,
+    'safety_stats': 60.0,
+    'acars_stats': 120.0,
+}
+```
+
+<br/>
+
+---
+
+## 🌐 External Data Sources
+
+| Source | Data Provided | Rate Limit | Status |
+|:-------|:--------------|:-----------|:------:|
+| 🌍 **OpenSky Network** | Aircraft database, live positions | 4,000 credits/day | ✅ |
+| 📷 **Planespotters.net** | Aircraft photos | Cached locally | ✅ |
+| 🌤️ **Aviation Weather Center** | METARs, TAFs, PIREPs | Unlimited | ✅ |
+| 🇺🇸 **FAA** | NOTAMs, TFRs | Unlimited | ✅ |
+| ☁️ **CheckWX** | Weather data | 3,000/day | ✅ |
+| 🌧️ **AVWX** | Weather data | Unlimited basic | ✅ |
+| ✈️ **OpenAIP** | Airspace boundaries | Unlimited | ✅ |
+
+<br/>
+
+---
+
+## 📖 API Documentation
+
+SkySpy provides a comprehensive REST API with OpenAPI documentation:
+
+| Documentation | URL | Description |
+|:--------------|:----|:------------|
+| 📘 **Swagger UI** | `/api/docs/` | Interactive API explorer |
+| 📕 **ReDoc** | `/api/redoc/` | Beautiful API reference |
+| 📄 **OpenAPI Schema** | `/api/schema/` | Machine-readable spec |
+
+<br/>
+
+### 🔗 Key Endpoints
+
+| Category | Base Path | Description |
+|:---------|:----------|:------------|
+| ✈️ Aircraft | `/api/v1/aircraft/` | Live aircraft tracking |
+| 📚 History | `/api/v1/sightings/`, `/api/v1/sessions/` | Historical data |
+| 🔔 Alerts | `/api/v1/alerts/rules/`, `/api/v1/alerts/history/` | Alert management |
+| 🚨 Safety | `/api/v1/safety/events/` | Safety event monitoring |
+| 🌤️ Aviation | `/api/v1/aviation/` | Weather and airspace data |
+| 📻 ACARS | `/api/v1/acars/` | ACARS message history |
+| 🎙️ Audio | `/api/v1/audio/` | Radio transmission recordings |
+| ⚙️ System | `/api/v1/system/` | Health and status |
+
+<br/>
+
+---
+
+## 📦 Version Information
+
+| Component | Version | Status |
+|:----------|:--------|:------:|
+| 🚀 **SkySpy API** | `2.6.0` | ![Stable](https://img.shields.io/badge/status-stable-green) |
+| 🌐 **Web Dashboard** | `2.5.0` | ![Stable](https://img.shields.io/badge/status-stable-green) |
+| 🖥️ **Go CLI** | `1.0.0` | ![Stable](https://img.shields.io/badge/status-stable-green) |
+| 🐍 **Django** | `5.x` | ![Required](https://img.shields.io/badge/required-5.x-blue) |
+| 🐍 **Python** | `3.12+` | ![Required](https://img.shields.io/badge/required-3.12+-blue) |
+| 📦 **Node.js** | `20+` | ![Required](https://img.shields.io/badge/required-20+-blue) |
+| 🔵 **Go** | `1.21+` | ![Required](https://img.shields.io/badge/required-1.21+-blue) |
+
+<br/>
+
+---
+
+## 📚 Next Steps
+
+| Link | Description |
+|:-----|:------------|
+| 📥 [Installation Guide](./02-installation.md) | Detailed setup instructions |
+| ⚙️ [Configuration Reference](./03-configuration.md) | Environment variables and settings |
+| 🔗 [API Reference](./04-api-reference.md) | Complete API documentation |
+| 🔌 [WebSocket Protocol](./05-websocket.md) | Real-time streaming guide |
+| 🔔 [Alert Rules](./06-alerts.md) | Custom alert configuration |
+| 🔐 [Authentication](./07-authentication.md) | Auth modes and SSO setup |
+
+<br/>
+
+---
+
+<br/>
+
+> 🛩️ **SkySpy** - Enterprise-grade aircraft tracking for enthusiasts and professionals alike.
