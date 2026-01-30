@@ -3,24 +3,24 @@ title: Testing Guide
 hidden: false
 ---
 
-# 🧪 Testing Guide
+# Testing Guide
 
-> 📘 **Premium Documentation**
+> **Premium Documentation**
 >
 > This guide covers the SkySpy test suite architecture, running tests, writing new tests, and best practices for maintaining comprehensive test coverage.
 
 ---
 
-## 🔬 Testing Overview
+## Testing Overview
 
 SkySpy employs a multi-layered testing strategy to ensure reliability across the entire stack.
 
 ```mermaid
 flowchart TB
-    subgraph Testing["🧪 Test Pyramid"]
-        E2E["🎭 E2E Tests<br/>User Workflows"]
-        INT["🔗 Integration Tests<br/>Component Interactions"]
-        UNIT["⚡ Unit Tests<br/>Individual Functions"]
+    subgraph Testing["Test Pyramid"]
+        E2E["E2E Tests<br/>User Workflows"]
+        INT["Integration Tests<br/>Component Interactions"]
+        UNIT["Unit Tests<br/>Individual Functions"]
     end
 
     E2E --> INT
@@ -31,44 +31,22 @@ flowchart TB
     style UNIT fill:#48dbfb,stroke:#333,stroke-width:2px,color:#333
 ```
 
-[block:parameters]
-{
-  "data": {
-    "h-0": "Layer",
-    "h-1": "Framework",
-    "h-2": "Location",
-    "h-3": "Purpose",
-    "0-0": "⚡ **Unit Tests**",
-    "0-1": "pytest + pytest-django",
-    "0-2": "`skyspy_django/skyspy/tests/`",
-    "0-3": "Test individual functions, methods, and classes",
-    "1-0": "🔗 **Integration Tests**",
-    "1-1": "pytest + pytest-asyncio",
-    "1-2": "`skyspy_django/skyspy/tests/`",
-    "1-3": "Test component interactions and data flow",
-    "2-0": "🔌 **Backend E2E**",
-    "2-1": "pytest + Django Channels",
-    "2-2": "`skyspy_django/skyspy/tests/e2e/`",
-    "2-3": "Test WebSocket consumers and real-time features",
-    "3-0": "🎭 **Frontend E2E**",
-    "3-1": "Playwright",
-    "3-2": "`web/e2e/`",
-    "3-3": "Test user workflows in the browser"
-  },
-  "cols": 4,
-  "rows": 4
-}
-[/block]
+| Layer | Framework | Location | Purpose |
+|-------|-----------|----------|---------|
+| **Unit Tests** | pytest + pytest-django | `skyspy_django/skyspy/tests/` | Test individual functions, methods, and classes |
+| **Integration Tests** | pytest + pytest-asyncio | `skyspy_django/skyspy/tests/` | Test component interactions and data flow |
+| **Backend E2E** | pytest + Django Channels | `skyspy_django/skyspy/tests/e2e/` | Test WebSocket consumers and real-time features |
+| **Frontend E2E** | Playwright | `web/e2e/` | Test user workflows in the browser |
 
-### 📊 Coverage Targets
+### Coverage Targets
 
-[block:html]
-{
-  "html": "<div style=\"display: flex; gap: 16px; flex-wrap: wrap; margin: 20px 0;\">\n  <div style=\"background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; border-radius: 12px; color: white; flex: 1; min-width: 200px;\">\n    <div style=\"font-size: 36px; font-weight: bold;\">80%+</div>\n    <div style=\"opacity: 0.9;\">Backend Coverage</div>\n  </div>\n  <div style=\"background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); padding: 20px; border-radius: 12px; color: white; flex: 1; min-width: 200px;\">\n    <div style=\"font-size: 36px; font-weight: bold;\">100%</div>\n    <div style=\"opacity: 0.9;\">Critical Paths</div>\n  </div>\n  <div style=\"background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); padding: 20px; border-radius: 12px; color: white; flex: 1; min-width: 200px;\">\n    <div style=\"font-size: 36px; font-weight: bold;\">✓</div>\n    <div style=\"opacity: 0.9;\">All User Workflows</div>\n  </div>\n</div>"
-}
-[/block]
+**Coverage Goals:**
 
-> ✅ **Coverage Requirements**
+- **80%+** Backend Coverage
+- **100%** Critical Paths
+- **All** User Workflows
+
+> **Coverage Requirements**
 >
 > - **Backend**: Minimum 80% line coverage
 > - **Critical Paths**: 100% coverage for authentication, alerts, and safety features
@@ -76,128 +54,105 @@ flowchart TB
 
 ---
 
-## 📁 Test Structure and Organization
+## Test Structure and Organization
 
-### 🐍 Backend Tests
+### Backend Tests
 
 ```
 skyspy_django/skyspy/tests/
-├── conftest.py                    # 🔧 Shared fixtures for all tests
-├── factories.py                   # 🏭 Factory Boy model factories
+├── conftest.py                    # Shared fixtures for all tests
+├── factories.py                   # Factory Boy model factories
 ├── e2e/
-│   ├── conftest.py               # 🔧 E2E-specific fixtures
-│   ├── test_e2e_stats.py         # 📊 Statistics E2E tests
-│   └── test_e2e_websocket.py     # 🔌 WebSocket E2E tests
-├── test_api_*.py                 # 🌐 REST API endpoint tests
-├── test_consumers_*.py           # 📡 WebSocket consumer tests
-├── test_services_*.py            # ⚙️ Business logic/service tests
-├── test_tasks_*.py               # ⏰ Celery task tests
-├── test_integration.py           # 🔗 Cross-component integration tests
-└── test_settings.py              # ⚙️ Configuration tests
+│   ├── conftest.py               # E2E-specific fixtures
+│   ├── test_e2e_stats.py         # Statistics E2E tests
+│   └── test_e2e_websocket.py     # WebSocket E2E tests
+├── test_api_*.py                 # REST API endpoint tests
+├── test_consumers_*.py           # WebSocket consumer tests
+├── test_services_*.py            # Business logic/service tests
+├── test_tasks_*.py               # Celery task tests
+├── test_integration.py           # Cross-component integration tests
+└── test_settings.py              # Configuration tests
 ```
 
-### 🎭 Frontend E2E Tests
+### Frontend E2E Tests
 
 ```
 web/e2e/
 ├── fixtures/
-│   └── test-setup.js             # 🔧 Mock data generators and test utilities
+│   └── test-setup.js             # Mock data generators and test utilities
 ├── tests/
-│   ├── alerts.spec.js            # 🔔 Alert management tests
-│   ├── map.spec.js               # 🗺️ Map and aircraft display tests
-│   └── ...                       # 📦 Additional feature tests
-└── playwright.config.js          # ⚙️ Playwright configuration
+│   ├── alerts.spec.js            # Alert management tests
+│   ├── map.spec.js               # Map and aircraft display tests
+│   └── ...                       # Additional feature tests
+└── playwright.config.js          # Playwright configuration
 ```
 
-### 📝 Naming Conventions
+### Naming Conventions
 
-[block:parameters]
-{
-  "data": {
-    "h-0": "Pattern",
-    "h-1": "Description",
-    "h-2": "Example",
-    "0-0": "`test_api_*.py`",
-    "0-1": "🌐 API endpoint tests",
-    "0-2": "`test_api_aircraft.py`",
-    "1-0": "`test_consumers_*.py`",
-    "1-1": "📡 WebSocket consumer tests",
-    "1-2": "`test_consumers_aircraft.py`",
-    "2-0": "`test_services_*.py`",
-    "2-1": "⚙️ Service layer tests",
-    "2-2": "`test_services_alerts.py`",
-    "3-0": "`test_tasks_*.py`",
-    "3-1": "⏰ Celery task tests",
-    "3-2": "`test_tasks_airspace.py`",
-    "4-0": "`test_e2e_*.py`",
-    "4-1": "🔌 Backend E2E tests",
-    "4-2": "`test_e2e_websocket.py`",
-    "5-0": "`*.spec.js`",
-    "5-1": "🎭 Frontend E2E tests",
-    "5-2": "`map.spec.js`"
-  },
-  "cols": 3,
-  "rows": 6
-}
-[/block]
+| Pattern | Description | Example |
+|---------|-------------|---------|
+| `test_api_*.py` | API endpoint tests | `test_api_aircraft.py` |
+| `test_consumers_*.py` | WebSocket consumer tests | `test_consumers_aircraft.py` |
+| `test_services_*.py` | Service layer tests | `test_services_alerts.py` |
+| `test_tasks_*.py` | Celery task tests | `test_tasks_airspace.py` |
+| `test_e2e_*.py` | Backend E2E tests | `test_e2e_websocket.py` |
+| `*.spec.js` | Frontend E2E tests | `map.spec.js` |
 
 ---
 
-## 🚀 Running Tests
+## Running Tests
 
-### ⚙️ Prerequisites
+### Prerequisites
 
-> 📘 **Setup Required**
+> **Setup Required**
 >
 > Ensure you have the test dependencies installed before running tests.
 
-[block:code]
-{
-  "codes": [
-    {
-      "code": "# Backend dependencies\ncd skyspy_django\npip install -e \".[test]\"",
-      "language": "bash",
-      "name": "🐍 Backend Setup"
-    },
-    {
-      "code": "# Frontend dependencies\ncd web\nnpm install\nnpx playwright install",
-      "language": "bash",
-      "name": "🎭 Frontend Setup"
-    }
-  ]
-}
-[/block]
+**Backend Setup:**
 
-### ⚡ Unit Tests
+```bash
+# Backend dependencies
+cd skyspy_django
+pip install -e ".[test]"
+```
 
-[block:code]
-{
-  "codes": [
-    {
-      "code": "cd skyspy_django\npytest",
-      "language": "bash",
-      "name": "Run All Tests"
-    },
-    {
-      "code": "pytest skyspy/tests/test_api_aircraft.py",
-      "language": "bash",
-      "name": "Specific Module"
-    },
-    {
-      "code": "pytest -k \"aircraft\"",
-      "language": "bash",
-      "name": "Pattern Matching"
-    },
-    {
-      "code": "pytest -v",
-      "language": "bash",
-      "name": "Verbose Output"
-    }
-  ]
-}
-[/block]
+**Frontend Setup:**
 
-### 🔗 Integration Tests
+```bash
+# Frontend dependencies
+cd web
+npm install
+npx playwright install
+```
+
+### Unit Tests
+
+**Run All Tests:**
+
+```bash
+cd skyspy_django
+pytest
+```
+
+**Specific Module:**
+
+```bash
+pytest skyspy/tests/test_api_aircraft.py
+```
+
+**Pattern Matching:**
+
+```bash
+pytest -k "aircraft"
+```
+
+**Verbose Output:**
+
+```bash
+pytest -v
+```
+
+### Integration Tests
 
 ```bash
 # Run integration tests
@@ -207,96 +162,77 @@ pytest skyspy/tests/test_integration.py
 pytest skyspy/tests/test_integration.py -v --asyncio-mode=auto
 ```
 
-### 🎭 E2E Tests
+### E2E Tests
 
-[block:callout]
-{
-  "type": "info",
-  "title": "🔌 Backend E2E (WebSocket/Channels)",
-  "body": "Tests real-time WebSocket functionality and Django Channels consumers."
-}
-[/block]
+> **Backend E2E (WebSocket/Channels)**
+>
+> Tests real-time WebSocket functionality and Django Channels consumers.
 
-[block:code]
-{
-  "codes": [
-    {
-      "code": "pytest skyspy/tests/e2e/ -v",
-      "language": "bash",
-      "name": "All Backend E2E"
-    },
-    {
-      "code": "pytest skyspy/tests/e2e/test_e2e_websocket.py::test_aircraft_position_updates -v",
-      "language": "bash",
-      "name": "Specific E2E Test"
-    }
-  ]
-}
-[/block]
+**All Backend E2E:**
 
-[block:callout]
-{
-  "type": "info",
-  "title": "🎭 Frontend E2E (Playwright)",
-  "body": "Tests user workflows in real browser environments."
-}
-[/block]
+```bash
+pytest skyspy/tests/e2e/ -v
+```
 
-[block:code]
-{
-  "codes": [
-    {
-      "code": "cd web\nnpx playwright test",
-      "language": "bash",
-      "name": "All Frontend E2E"
-    },
-    {
-      "code": "npx playwright test tests/map.spec.js",
-      "language": "bash",
-      "name": "Specific Test File"
-    },
-    {
-      "code": "npx playwright test --headed",
-      "language": "bash",
-      "name": "🖥️ Headed Mode"
-    },
-    {
-      "code": "npx playwright test --ui",
-      "language": "bash",
-      "name": "🎨 UI Mode (Debug)"
-    }
-  ]
-}
-[/block]
+**Specific E2E Test:**
 
-### 🐳 Docker-Based Testing
+```bash
+pytest skyspy/tests/e2e/test_e2e_websocket.py::test_aircraft_position_updates -v
+```
+
+> **Frontend E2E (Playwright)**
+>
+> Tests user workflows in real browser environments.
+
+**All Frontend E2E:**
+
+```bash
+cd web
+npx playwright test
+```
+
+**Specific Test File:**
+
+```bash
+npx playwright test tests/map.spec.js
+```
+
+**Headed Mode:**
+
+```bash
+npx playwright test --headed
+```
+
+**UI Mode (Debug):**
+
+```bash
+npx playwright test --ui
+```
+
+### Docker-Based Testing
 
 ```bash
 docker-compose -f docker-compose.test.yaml up --build --abort-on-container-exit
 ```
 
-> ✅ **Docker Test Environment Includes:**
+> **Docker Test Environment Includes:**
 >
-> - 🐘 Isolated PostgreSQL database
-> - 🔴 Redis for caching and Channels
-> - 🌐 Proper network configuration
-> - 📊 Coverage report generation
+> - Isolated PostgreSQL database
+> - Redis for caching and Channels
+> - Proper network configuration
+> - Coverage report generation
 
 ---
 
-## 🔧 Test Fixtures and Factories
+## Test Fixtures and Factories
 
-### 🐍 Backend Fixtures (`conftest.py`)
+### Backend Fixtures (`conftest.py`)
 
 SkySpy uses pytest fixtures for test setup. Key fixtures are defined in `skyspy_django/skyspy/tests/conftest.py`:
 
-[block:callout]
-{
-  "type": "success",
-  "title": "💾 Database Fixtures",
-  "body": "Manage database state and provide API clients for testing."
-}
-[/block]
+> **Database Fixtures**
+>
+> Manage database state and provide API clients for testing.
 
 ```python
 @pytest.fixture
@@ -318,13 +254,9 @@ def authenticated_client(api_client, user):
     return api_client
 ```
 
-[block:callout]
-{
-  "type": "success",
-  "title": "🔌 WebSocket Fixtures",
-  "body": "Enable testing of real-time WebSocket functionality."
-}
-[/block]
+> **WebSocket Fixtures**
+>
+> Enable testing of real-time WebSocket functionality.
 
 ```python
 @pytest.fixture
@@ -338,13 +270,9 @@ async def communicator(application):
     await communicator.disconnect()
 ```
 
-[block:callout]
-{
-  "type": "success",
-  "title": "👤 User Fixtures",
-  "body": "Create test users with various permission levels."
-}
-[/block]
+> **User Fixtures**
+>
+> Create test users with various permission levels.
 
 ```python
 @pytest.fixture
@@ -368,7 +296,7 @@ def admin_user(db):
     )
 ```
 
-### 🏭 Factory Boy Factories (`factories.py`)
+### Factory Boy Factories (`factories.py`)
 
 Factories generate realistic test data using Factory Boy:
 
@@ -411,13 +339,9 @@ class AlertFactory(DjangoModelFactory):
     is_active = True
 ```
 
-[block:callout]
-{
-  "type": "info",
-  "title": "💡 Using Factories in Tests",
-  "body": "Factories simplify test data creation and make tests more readable."
-}
-[/block]
+> **Using Factories in Tests**
+>
+> Factories simplify test data creation and make tests more readable.
 
 ```python
 def test_aircraft_list(authenticated_client):
@@ -441,33 +365,61 @@ def test_alert_triggers(user):
     assert alert.evaluate(aircraft) is True
 ```
 
-### 🎭 Frontend Test Fixtures (`test-setup.js`)
+### Frontend Test Fixtures (`test-setup.js`)
 
 Frontend E2E tests use custom fixtures for mock data and API mocking:
 
-[block:code]
-{
-  "codes": [
-    {
-      "code": "// Generate mock aircraft data\nexport function generateMockAircraft(count = 10) {\n    return Array.from({ length: count }, (_, i) => ({\n        icao_hex: `A${String(i).padStart(5, '0')}`,\n        callsign: `TEST${String(i).padStart(3, '0')}`,\n        latitude: 40.7128 + (Math.random() - 0.5) * 2,\n        longitude: -74.0060 + (Math.random() - 0.5) * 2,\n        altitude: Math.floor(Math.random() * 40000) + 5000,\n        speed: Math.floor(Math.random() * 500) + 100,\n        heading: Math.floor(Math.random() * 360),\n        aircraft_type: 'B738',\n        registration: `N${100 + i}AA`\n    }));\n}",
-      "language": "javascript",
-      "name": "✈️ Mock Aircraft"
-    },
-    {
-      "code": "// Generate mock ACARS messages\nexport function generateMockAcarsMessages(count = 5) {\n    return Array.from({ length: count }, (_, i) => ({\n        id: i + 1,\n        timestamp: new Date(Date.now() - i * 60000).toISOString(),\n        icao_hex: `A${String(i).padStart(5, '0')}`,\n        message: `ACARS message content ${i}`,\n        label: 'H1',\n        block_id: String.fromCharCode(65 + i)\n    }));\n}",
-      "language": "javascript",
-      "name": "📨 Mock ACARS"
-    },
-    {
-      "code": "// Generate mock alert rules\nexport function generateMockAlertRules(count = 3) {\n    return Array.from({ length: count }, (_, i) => ({\n        id: i + 1,\n        name: `Alert Rule ${i + 1}`,\n        conditions: [{ field: 'altitude', operator: 'lt', value: 5000 }],\n        is_active: true,\n        notification_channels: ['browser']\n    }));\n}",
-      "language": "javascript",
-      "name": "🔔 Mock Alerts"
-    }
-  ]
-}
-[/block]
+**Mock Aircraft:**
 
-#### 🎭 Extended Playwright Test Fixture
+```javascript
+// Generate mock aircraft data
+export function generateMockAircraft(count = 10) {
+    return Array.from({ length: count }, (_, i) => ({
+        icao_hex: `A${String(i).padStart(5, '0')}`,
+        callsign: `TEST${String(i).padStart(3, '0')}`,
+        latitude: 40.7128 + (Math.random() - 0.5) * 2,
+        longitude: -74.0060 + (Math.random() - 0.5) * 2,
+        altitude: Math.floor(Math.random() * 40000) + 5000,
+        speed: Math.floor(Math.random() * 500) + 100,
+        heading: Math.floor(Math.random() * 360),
+        aircraft_type: 'B738',
+        registration: `N${100 + i}AA`
+    }));
+}
+```
+
+**Mock ACARS:**
+
+```javascript
+// Generate mock ACARS messages
+export function generateMockAcarsMessages(count = 5) {
+    return Array.from({ length: count }, (_, i) => ({
+        id: i + 1,
+        timestamp: new Date(Date.now() - i * 60000).toISOString(),
+        icao_hex: `A${String(i).padStart(5, '0')}`,
+        message: `ACARS message content ${i}`,
+        label: 'H1',
+        block_id: String.fromCharCode(65 + i)
+    }));
+}
+```
+
+**Mock Alerts:**
+
+```javascript
+// Generate mock alert rules
+export function generateMockAlertRules(count = 3) {
+    return Array.from({ length: count }, (_, i) => ({
+        id: i + 1,
+        name: `Alert Rule ${i + 1}`,
+        conditions: [{ field: 'altitude', operator: 'lt', value: 5000 }],
+        is_active: true,
+        notification_channels: ['browser']
+    }));
+}
+```
+
+#### Extended Playwright Test Fixture
 
 ```javascript
 import { test as base, expect } from '@playwright/test';
@@ -514,17 +466,17 @@ export const test = base.extend({
 
 ---
 
-## 🎭 Mocking Strategies
+## Mocking Strategies
 
-### 🐍 Backend Mocking
+### Backend Mocking
 
 ```mermaid
 flowchart LR
-    subgraph Test["🧪 Test"]
+    subgraph Test["Test"]
         TC[Test Code]
     end
 
-    subgraph Mocks["🎭 Mocks"]
+    subgraph Mocks["Mocks"]
         ME[External Services]
         MC[Cache/Redis]
         MT[Celery Tasks]
@@ -538,13 +490,9 @@ flowchart LR
     style Mocks fill:#feca57,stroke:#333,stroke-width:2px
 ```
 
-[block:callout]
-{
-  "type": "info",
-  "title": "🌐 Mocking External Services",
-  "body": "Isolate tests from external API dependencies."
-}
-[/block]
+> **Mocking External Services**
+>
+> Isolate tests from external API dependencies.
 
 ```python
 from unittest.mock import patch, MagicMock
@@ -559,13 +507,9 @@ def test_external_api_call():
         assert result["conditions"] == "clear"
 ```
 
-[block:callout]
-{
-  "type": "info",
-  "title": "🔴 Mocking Redis/Cache",
-  "body": "Control cache behavior in tests."
-}
-[/block]
+> **Mocking Redis/Cache**
+>
+> Control cache behavior in tests.
 
 ```python
 @pytest.fixture
@@ -583,13 +527,9 @@ def test_cached_aircraft_data(mock_cache):
     assert result["cached"] is True
 ```
 
-[block:callout]
-{
-  "type": "info",
-  "title": "⏰ Mocking Celery Tasks",
-  "body": "Test task scheduling without running background workers."
-}
-[/block]
+> **Mocking Celery Tasks**
+>
+> Test task scheduling without running background workers.
 
 ```python
 from unittest.mock import patch
@@ -603,15 +543,11 @@ def test_task_scheduling():
         assert mock_task.call_count == 2
 ```
 
-### 🎭 Frontend Mocking
+### Frontend Mocking
 
-[block:callout]
-{
-  "type": "info",
-  "title": "🌐 API Route Mocking with Playwright",
-  "body": "Intercept and mock API calls in browser tests."
-}
-[/block]
+> **API Route Mocking with Playwright**
+>
+> Intercept and mock API calls in browser tests.
 
 ```javascript
 test('displays aircraft list', async ({ page }) => {
@@ -635,13 +571,9 @@ test('displays aircraft list', async ({ page }) => {
 });
 ```
 
-[block:callout]
-{
-  "type": "info",
-  "title": "🔌 WebSocket Mocking",
-  "body": "Simulate real-time updates in browser tests."
-}
-[/block]
+> **WebSocket Mocking**
+>
+> Simulate real-time updates in browser tests.
 
 ```javascript
 class WebSocketMock {
@@ -686,13 +618,9 @@ test('receives real-time aircraft updates', async ({ page, wsMock }) => {
 });
 ```
 
-[block:callout]
-{
-  "type": "info",
-  "title": "🔐 Mocking Authentication State",
-  "body": "Test authenticated user flows without real login."
-}
-[/block]
+> **Mocking Authentication State**
+>
+> Test authenticated user flows without real login.
 
 ```javascript
 test('authenticated user sees alerts', async ({ page }) => {
@@ -713,39 +641,39 @@ test('authenticated user sees alerts', async ({ page }) => {
 
 ---
 
-## 📊 Coverage Reporting
+## Coverage Reporting
 
-### 🐍 Backend Coverage
+### Backend Coverage
 
-[block:code]
-{
-  "codes": [
-    {
-      "code": "cd skyspy_django\npytest --cov=skyspy --cov-report=html --cov-report=xml",
-      "language": "bash",
-      "name": "Generate Coverage"
-    },
-    {
-      "code": "# Generate and open HTML report\npytest --cov=skyspy --cov-report=html\nopen htmlcov/index.html",
-      "language": "bash",
-      "name": "View HTML Report"
-    },
-    {
-      "code": "# Generate coverage badge\ncoverage-badge -o coverage.svg -f",
-      "language": "bash",
-      "name": "Generate Badge"
-    }
-  ]
-}
-[/block]
+**Generate Coverage:**
 
-> 📁 **Coverage Report Locations:**
+```bash
+cd skyspy_django
+pytest --cov=skyspy --cov-report=html --cov-report=xml
+```
+
+**View HTML Report:**
+
+```bash
+# Generate and open HTML report
+pytest --cov=skyspy --cov-report=html
+open htmlcov/index.html
+```
+
+**Generate Badge:**
+
+```bash
+# Generate coverage badge
+coverage-badge -o coverage.svg -f
+```
+
+> **Coverage Report Locations:**
 >
 > - **HTML Report**: `htmlcov/index.html` (open in browser)
 > - **XML Report**: `coverage.xml` (for CI integration)
 > - **Terminal Summary**: Displayed after test run
 
-#### ⚙️ Coverage Configuration (`pyproject.toml`)
+#### Coverage Configuration (`pyproject.toml`)
 
 ```toml
 [tool.coverage.run]
@@ -772,26 +700,26 @@ show_missing = true
 
 ---
 
-## 🔄 CI/CD Integration
+## CI/CD Integration
 
 ```mermaid
 flowchart LR
-    subgraph Trigger["🎯 Triggers"]
+    subgraph Trigger["Triggers"]
         PUSH[Push to main/develop]
         PR[Pull Request]
     end
 
-    subgraph Jobs["⚙️ Jobs"]
-        BE[🐍 Backend Tests]
-        FE[🎭 Frontend E2E]
+    subgraph Jobs["Jobs"]
+        BE[Backend Tests]
+        FE[Frontend E2E]
     end
 
-    subgraph Services["🔧 Services"]
-        PG[(🐘 PostgreSQL)]
-        RD[(🔴 Redis)]
+    subgraph Services["Services"]
+        PG[(PostgreSQL)]
+        RD[(Redis)]
     end
 
-    subgraph Output["📊 Output"]
+    subgraph Output["Output"]
         COV[Coverage Report]
         ART[Test Artifacts]
     end
@@ -813,30 +741,97 @@ flowchart LR
     style Output fill:#26de81,stroke:#333,stroke-width:2px
 ```
 
-### 🐙 GitHub Actions Workflow
+### GitHub Actions Workflow
 
 SkySpy uses GitHub Actions for continuous integration. The test workflow is triggered on:
 - Push to `main` or `develop` branches
 - Pull requests targeting `main`
 
-[block:code]
-{
-  "codes": [
-    {
-      "code": "name: Tests\n\non:\n  push:\n    branches: [main, develop]\n  pull_request:\n    branches: [main]\n\njobs:\n  backend-tests:\n    runs-on: ubuntu-latest\n    services:\n      postgres:\n        image: postgres:15\n        env:\n          POSTGRES_DB: skyspy_test\n          POSTGRES_USER: postgres\n          POSTGRES_PASSWORD: postgres\n        ports:\n          - 5432:5432\n      redis:\n        image: redis:7\n        ports:\n          - 6379:6379\n\n    steps:\n      - uses: actions/checkout@v4\n\n      - name: Set up Python\n        uses: actions/setup-python@v5\n        with:\n          python-version: '3.11'\n\n      - name: Install dependencies\n        run: |\n          cd skyspy_django\n          pip install -e \".[test]\"\n\n      - name: Run tests with coverage\n        run: |\n          cd skyspy_django\n          pytest --cov=skyspy --cov-report=xml\n\n      - name: Upload coverage\n        uses: codecov/codecov-action@v4\n        with:\n          file: skyspy_django/coverage.xml",
-      "language": "yaml",
-      "name": "🐍 Backend Tests"
-    },
-    {
-      "code": "  frontend-e2e:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n\n      - name: Set up Node.js\n        uses: actions/setup-node@v4\n        with:\n          node-version: '20'\n\n      - name: Install dependencies\n        run: |\n          cd web\n          npm ci\n          npx playwright install --with-deps\n\n      - name: Run E2E tests\n        run: |\n          cd web\n          npx playwright test\n\n      - name: Upload test artifacts\n        uses: actions/upload-artifact@v4\n        if: failure()\n        with:\n          name: playwright-report\n          path: web/playwright-report/",
-      "language": "yaml",
-      "name": "🎭 Frontend E2E"
-    }
-  ]
-}
-[/block]
+**Backend Tests:**
 
-### 🪝 Pre-commit Hooks
+```yaml
+name: Tests
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  backend-tests:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_DB: skyspy_test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+      redis:
+        image: redis:7
+        ports:
+          - 6379:6379
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          cd skyspy_django
+          pip install -e ".[test]"
+
+      - name: Run tests with coverage
+        run: |
+          cd skyspy_django
+          pytest --cov=skyspy --cov-report=xml
+
+      - name: Upload coverage
+        uses: codecov/codecov-action@v4
+        with:
+          file: skyspy_django/coverage.xml
+```
+
+**Frontend E2E:**
+
+```yaml
+  frontend-e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: |
+          cd web
+          npm ci
+          npx playwright install --with-deps
+
+      - name: Run E2E tests
+        run: |
+          cd web
+          npx playwright test
+
+      - name: Upload test artifacts
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report
+          path: web/playwright-report/
+```
+
+### Pre-commit Hooks
 
 ```bash
 pip install pre-commit
@@ -857,7 +852,7 @@ repos:
         always_run: true
 ```
 
-### 🐳 Local CI Simulation
+### Local CI Simulation
 
 ```bash
 docker-compose -f docker-compose.test.yaml up --build
@@ -865,9 +860,9 @@ docker-compose -f docker-compose.test.yaml up --build
 
 ---
 
-## ✍️ Writing New Tests
+## Writing New Tests
 
-### 🐍 Backend Unit Test Template
+### Backend Unit Test Template
 
 ```python
 import pytest
@@ -908,7 +903,7 @@ class TestAircraftService:
         assert result[0].altitude == 20000
 ```
 
-### 🌐 Backend API Test Template
+### Backend API Test Template
 
 ```python
 import pytest
@@ -949,7 +944,7 @@ class TestAircraftAPI:
         assert response.status_code == status.HTTP_401_UNAUTHORIZED
 ```
 
-### 📡 Backend WebSocket Consumer Test Template
+### Backend WebSocket Consumer Test Template
 
 ```python
 import pytest
@@ -995,7 +990,7 @@ class TestAircraftConsumer:
         assert response["payload"]["icao_hex"] == "ABC123"
 ```
 
-### 🎭 Frontend E2E Test Template
+### Frontend E2E Test Template
 
 ```javascript
 import { test, expect } from '../fixtures/test-setup';
@@ -1039,17 +1034,23 @@ test.describe('Aircraft Map Features', () => {
 
 ---
 
-## ✅ Test Checklist
+## Test Checklist
 
 When writing new tests, ensure you follow these best practices:
 
-[block:html]
-{
-  "html": "<div style=\"background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 24px; border-radius: 12px; color: white; margin: 20px 0;\">\n  <h3 style=\"margin-top: 0;\">📝 Pre-Submit Checklist</h3>\n  <div style=\"display: grid; gap: 8px;\">\n    <label style=\"display: flex; align-items: center; gap: 8px; cursor: pointer;\">\n      <input type=\"checkbox\" style=\"width: 18px; height: 18px;\"> Use descriptive test names that explain the expected behavior\n    </label>\n    <label style=\"display: flex; align-items: center; gap: 8px; cursor: pointer;\">\n      <input type=\"checkbox\" style=\"width: 18px; height: 18px;\"> Follow the Arrange-Act-Assert pattern\n    </label>\n    <label style=\"display: flex; align-items: center; gap: 8px; cursor: pointer;\">\n      <input type=\"checkbox\" style=\"width: 18px; height: 18px;\"> Use factories for test data creation\n    </label>\n    <label style=\"display: flex; align-items: center; gap: 8px; cursor: pointer;\">\n      <input type=\"checkbox\" style=\"width: 18px; height: 18px;\"> Mock external dependencies\n    </label>\n    <label style=\"display: flex; align-items: center; gap: 8px; cursor: pointer;\">\n      <input type=\"checkbox\" style=\"width: 18px; height: 18px;\"> Test both success and error cases\n    </label>\n    <label style=\"display: flex; align-items: center; gap: 8px; cursor: pointer;\">\n      <input type=\"checkbox\" style=\"width: 18px; height: 18px;\"> Test edge cases and boundary conditions\n    </label>\n    <label style=\"display: flex; align-items: center; gap: 8px; cursor: pointer;\">\n      <input type=\"checkbox\" style=\"width: 18px; height: 18px;\"> Include proper cleanup in fixtures\n    </label>\n    <label style=\"display: flex; align-items: center; gap: 8px; cursor: pointer;\">\n      <input type=\"checkbox\" style=\"width: 18px; height: 18px;\"> Add appropriate test markers (@pytest.mark.slow, @pytest.mark.integration)\n    </label>\n    <label style=\"display: flex; align-items: center; gap: 8px; cursor: pointer;\">\n      <input type=\"checkbox\" style=\"width: 18px; height: 18px;\"> Verify test runs in isolation (no test interdependencies)\n    </label>\n  </div>\n</div>"
-}
-[/block]
+**Pre-Submit Checklist:**
 
-### 🏷️ Common Pytest Markers
+- [ ] Use descriptive test names that explain the expected behavior
+- [ ] Follow the Arrange-Act-Assert pattern
+- [ ] Use factories for test data creation
+- [ ] Mock external dependencies
+- [ ] Test both success and error cases
+- [ ] Test edge cases and boundary conditions
+- [ ] Include proper cleanup in fixtures
+- [ ] Add appropriate test markers (`@pytest.mark.slow`, `@pytest.mark.integration`)
+- [ ] Verify test runs in isolation (no test interdependencies)
+
+### Common Pytest Markers
 
 ```python
 # Mark test as slow-running
@@ -1084,15 +1085,11 @@ def test_double(input, expected):
 
 ---
 
-## 🔧 Troubleshooting
+## Troubleshooting
 
-[block:callout]
-{
-  "type": "danger",
-  "title": "❌ Database Not Cleaned Between Tests",
-  "body": "Ensure you're using the `db` fixture or `@pytest.mark.django_db`"
-}
-[/block]
+> **Warning: Database Not Cleaned Between Tests**
+>
+> Ensure you're using the `db` fixture or `@pytest.mark.django_db`
 
 ```python
 @pytest.mark.django_db
@@ -1101,101 +1098,65 @@ def test_needs_database():
     pass
 ```
 
-[block:callout]
-{
-  "type": "danger",
-  "title": "❌ WebSocket Tests Timing Out",
-  "body": "Increase the timeout or check consumer connection logic"
-}
-[/block]
+> **Warning: WebSocket Tests Timing Out**
+>
+> Increase the timeout or check consumer connection logic
 
 ```python
 response = await communicator.receive_json_from(timeout=10)
 ```
 
-[block:callout]
-{
-  "type": "danger",
-  "title": "❌ Playwright Tests Flaky",
-  "body": "Add explicit waits for elements"
-}
-[/block]
+> **Warning: Playwright Tests Flaky**
+>
+> Add explicit waits for elements
 
 ```javascript
 await page.waitForSelector('[data-testid="element"]', { state: 'visible' });
 ```
 
-[block:callout]
-{
-  "type": "danger",
-  "title": "❌ Coverage Not Detecting Async Code",
-  "body": "Ensure `pytest-asyncio` is properly configured"
-}
-[/block]
+> **Warning: Coverage Not Detecting Async Code**
+>
+> Ensure `pytest-asyncio` is properly configured
 
 ```ini
 [pytest]
 asyncio_mode = auto
 ```
 
-### 🐛 Debug Mode
+### Debug Mode
 
-[block:code]
-{
-  "codes": [
-    {
-      "code": "pytest -v --tb=long --capture=no",
-      "language": "bash",
-      "name": "🐍 Backend Debug"
-    },
-    {
-      "code": "npx playwright test --debug",
-      "language": "bash",
-      "name": "🎭 Frontend Debug"
-    }
-  ]
-}
-[/block]
+**Backend Debug:**
+
+```bash
+pytest -v --tb=long --capture=no
+```
+
+**Frontend Debug:**
+
+```bash
+npx playwright test --debug
+```
 
 ---
 
-## ⚡ Quick Reference
+## Quick Reference
 
-[block:parameters]
-{
-  "data": {
-    "h-0": "Task",
-    "h-1": "Command",
-    "0-0": "🧪 Run all backend tests",
-    "0-1": "`pytest`",
-    "1-0": "📊 Run with coverage",
-    "1-1": "`pytest --cov=skyspy`",
-    "2-0": "📄 Run specific test file",
-    "2-1": "`pytest path/to/test_file.py`",
-    "3-0": "🔍 Run matching tests",
-    "3-1": "`pytest -k \"pattern\"`",
-    "4-0": "🎭 Run frontend E2E",
-    "4-1": "`npx playwright test`",
-    "5-0": "🖥️ Run E2E headed",
-    "5-1": "`npx playwright test --headed`",
-    "6-0": "🎨 Run E2E with UI",
-    "6-1": "`npx playwright test --ui`",
-    "7-0": "🐳 Docker test suite",
-    "7-1": "`docker-compose -f docker-compose.test.yaml up`",
-    "8-0": "📈 Generate coverage HTML",
-    "8-1": "`pytest --cov=skyspy --cov-report=html`",
-    "9-0": "🐛 Debug backend tests",
-    "9-1": "`pytest -v --tb=long --capture=no`",
-    "10-0": "🐛 Debug frontend tests",
-    "10-1": "`npx playwright test --debug`"
-  },
-  "cols": 2,
-  "rows": 11
-}
-[/block]
+| Task | Command |
+|------|---------|
+| Run all backend tests | `pytest` |
+| Run with coverage | `pytest --cov=skyspy` |
+| Run specific test file | `pytest path/to/test_file.py` |
+| Run matching tests | `pytest -k "pattern"` |
+| Run frontend E2E | `npx playwright test` |
+| Run E2E headed | `npx playwright test --headed` |
+| Run E2E with UI | `npx playwright test --ui` |
+| Docker test suite | `docker-compose -f docker-compose.test.yaml up` |
+| Generate coverage HTML | `pytest --cov=skyspy --cov-report=html` |
+| Debug backend tests | `pytest -v --tb=long --capture=no` |
+| Debug frontend tests | `npx playwright test --debug` |
 
 ---
 
-> 💬 **Need Help?**
+> **Need Help?**
 >
 > For questions or issues with testing, please open an issue on the GitHub repository.
