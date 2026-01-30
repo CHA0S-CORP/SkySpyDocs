@@ -1,5 +1,6 @@
 ---
 title: Go Services
+hidden: false
 ---
 
 # 🦫 Go Services Architecture
