@@ -3,6 +3,7 @@ title: Overview & Architecture
 excerpt: >-
   Introduction to SkySpy, a real-time ADS-B aircraft tracking and monitoring
   system.
+hidden: false
 ---
 
 # 🛩️ Project Overview and Architecture
