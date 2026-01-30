@@ -3,7 +3,7 @@ title: Statistics & Analytics
 hidden: false
 ---
 
-# 📊 Statistics & Analytics
+# Statistics & Analytics
 
 > **Transform your aircraft tracking data into actionable insights**
 
@@ -11,32 +11,31 @@ SkySpy provides comprehensive statistics and analytics capabilities for tracking
 
 ---
 
-## 🎯 Overview
+## Overview
 
-<Tabs>
-<Tab title="Architecture">
+### Architecture
 
 ```mermaid
 graph TB
     subgraph "Data Sources"
-        ADS[🛩️ ADS-B Receiver]
-        ACARS[📡 ACARS Decoder]
+        ADS[ADS-B Receiver]
+        ACARS[ACARS Decoder]
     end
 
     subgraph "Processing Layer"
-        CACHE[(🗄️ Redis Cache)]
-        DB[(🐘 PostgreSQL)]
-        CELERY[⚙️ Celery Workers]
+        CACHE[(Redis Cache)]
+        DB[(PostgreSQL)]
+        CELERY[Celery Workers]
     end
 
     subgraph "API Layer"
-        REST[🌐 REST API]
-        WS[🔌 WebSocket]
+        REST[REST API]
+        WS[WebSocket]
     end
 
     subgraph "Frontend"
-        DASH[📈 Stats Dashboard]
-        GAME[🎮 Gamification View]
+        DASH[Stats Dashboard]
+        GAME[Gamification View]
     end
 
     ADS --> DB
@@ -51,54 +50,43 @@ graph TB
     WS --> GAME
 ```
 
-</Tab>
-<Tab title="Components">
+### Components
 
 | Component | Purpose | Technology |
 |-----------|---------|------------|
-| 🌐 **REST API** | Request-response statistics | Django REST Framework |
-| 🔌 **WebSocket** | Real-time streaming updates | Django Channels |
-| 📈 **Dashboard** | Interactive visualizations | React + Recharts |
-| 🗄️ **Cache** | Performance optimization | Redis |
+| **REST API** | Request-response statistics | Django REST Framework |
+| **WebSocket** | Real-time streaming updates | Django Channels |
+| **Dashboard** | Interactive visualizations | React + Recharts |
+| **Cache** | Performance optimization | Redis |
 
-</Tab>
-</Tabs>
-
-> 📌 **Pro Tip:** All statistics are cached for performance with configurable TTLs, and most support customizable time ranges.
+> **Pro Tip:** All statistics are cached for performance with configurable TTLs, and most support customizable time ranges.
 
 ---
 
-## ✈️ Aircraft Statistics
+## Aircraft Statistics
 
 Core metrics about tracked aircraft within your coverage area.
 
-### 📊 Live Metrics Dashboard
+### Live Metrics Dashboard
 
-<CardGroup cols={4}>
-<Card title="Total Aircraft" icon="plane">
-Currently tracked aircraft count with real-time updates
-</Card>
-<Card title="With Position" icon="map-pin">
-Aircraft transmitting valid GPS coordinates
-</Card>
-<Card title="Military" icon="shield">
-Active military aircraft in coverage area
-</Card>
-<Card title="Emergencies" icon="triangle-exclamation">
-Aircraft squawking 7500/7600/7700
-</Card>
-</CardGroup>
+| Metric | Icon | Description |
+|--------|------|-------------|
+| **Total Aircraft** | plane | Currently tracked aircraft count with real-time updates |
+| **With Position** | map-pin | Aircraft transmitting valid GPS coordinates |
+| **Military** | shield | Active military aircraft in coverage area |
+| **Emergencies** | triangle-exclamation | Aircraft squawking 7500/7600/7700 |
 
-### 📈 Altitude Distribution
+### Altitude Distribution
 
 | Band | Altitude Range | Icon | Typical Traffic |
 |:----:|----------------|:----:|-----------------|
-| 🛬 | Ground | `ground` | Taxiing, parked aircraft |
-| ⬆️ | Below 10,000 ft | `low` | Departures, arrivals, GA |
-| ✈️ | 10,000 - 30,000 ft | `medium` | Climbing, regional flights |
-| 🚀 | Above 30,000 ft | `high` | Cruise altitude, long-haul |
+| Ground | Ground | `ground` | Taxiing, parked aircraft |
+| Low | Below 10,000 ft | `low` | Departures, arrivals, GA |
+| Medium | 10,000 - 30,000 ft | `medium` | Climbing, regional flights |
+| High | Above 30,000 ft | `high` | Cruise altitude, long-haul |
 
-<Accordion title="Example Response">
+<details>
+<summary>Example Response</summary>
 
 ```json
 {
@@ -115,45 +103,33 @@ Aircraft squawking 7500/7600/7700
 }
 ```
 
-</Accordion>
+</details>
 
 ---
 
-## 🏆 Top Aircraft Leaderboards
+## Top Aircraft Leaderboards
 
 Real-time leaderboards computed from currently tracked aircraft.
 
-| Rank | 🎯 Closest | 🚀 Fastest | ⬆️ Highest |
+| Rank | Closest | Fastest | Highest |
 |:----:|-----------|-----------|-----------|
-| 🥇 | 2.3 nm | 612 kts | 45,000 ft |
-| 🥈 | 4.8 nm | 585 kts | 43,500 ft |
-| 🥉 | 7.1 nm | 560 kts | 42,000 ft |
+| 1st | 2.3 nm | 612 kts | 45,000 ft |
+| 2nd | 4.8 nm | 585 kts | 43,500 ft |
+| 3rd | 7.1 nm | 560 kts | 42,000 ft |
 
-<CardGroup cols={3}>
-<Card title="🎯 Closest" icon="crosshairs">
-**Metric:** Distance (nm)
-
-Nearest aircraft to your receiver location
-</Card>
-<Card title="🚀 Fastest" icon="gauge-high">
-**Metric:** Ground Speed (kts)
-
-Highest velocity aircraft currently tracked
-</Card>
-<Card title="⬆️ Highest" icon="arrow-up">
-**Metric:** Altitude (ft)
-
-Aircraft at highest cruise altitude
-</Card>
-</CardGroup>
+| Leaderboard | Icon | Metric | Description |
+|-------------|------|--------|-------------|
+| **Closest** | crosshairs | Distance (nm) | Nearest aircraft to your receiver location |
+| **Fastest** | gauge-high | Ground Speed (kts) | Highest velocity aircraft currently tracked |
+| **Highest** | arrow-up | Altitude (ft) | Aircraft at highest cruise altitude |
 
 ---
 
-## 📈 Flight Patterns
+## Flight Patterns
 
 Flight pattern analytics provide insights into traffic patterns over time.
 
-### 🌡️ Busiest Hours Heatmap
+### Busiest Hours Heatmap
 
 Hourly activity distribution for visualization as a heatmap.
 
@@ -165,7 +141,8 @@ xychart-beta
     bar [5, 3, 2, 8, 25, 42, 48, 52, 50, 45, 35, 15]
 ```
 
-<Accordion title="🔗 API: GET /api/v1/stats/flight-patterns/busiest-hours">
+<details>
+<summary>API: GET /api/v1/stats/flight-patterns/busiest-hours</summary>
 
 **Response Fields:**
 
@@ -177,18 +154,21 @@ xychart-beta
 | `quietest_hour` | integer | Hour with least activity |
 | `day_night_ratio` | float | Daytime to nighttime ratio |
 
-</Accordion>
+</details>
 
-### 🛫 Top Routes
+### Top Routes
 
 Most frequent origin-destination pairs based on ACARS data and callsign analysis.
 
-<CodeGroup>
-```bash Request
+**Request:**
+
+```bash
 GET /api/v1/flight-patterns/routes?hours=24&limit=20
 ```
 
-```json Response
+**Response:**
+
+```json
 {
   "routes": [
     {
@@ -202,16 +182,16 @@ GET /api/v1/flight-patterns/routes?hours=24&limit=20
   "time_range_hours": 24
 }
 ```
-</CodeGroup>
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
 | `hours` | integer | 24 | Time range in hours |
 | `limit` | integer | 20 | Maximum routes to return |
 
-### ✈️ Aircraft Types Distribution
+### Aircraft Types Distribution
 
-<Accordion title="🔗 API: GET /api/v1/flight-patterns/aircraft-types">
+<details>
+<summary>API: GET /api/v1/flight-patterns/aircraft-types</summary>
 
 **Response includes:**
 
@@ -224,11 +204,12 @@ GET /api/v1/flight-patterns/routes?hours=24&limit=20
 | `military_pct` | Percentage military |
 | `avg_duration_min` | Average tracking duration |
 
-</Accordion>
+</details>
 
-### ⏱️ Flight Duration by Type
+### Flight Duration by Type
 
-<Accordion title="🔗 API: GET /api/v1/flight-patterns/duration-by-type">
+<details>
+<summary>API: GET /api/v1/flight-patterns/duration-by-type</summary>
 
 ```json
 {
@@ -244,32 +225,35 @@ GET /api/v1/flight-patterns/routes?hours=24&limit=20
 }
 ```
 
-</Accordion>
+</details>
 
 ---
 
-## 🌍 Geographic Statistics
+## Geographic Statistics
 
 Geographic analytics based on aircraft registration and origin data.
 
-### 🏳️ Countries of Origin
+### Countries of Origin
 
 Breakdown by country based on registration prefix.
 
 | Prefix | Country | Example |
 |:------:|---------|---------|
-| 🇺🇸 N | United States | N12345 |
-| 🇬🇧 G- | United Kingdom | G-ABCD |
-| 🇩🇪 D- | Germany | D-AIBC |
-| 🇫🇷 F- | France | F-GHIJ |
-| 🇯🇵 JA | Japan | JA8088 |
+| N | United States | N12345 |
+| G- | United Kingdom | G-ABCD |
+| D- | Germany | D-AIBC |
+| F- | France | F-GHIJ |
+| JA | Japan | JA8088 |
 
-<CodeGroup>
-```bash Request
+**Request:**
+
+```bash
 GET /api/v1/stats/geographic/countries
 ```
 
-```json Response
+**Response:**
+
+```json
 {
   "countries": [
     {
@@ -283,11 +267,11 @@ GET /api/v1/stats/geographic/countries
   "total_countries": 28
 }
 ```
-</CodeGroup>
 
-### ✈️ Airlines/Operators
+### Airlines/Operators
 
-<Accordion title="🔗 API: GET /api/v1/stats/geographic/operators">
+<details>
+<summary>API: GET /api/v1/stats/geographic/operators</summary>
 
 **Response includes:**
 - `operator` - Operator name
@@ -295,13 +279,14 @@ GET /api/v1/stats/geographic/countries
 - `aircraft_count` - Unique aircraft
 - `session_count` - Total tracking sessions
 
-</Accordion>
+</details>
 
-### 🛫 Connected Airports
+### Connected Airports
 
 Airports most connected to your coverage area based on ACARS mentions.
 
-<Accordion title="Example Response">
+<details>
+<summary>Example Response</summary>
 
 ```json
 {
@@ -317,9 +302,9 @@ Airports most connected to your coverage area based on ACARS mentions.
 }
 ```
 
-</Accordion>
+</details>
 
-### ⚔️ Military vs Civilian
+### Military vs Civilian
 
 **Endpoint:** `GET /api/v1/stats/geographic/military-breakdown`
 
@@ -327,45 +312,30 @@ Returns military/civilian split by country with counts and percentages.
 
 ---
 
-## 📡 System Performance
+## System Performance
 
-### 📶 Tracking Quality Metrics
+### Tracking Quality Metrics
 
 Quality metrics for your ADS-B reception.
 
-<CardGroup cols={4}>
-<Card title="Quality Score" icon="gauge">
-**Target:** > 80
+| Metric | Icon | Target | Description |
+|--------|------|--------|-------------|
+| **Quality Score** | gauge | greater than 80 | Composite score (0-100) |
+| **Update Rate** | bolt | greater than 1.0 Hz | Position updates per second |
+| **Coverage** | signal | greater than 90% | Expected positions received |
+| **RSSI** | wave-square | greater than -20 dB | Average signal strength |
 
-Composite score (0-100)
-</Card>
-<Card title="Update Rate" icon="bolt">
-**Target:** > 1.0 Hz
-
-Position updates per second
-</Card>
-<Card title="Coverage" icon="signal">
-**Target:** > 90%
-
-Expected positions received
-</Card>
-<Card title="RSSI" icon="wave-square">
-**Target:** > -20 dB
-
-Average signal strength
-</Card>
-</CardGroup>
-
-### 🏅 Quality Grades
+### Quality Grades
 
 | Grade | Badge | Completeness | Update Rate |
 |-------|:-----:|--------------|-------------|
-| **Excellent** | ⭐⭐⭐⭐⭐ | ≥ 90% | ≥ 10/min |
-| **Good** | ⭐⭐⭐⭐ | ≥ 70% | ≥ 6/min |
-| **Fair** | ⭐⭐⭐ | ≥ 50% | Any |
-| **Poor** | ⭐ | < 50% | Any |
+| **Excellent** | 5 stars | 90% or higher | 10/min or higher |
+| **Good** | 4 stars | 70% or higher | 6/min or higher |
+| **Fair** | 3 stars | 50% or higher | Any |
+| **Poor** | 1 star | less than 50% | Any |
 
-<Accordion title="🔗 API: GET /api/v1/stats/tracking-quality/session/{icao_hex}">
+<details>
+<summary>API: GET /api/v1/stats/tracking-quality/session/icao_hex</summary>
 
 ```json
 {
@@ -397,9 +367,9 @@ Average signal strength
 }
 ```
 
-</Accordion>
+</details>
 
-### 📉 Coverage Gaps Analysis
+### Coverage Gaps Analysis
 
 **Endpoint:** `GET /api/v1/stats/tracking-quality/gaps`
 
@@ -410,11 +380,11 @@ Average signal strength
 
 ---
 
-## 📡 Antenna Metrics
+## Antenna Metrics
 
-> 🧪 **Beta Feature** - Advanced antenna performance analytics
+> **Beta Feature** - Advanced antenna performance analytics
 
-### 🎯 Polar Coverage Plot
+### Polar Coverage Plot
 
 Reception data by bearing (direction) for antenna pattern visualization.
 
@@ -427,7 +397,8 @@ pie showData
     "West (270-360°)" : 26
 ```
 
-<Accordion title="Data Structure">
+<details>
+<summary>Data Structure</summary>
 
 ```json
 {
@@ -448,20 +419,21 @@ pie showData
 }
 ```
 
-</Accordion>
+</details>
 
-### 📊 RSSI vs Distance Correlation
+### RSSI vs Distance Correlation
 
 Signal strength analysis by distance for antenna performance evaluation.
 
 | Band | Distance | Avg RSSI | Status |
 |------|----------|----------|:------:|
-| Near | 0-25 nm | -12.5 dB | 🟢 |
-| Mid | 25-50 nm | -16.2 dB | 🟢 |
-| Far | 50-100 nm | -20.8 dB | 🟡 |
-| Extended | 100+ nm | -25.5 dB | 🟠 |
+| Near | 0-25 nm | -12.5 dB | Good |
+| Mid | 25-50 nm | -16.2 dB | Good |
+| Far | 50-100 nm | -20.8 dB | Fair |
+| Extended | 100+ nm | -25.5 dB | Marginal |
 
-<Accordion title="Full Data Structure">
+<details>
+<summary>Full Data Structure</summary>
 
 ```json
 {
@@ -486,15 +458,15 @@ Signal strength analysis by distance for antenna performance evaluation.
 }
 ```
 
-</Accordion>
+</details>
 
 ---
 
-## 🔌 Real-Time Stats Streaming
+## Real-Time Stats Streaming
 
 SkySpy provides WebSocket-based real-time statistics streaming.
 
-### 📡 Connection Flow
+### Connection Flow
 
 ```mermaid
 sequenceDiagram
@@ -526,10 +498,9 @@ sequenceDiagram
     WebSocket-->>Client: stats.response
 ```
 
-### 📋 Available Stat Types
+### Available Stat Types
 
-<Tabs>
-<Tab title="✈️ Flight">
+#### Flight Stats
 
 | Stat Type | Description |
 |-----------|-------------|
@@ -538,8 +509,7 @@ sequenceDiagram
 | `busiest_hours` | Hourly activity |
 | `common_aircraft_types` | Aircraft types seen |
 
-</Tab>
-<Tab title="🌍 Geographic">
+#### Geographic Stats
 
 | Stat Type | Description |
 |-----------|-------------|
@@ -547,8 +517,7 @@ sequenceDiagram
 | `airlines` | Airline frequency |
 | `airports` | Connected airports |
 
-</Tab>
-<Tab title="📊 Session">
+#### Session Stats
 
 | Stat Type | Description |
 |-----------|-------------|
@@ -556,8 +525,7 @@ sequenceDiagram
 | `coverage_gaps` | Coverage gap analysis |
 | `engagement` | Engagement statistics |
 
-</Tab>
-<Tab title="⏱️ Time">
+#### Time Stats
 
 | Stat Type | Description |
 |-----------|-------------|
@@ -569,8 +537,7 @@ sequenceDiagram
 | `weekly_totals` | Weekly time series |
 | `monthly_totals` | Monthly time series |
 
-</Tab>
-<Tab title="📡 ACARS">
+#### ACARS Stats
 
 | Stat Type | Description |
 |-----------|-------------|
@@ -578,8 +545,7 @@ sequenceDiagram
 | `acars_trends` | ACARS trends |
 | `acars_airlines` | ACARS by airline |
 
-</Tab>
-<Tab title="🎮 Gamification">
+#### Gamification Stats
 
 | Stat Type | Description |
 |-----------|-------------|
@@ -592,20 +558,20 @@ sequenceDiagram
 | `daily_stats` | Daily gamification |
 | `lifetime_stats` | Lifetime totals |
 
-</Tab>
-</Tabs>
+### WebSocket Messages
 
-### 📨 WebSocket Messages
+**Subscribe:**
 
-<CodeGroup>
-```json Subscribe
+```json
 {
   "type": "stats.subscribe",
   "stat_types": ["flight_patterns", "tracking_quality"]
 }
 ```
 
-```json Request Data
+**Request Data:**
+
+```json
 {
   "type": "stats.request",
   "stat_type": "flight_patterns",
@@ -617,7 +583,9 @@ sequenceDiagram
 }
 ```
 
-```json Set Filters
+**Set Filters:**
+
+```json
 {
   "type": "stats.set_filters",
   "filters": {
@@ -627,26 +595,30 @@ sequenceDiagram
 }
 ```
 
-```json Refresh Cache
+**Refresh Cache:**
+
+```json
 {
   "type": "stats.refresh",
   "stat_type": "geographic"
 }
 ```
-</CodeGroup>
 
 ---
 
-## 📜 Historical Data Analysis
+## Historical Data Analysis
 
-### 📈 Trends Over Time
+### Trends Over Time
 
-<CodeGroup>
-```bash Request
+**Request:**
+
+```bash
 GET /api/v1/history/trends?hours=24&interval=hour
 ```
 
-```json Response
+**Response:**
+
+```json
 {
   "intervals": [
     {
@@ -663,25 +635,25 @@ GET /api/v1/history/trends?hours=24&interval=hour
   }
 }
 ```
-</CodeGroup>
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
 | `hours` | integer | 24 | Time range |
 | `interval` | string | "hour" | Grouping (hour/day) |
 
-### 🏆 Top Performers
+### Top Performers
 
 **Endpoint:** `GET /api/v1/history/top`
 
 | Category | Icon | Description |
 |----------|:----:|-------------|
-| `longest_tracked` | ⏱️ | Longest session duration |
-| `furthest_distance` | 🎯 | Maximum distance from receiver |
-| `highest_altitude` | ⬆️ | Maximum altitude reached |
-| `closest_approach` | 📍 | Minimum distance to receiver |
+| `longest_tracked` | stopwatch | Longest session duration |
+| `furthest_distance` | crosshairs | Maximum distance from receiver |
+| `highest_altitude` | arrow-up | Maximum altitude reached |
+| `closest_approach` | location-dot | Minimum distance to receiver |
 
-<Accordion title="Example Response">
+<details>
+<summary>Example Response</summary>
 
 ```json
 {
@@ -700,13 +672,14 @@ GET /api/v1/history/trends?hours=24&interval=hour
 }
 ```
 
-</Accordion>
+</details>
 
-### 📏 Distance Analytics
+### Distance Analytics
 
 **Endpoint:** `GET /api/v1/history/analytics/distance`
 
-<Accordion title="Response Structure">
+<details>
+<summary>Response Structure</summary>
 
 ```json
 {
@@ -726,13 +699,14 @@ GET /api/v1/history/trends?hours=24&interval=hour
 }
 ```
 
-</Accordion>
+</details>
 
-### 🚀 Speed Analytics
+### Speed Analytics
 
 **Endpoint:** `GET /api/v1/history/analytics/speed`
 
-<Accordion title="Response Structure">
+<details>
+<summary>Response Structure</summary>
 
 ```json
 {
@@ -751,9 +725,9 @@ GET /api/v1/history/trends?hours=24&interval=hour
 }
 ```
 
-</Accordion>
+</details>
 
-### 🔗 Correlation Analysis
+### Correlation Analysis
 
 **Endpoint:** `GET /api/v1/history/analytics/correlation`
 
@@ -767,11 +741,12 @@ xychart-beta
 
 ---
 
-## 👥 Engagement Statistics
+## Engagement Statistics
 
-### 📈 Peak Tracking Periods
+### Peak Tracking Periods
 
-<Accordion title="🔗 API: GET /api/v1/stats/engagement/peak-tracking">
+<details>
+<summary>API: GET /api/v1/stats/engagement/peak-tracking</summary>
 
 ```json
 {
@@ -790,9 +765,9 @@ xychart-beta
 }
 ```
 
-</Accordion>
+</details>
 
-### 🔄 Return Visitors
+### Return Visitors
 
 Aircraft seen multiple times within the time range.
 
@@ -802,7 +777,8 @@ Aircraft seen multiple times within the time range.
 | `min_sessions` | integer | 2 | Minimum session count |
 | `limit` | integer | 30 | Results limit |
 
-<Accordion title="Response Example">
+<details>
+<summary>Response Example</summary>
 
 ```json
 {
@@ -824,71 +800,37 @@ Aircraft seen multiple times within the time range.
 }
 ```
 
-</Accordion>
+</details>
 
-### ⭐ Most Watched Aircraft
+### Most Watched Aircraft
 
 **Endpoint:** `GET /api/v1/stats/engagement/most-watched`
 
 ---
 
-## 🎮 Gamification Features
+## Gamification Features
 
 > **Level up your aircraft spotting experience!**
 
 SkySpy includes gamification elements to make aircraft spotting more engaging.
 
-### 🏆 Personal Records
+### Personal Records
 
 Track your best achievements across multiple categories.
 
-<CardGroup cols={4}>
-<Card title="🎯 Max Distance" icon="bullseye">
-Furthest aircraft tracked
+| Record | Icon | Description | Unit |
+|--------|------|-------------|------|
+| **Max Distance** | bullseye | Furthest aircraft tracked | nautical miles |
+| **Max Altitude** | arrow-up | Highest aircraft tracked | feet |
+| **Max Speed** | gauge-high | Fastest aircraft observed | knots |
+| **Longest Session** | stopwatch | Longest tracking duration | minutes |
+| **Most Positions** | chart-line | Most positions in single session | count |
+| **Closest Approach** | location-dot | Nearest to receiver | nautical miles |
+| **Max Climb** | arrow-trend-up | Fastest climb rate | ft/min |
+| **Max Descent** | arrow-trend-down | Fastest descent rate | ft/min |
 
-**Unit:** nautical miles
-</Card>
-<Card title="⬆️ Max Altitude" icon="arrow-up">
-Highest aircraft tracked
-
-**Unit:** feet
-</Card>
-<Card title="🚀 Max Speed" icon="gauge-high">
-Fastest aircraft observed
-
-**Unit:** knots
-</Card>
-<Card title="⏱️ Longest Session" icon="stopwatch">
-Longest tracking duration
-
-**Unit:** minutes
-</Card>
-</CardGroup>
-
-<CardGroup cols={4}>
-<Card title="📊 Most Positions" icon="chart-line">
-Most positions in single session
-
-**Unit:** count
-</Card>
-<Card title="📍 Closest Approach" icon="location-dot">
-Nearest to receiver
-
-**Unit:** nautical miles
-</Card>
-<Card title="📈 Max Climb" icon="arrow-trend-up">
-Fastest climb rate
-
-**Unit:** ft/min
-</Card>
-<Card title="📉 Max Descent" icon="arrow-trend-down">
-Fastest descent rate
-
-**Unit:** ft/min
-</Card>
-</CardGroup>
-
-<Accordion title="API Response Example">
+<details>
+<summary>API Response Example</summary>
 
 ```json
 {
@@ -910,9 +852,9 @@ Fastest descent rate
 }
 ```
 
-</Accordion>
+</details>
 
-### 💎 Rare Sightings
+### Rare Sightings
 
 Notable and rare aircraft detections.
 
@@ -922,44 +864,45 @@ Notable and rare aircraft detections.
 | `limit` | integer | 50 | Maximum results |
 | `include_acknowledged` | boolean | false | Include dismissed |
 
-#### 🏅 Rarity Types & Scores
+#### Rarity Types and Scores
 
 | Type | Icon | Description | Score |
 |------|:----:|-------------|:-----:|
-| `first_hex` | 🆕 | First time tracking this aircraft | 3 |
-| `military` | ⚔️ | Military aircraft | 4 |
-| `air_ambulance` | 🚑 | Medical evacuation flights | 5 |
-| `law_enforcement` | 🚔 | Police/Coast Guard aircraft | 5-6 |
-| `rare_type` | 💎 | Rare aircraft type | 6-10 |
-| `test_flight` | 🧪 | Manufacturer test flights | 7 |
-| `government` | 🏛️ | Government aircraft (e.g., N1xx) | 9 |
+| `first_hex` | new | First time tracking this aircraft | 3 |
+| `military` | shield | Military aircraft | 4 |
+| `air_ambulance` | ambulance | Medical evacuation flights | 5 |
+| `law_enforcement` | badge | Police/Coast Guard aircraft | 5-6 |
+| `rare_type` | gem | Rare aircraft type | 6-10 |
+| `test_flight` | flask | Manufacturer test flights | 7 |
+| `government` | landmark | Government aircraft (e.g., N1xx) | 9 |
 
-#### ✨ Notable Registration Patterns
+#### Notable Registration Patterns
 
 | Pattern | Description | Example |
 |---------|-------------|---------|
-| 🇺🇸 `N1xx` | US Government | N100, N175 |
-| ✈️ `SAM`, `AF1`, `AF2` | Air Force One/Two | Executive transport |
-| 🔧 `N7xx` | Boeing Test | N787BX |
-| 🔧 `F-WW*` | Airbus Test | F-WWDD |
-| 🚀 Contains "NASA" | NASA Research | NASA941 |
+| `N1xx` | US Government | N100, N175 |
+| `SAM`, `AF1`, `AF2` | Air Force One/Two | Executive transport |
+| `N7xx` | Boeing Test | N787BX |
+| `F-WW*` | Airbus Test | F-WWDD |
+| Contains "NASA" | NASA Research | NASA941 |
 
-#### 🌟 Ultra-Rare Aircraft Types
+#### Ultra-Rare Aircraft Types
 
 | Aircraft | Rarity Score | Description |
 |----------|:------------:|-------------|
-| Boeing E-4B Nightwatch | ⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐ | "Doomsday Plane" |
-| Lockheed U-2 | ⭐⭐⭐⭐⭐⭐⭐⭐⭐ | High-altitude reconnaissance |
-| Boeing E-6B Mercury | ⭐⭐⭐⭐⭐⭐⭐⭐⭐ | Airborne command post |
-| Boeing B-52 | ⭐⭐⭐⭐⭐⭐⭐⭐ | Strategic bomber |
-| Airbus A380 | ⭐⭐⭐⭐⭐⭐⭐ | Superjumbo |
-| Boeing 747-8 | ⭐⭐⭐⭐⭐⭐ | Jumbo variant |
+| Boeing E-4B Nightwatch | 10 | "Doomsday Plane" |
+| Lockheed U-2 | 9 | High-altitude reconnaissance |
+| Boeing E-6B Mercury | 9 | Airborne command post |
+| Boeing B-52 | 8 | Strategic bomber |
+| Airbus A380 | 7 | Superjumbo |
+| Boeing 747-8 | 6 | Jumbo variant |
 
-### 📦 Collection Progress
+### Collection Progress
 
 **Endpoint:** `GET /api/v1/stats/gamification/collection`
 
-<Accordion title="Response Example">
+<details>
+<summary>Response Example</summary>
 
 ```json
 {
@@ -984,22 +927,23 @@ Notable and rare aircraft detections.
 }
 ```
 
-</Accordion>
+</details>
 
-### 🔥 Sighting Streaks
+### Sighting Streaks
 
 Track consecutive day streaks for various categories.
 
 | Streak Type | Icon | Qualification |
 |-------------|:----:|---------------|
-| `any_sighting` | 📅 | Any aircraft tracked |
-| `military` | ⚔️ | At least one military aircraft |
-| `unique_new` | 🆕 | A new unique aircraft |
-| `high_altitude` | 🚀 | Aircraft at 40,000+ ft |
-| `long_range` | 🎯 | Aircraft at 100+ nm |
-| `rare_type` | 💎 | A rare aircraft type |
+| `any_sighting` | calendar | Any aircraft tracked |
+| `military` | shield | At least one military aircraft |
+| `unique_new` | new | A new unique aircraft |
+| `high_altitude` | rocket | Aircraft at 40,000+ ft |
+| `long_range` | crosshairs | Aircraft at 100+ nm |
+| `rare_type` | gem | A rare aircraft type |
 
-<Accordion title="Response Example">
+<details>
+<summary>Response Example</summary>
 
 ```json
 {
@@ -1018,13 +962,14 @@ Track consecutive day streaks for various categories.
 }
 ```
 
-</Accordion>
+</details>
 
-### 📊 Daily Statistics
+### Daily Statistics
 
 **Endpoint:** `GET /api/v1/stats/gamification/daily?days=30`
 
-<Accordion title="Response Example">
+<details>
+<summary>Response Example</summary>
 
 ```json
 {
@@ -1046,25 +991,20 @@ Track consecutive day streaks for various categories.
 }
 ```
 
-</Accordion>
+</details>
 
-### ♾️ Lifetime Statistics
+### Lifetime Statistics
 
 **Endpoint:** `GET /api/v1/stats/gamification/lifetime`
 
-<CardGroup cols={3}>
-<Card title="Total Aircraft" icon="plane">
-All-time unique aircraft spotted
-</Card>
-<Card title="Total Sessions" icon="clock">
-Cumulative tracking sessions
-</Card>
-<Card title="Total Positions" icon="map-pin">
-Position updates received
-</Card>
-</CardGroup>
+| Metric | Icon | Description |
+|--------|------|-------------|
+| **Total Aircraft** | plane | All-time unique aircraft spotted |
+| **Total Sessions** | clock | Cumulative tracking sessions |
+| **Total Positions** | map-pin | Position updates received |
 
-<Accordion title="Full Response">
+<details>
+<summary>Full Response</summary>
 
 ```json
 {
@@ -1087,110 +1027,114 @@ Position updates received
 }
 ```
 
-</Accordion>
+</details>
 
 ---
 
-## 🔗 API Endpoints Reference
+## API Endpoints Reference
 
-### 📊 Stats API
-
-| Endpoint | Method | Description |
-|----------|:------:|-------------|
-| `/api/v1/stats/tracking-quality` | `GET` | 📶 Tracking quality metrics |
-| `/api/v1/stats/tracking-quality/gaps` | `GET` | 📉 Coverage gaps analysis |
-| `/api/v1/stats/tracking-quality/session/{icao_hex}` | `GET` | 🎯 Session-specific quality |
-| `/api/v1/stats/engagement` | `GET` | 👥 Engagement statistics |
-| `/api/v1/stats/engagement/most-watched` | `GET` | ⭐ Most favorited aircraft |
-| `/api/v1/stats/engagement/return-visitors` | `GET` | 🔄 Returning aircraft |
-| `/api/v1/stats/engagement/peak-tracking` | `GET` | 📈 Peak concurrent periods |
-| `/api/v1/stats/flight-patterns` | `GET` | ✈️ Flight pattern analytics |
-| `/api/v1/stats/flight-patterns/routes` | `GET` | 🛫 Top routes |
-| `/api/v1/stats/flight-patterns/busiest-hours` | `GET` | 🌡️ Hourly heatmap data |
-| `/api/v1/stats/flight-patterns/aircraft-types` | `GET` | 🛩️ Aircraft types breakdown |
-| `/api/v1/stats/flight-patterns/duration-by-type` | `GET` | ⏱️ Duration by type |
-| `/api/v1/stats/geographic` | `GET` | 🌍 All geographic stats |
-| `/api/v1/stats/geographic/countries` | `GET` | 🏳️ Countries breakdown |
-| `/api/v1/stats/geographic/operators` | `GET` | ✈️ Operators frequency |
-| `/api/v1/stats/geographic/airports` | `GET` | 🛫 Connected airports |
-| `/api/v1/stats/geographic/military-breakdown` | `GET` | ⚔️ Military vs civilian |
-| `/api/v1/stats/combined` | `GET` | 📦 All stats combined |
-| `/api/v1/stats/combined/summary` | `GET` | 📋 High-level summary |
-
-### 📜 History API
+### Stats API
 
 | Endpoint | Method | Description |
 |----------|:------:|-------------|
-| `/api/v1/history/stats` | `GET` | 📊 Historical statistics |
-| `/api/v1/history/trends` | `GET` | 📈 Activity trends |
-| `/api/v1/history/top` | `GET` | 🏆 Top performers |
-| `/api/v1/history/analytics/distance` | `GET` | 📏 Distance analytics |
-| `/api/v1/history/analytics/speed` | `GET` | 🚀 Speed analytics |
-| `/api/v1/history/analytics/correlation` | `GET` | 🔗 Correlation analysis |
+| `/api/v1/stats/tracking-quality` | `GET` | Tracking quality metrics |
+| `/api/v1/stats/tracking-quality/gaps` | `GET` | Coverage gaps analysis |
+| `/api/v1/stats/tracking-quality/session/{icao_hex}` | `GET` | Session-specific quality |
+| `/api/v1/stats/engagement` | `GET` | Engagement statistics |
+| `/api/v1/stats/engagement/most-watched` | `GET` | Most favorited aircraft |
+| `/api/v1/stats/engagement/return-visitors` | `GET` | Returning aircraft |
+| `/api/v1/stats/engagement/peak-tracking` | `GET` | Peak concurrent periods |
+| `/api/v1/stats/flight-patterns` | `GET` | Flight pattern analytics |
+| `/api/v1/stats/flight-patterns/routes` | `GET` | Top routes |
+| `/api/v1/stats/flight-patterns/busiest-hours` | `GET` | Hourly heatmap data |
+| `/api/v1/stats/flight-patterns/aircraft-types` | `GET` | Aircraft types breakdown |
+| `/api/v1/stats/flight-patterns/duration-by-type` | `GET` | Duration by type |
+| `/api/v1/stats/geographic` | `GET` | All geographic stats |
+| `/api/v1/stats/geographic/countries` | `GET` | Countries breakdown |
+| `/api/v1/stats/geographic/operators` | `GET` | Operators frequency |
+| `/api/v1/stats/geographic/airports` | `GET` | Connected airports |
+| `/api/v1/stats/geographic/military-breakdown` | `GET` | Military vs civilian |
+| `/api/v1/stats/combined` | `GET` | All stats combined |
+| `/api/v1/stats/combined/summary` | `GET` | High-level summary |
 
-### ⭐ Favorites API
+### History API
 
 | Endpoint | Method | Description |
 |----------|:------:|-------------|
-| `/api/v1/stats/favorites` | `GET` | 📋 List user favorites |
-| `/api/v1/stats/favorites/toggle/{icao_hex}` | `POST` | 🔄 Add/remove favorite |
-| `/api/v1/stats/favorites/check/{icao_hex}` | `GET` | ✅ Check if favorited |
-| `/api/v1/stats/favorites/{id}/notes` | `PATCH` | ✏️ Update notes |
+| `/api/v1/history/stats` | `GET` | Historical statistics |
+| `/api/v1/history/trends` | `GET` | Activity trends |
+| `/api/v1/history/top` | `GET` | Top performers |
+| `/api/v1/history/analytics/distance` | `GET` | Distance analytics |
+| `/api/v1/history/analytics/speed` | `GET` | Speed analytics |
+| `/api/v1/history/analytics/correlation` | `GET` | Correlation analysis |
 
-### 🎮 Gamification API
+### Favorites API
 
 | Endpoint | Method | Description |
 |----------|:------:|-------------|
-| `/api/v1/stats/gamification/records` | `GET` | 🏆 Personal records |
-| `/api/v1/stats/gamification/rare-sightings` | `GET` | 💎 Rare sightings |
-| `/api/v1/stats/gamification/collection` | `GET` | 📦 Collection progress |
-| `/api/v1/stats/gamification/spotted/types` | `GET` | 🛩️ Spotted by type |
-| `/api/v1/stats/gamification/spotted/operators` | `GET` | ✈️ Spotted by operator |
-| `/api/v1/stats/gamification/streaks` | `GET` | 🔥 Sighting streaks |
-| `/api/v1/stats/gamification/daily` | `GET` | 📅 Daily stats |
-| `/api/v1/stats/gamification/lifetime` | `GET` | ♾️ Lifetime totals |
+| `/api/v1/stats/favorites` | `GET` | List user favorites |
+| `/api/v1/stats/favorites/toggle/{icao_hex}` | `POST` | Add/remove favorite |
+| `/api/v1/stats/favorites/check/{icao_hex}` | `GET` | Check if favorited |
+| `/api/v1/stats/favorites/{id}/notes` | `PATCH` | Update notes |
 
-### 🔧 Common Query Parameters
+### Gamification API
+
+| Endpoint | Method | Description |
+|----------|:------:|-------------|
+| `/api/v1/stats/gamification/records` | `GET` | Personal records |
+| `/api/v1/stats/gamification/rare-sightings` | `GET` | Rare sightings |
+| `/api/v1/stats/gamification/collection` | `GET` | Collection progress |
+| `/api/v1/stats/gamification/spotted/types` | `GET` | Spotted by type |
+| `/api/v1/stats/gamification/spotted/operators` | `GET` | Spotted by operator |
+| `/api/v1/stats/gamification/streaks` | `GET` | Sighting streaks |
+| `/api/v1/stats/gamification/daily` | `GET` | Daily stats |
+| `/api/v1/stats/gamification/lifetime` | `GET` | Lifetime totals |
+
+### Common Query Parameters
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
-| `hours` | integer | 24 | ⏱️ Time range in hours |
-| `refresh` | boolean | false | 🔄 Force cache refresh |
-| `limit` | integer | varies | 📊 Maximum results |
-| `military_only` | boolean | false | ⚔️ Filter to military only |
+| `hours` | integer | 24 | Time range in hours |
+| `refresh` | boolean | false | Force cache refresh |
+| `limit` | integer | varies | Maximum results |
+| `military_only` | boolean | false | Filter to military only |
 
 ---
 
-## 📤 Exporting Data
+## Exporting Data
 
-### 📄 JSON Export
+### JSON Export
 
 All API endpoints return JSON data that can be exported directly.
 
-<CodeGroup>
-```bash Flight Patterns
+**Flight Patterns:**
+
+```bash
 # Export flight patterns for last 48 hours
 curl -H "Authorization: Bearer YOUR_TOKEN" \
   "https://your-server/api/v1/stats/flight-patterns?hours=48" \
   > flight_patterns.json
 ```
 
-```bash Gamification
+**Gamification:**
+
+```bash
 # Export gamification stats
 curl -H "Authorization: Bearer YOUR_TOKEN" \
   "https://your-server/api/v1/stats/gamification/lifetime" \
   > lifetime_stats.json
 ```
 
-```bash Combined
+**Combined:**
+
+```bash
 # Export all stats
 curl -H "Authorization: Bearer YOUR_TOKEN" \
   "https://your-server/api/v1/stats/combined" \
   > all_stats.json
 ```
-</CodeGroup>
 
-### 📊 CSV Export
+### CSV Export
 
 For tabular data, convert JSON to CSV:
 
@@ -1210,7 +1154,7 @@ curl -s -H "Authorization: Bearer YOUR_TOKEN" \
 "KLAX","KSFO",32
 ```
 
-### ⏰ Scheduled Exports
+### Scheduled Exports
 
 Use Celery tasks for scheduled data exports:
 
@@ -1228,9 +1172,9 @@ CELERY_BEAT_SCHEDULE = {
 
 ---
 
-## 💻 Frontend Integration
+## Frontend Integration
 
-### 🪝 Using the Stats Hook
+### Using the Stats Hook
 
 The `useStatsData` hook provides access to all statistics data:
 
@@ -1267,7 +1211,7 @@ function MyStatsComponent({ apiBase, wsRequest, wsConnected }) {
 }
 ```
 
-### 🎚️ Filter Options
+### Filter Options
 
 ```javascript
 const filters = {
@@ -1282,7 +1226,7 @@ const filters = {
 };
 ```
 
-### ⏱️ Time Range Mappings
+### Time Range Mappings
 
 | Display | Hours | Use Case |
 |---------|:-----:|----------|
@@ -1294,73 +1238,59 @@ const filters = {
 
 ---
 
-## 🗄️ Caching Strategy
+## Caching Strategy
 
 Statistics are cached at multiple levels for performance:
 
 | Cache Key | TTL | Category |
 |-----------|:---:|----------|
-| `flight_patterns_stats` | 5 min | ✈️ Flight |
-| `geographic_stats` | 5 min | 🌍 Geographic |
-| `tracking_quality_stats` | 5 min | 📶 Quality |
-| `engagement_stats` | 5 min | 👥 Engagement |
-| `gamification:personal_records` | 5 min | 🏆 Gamification |
-| `gamification:rare_sightings` | 2 min | 💎 Gamification |
-| `gamification:collection_stats` | 5 min | 📦 Gamification |
-| `gamification:streaks` | 10 min | 🔥 Gamification |
-| `gamification:daily_stats` | 5 min | 📅 Gamification |
-| `gamification:lifetime_stats` | 10 min | ♾️ Gamification |
+| `flight_patterns_stats` | 5 min | Flight |
+| `geographic_stats` | 5 min | Geographic |
+| `tracking_quality_stats` | 5 min | Quality |
+| `engagement_stats` | 5 min | Engagement |
+| `gamification:personal_records` | 5 min | Gamification |
+| `gamification:rare_sightings` | 2 min | Gamification |
+| `gamification:collection_stats` | 5 min | Gamification |
+| `gamification:streaks` | 10 min | Gamification |
+| `gamification:daily_stats` | 5 min | Gamification |
+| `gamification:lifetime_stats` | 10 min | Gamification |
 
-### 🔄 Forcing Cache Refresh
+### Forcing Cache Refresh
 
-<CodeGroup>
-```bash REST API
+**REST API:**
+
+```bash
 GET /api/v1/stats/flight-patterns?refresh=true
 ```
 
-```json WebSocket
+**WebSocket:**
+
+```json
 {
   "type": "stats.request",
   "stat_type": "flight_patterns",
   "filters": {"force_refresh": true}
 }
 ```
-</CodeGroup>
 
 ---
 
-## ✅ Best Practices
+## Best Practices
 
-<CardGroup cols={2}>
-<Card title="🔌 Use WebSocket for Real-Time" icon="bolt">
-Subscribe to stat types you need updates for rather than polling REST endpoints.
-</Card>
-<Card title="🗄️ Cache Appropriately" icon="database">
-Don't force-refresh unless necessary. Default cache TTLs are optimized for typical use cases.
-</Card>
-<Card title="🎯 Filter at the Source" icon="filter">
-Use query parameters to filter data server-side rather than fetching everything and filtering client-side.
-</Card>
-<Card title="📦 Batch Requests" icon="boxes-stacked">
-Use the combined endpoints (`/api/v1/stats/combined`) when you need multiple stat types.
-</Card>
-<Card title="⏱️ Time Range Optimization" icon="clock">
-Shorter time ranges (1h, 6h) compute faster. Use 24h or longer for trend analysis.
-</Card>
-<Card title="⏳ Handle Loading States" icon="spinner">
-All data fetches may take time. Show loading indicators while data is being retrieved.
-</Card>
-<Card title="🔄 Error Handling" icon="triangle-exclamation">
-Stats endpoints return 503 if unable to calculate. Implement appropriate retry logic.
-</Card>
-<Card title="📊 Choose Right Charts" icon="chart-simple">
-Use heatmaps for hourly data, line charts for trends, and pie charts for distributions.
-</Card>
-</CardGroup>
+| Practice | Icon | Description |
+|----------|------|-------------|
+| **Use WebSocket for Real-Time** | bolt | Subscribe to stat types you need updates for rather than polling REST endpoints. |
+| **Cache Appropriately** | database | Do not force-refresh unless necessary. Default cache TTLs are optimized for typical use cases. |
+| **Filter at the Source** | filter | Use query parameters to filter data server-side rather than fetching everything and filtering client-side. |
+| **Batch Requests** | boxes-stacked | Use the combined endpoints (`/api/v1/stats/combined`) when you need multiple stat types. |
+| **Time Range Optimization** | clock | Shorter time ranges (1h, 6h) compute faster. Use 24h or longer for trend analysis. |
+| **Handle Loading States** | spinner | All data fetches may take time. Show loading indicators while data is being retrieved. |
+| **Error Handling** | triangle-exclamation | Stats endpoints return 503 if unable to calculate. Implement appropriate retry logic. |
+| **Choose Right Charts** | chart-simple | Use heatmaps for hourly data, line charts for trends, and pie charts for distributions. |
 
 ---
 
-> 📚 **Related Documentation**
+> **Related Documentation**
 > - [WebSocket API](/docs/websocket) - Real-time streaming details
 > - [Authentication](/docs/authentication) - API token management
 > - [Alerts](/docs/alerts) - Set up stat-based alerts
