@@ -1,5 +1,6 @@
 ---
 title: ACARS Integration
+hidden: false
 ---
 
 # 📡 ACARS Message Handling
