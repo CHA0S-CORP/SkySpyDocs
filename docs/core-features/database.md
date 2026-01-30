@@ -1619,7 +1619,7 @@ graph TD
     C3 --> E
 ```
 
-> **Tip**: Partial indexes in PostgreSQL dramatically reduce index size for sparse boolean columns like `is_military` (typically <5% of traffic).
+> **Tip**: Partial indexes in PostgreSQL dramatically reduce index size for sparse boolean columns like `is_military` (typically less than 5% of traffic).
 
 #### Time-Based Queries
 
@@ -1640,7 +1640,7 @@ CREATE INDEX idx_session_icao_lastseen ON aircraft_sessions(icao_hex, last_seen 
 #### Partial Indexes
 
 ```sql
--- Military aircraft filtering (typically <5% of traffic)
+-- Military aircraft filtering (typically less than 5% of traffic)
 CREATE INDEX idx_sighting_military ON aircraft_sightings(is_military) WHERE is_military = TRUE;
 
 -- Distance-based queries (exclude null values)
