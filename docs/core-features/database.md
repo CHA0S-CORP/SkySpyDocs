@@ -606,10 +606,10 @@ graph LR
 |:--------:|:------:|-------------|
 | `eq` | `=` | Equals |
 | `neq` | `!=` | Not Equals |
-| `lt` | `<` | Less Than |
-| `le` | `<=` | Less Than or Equal |
-| `gt` | `>` | Greater Than |
-| `ge` | `>=` | Greater Than or Equal |
+| `lt` | `\<` | Less Than |
+| `le` | `\<=` | Less Than or Equal |
+| `gt` | `\>` | Greater Than |
+| `ge` | `\>=` | Greater Than or Equal |
 | `contains` | `*...*` | Contains |
 | `startswith` | `^...` | Starts With |
 | `endswith` | `...$` | Ends With |
