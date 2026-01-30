@@ -1,5 +1,6 @@
 ---
 title: Testing Guide
+hidden: false
 ---
 
 # 🧪 Testing Guide
