@@ -1,208 +1,99 @@
 ---
-title: "Safety & Alerts"
-slug: "safety-and-alerts"
-excerpt: "Configure safety monitoring and custom alert rules for aircraft tracking."
-hidden: false
+title: "SkySpy CLI"
+excerpt: "A native Go terminal-based aircraft tracking application"
 ---
 
-SkySpy provides two types of alerts: automatic **safety monitoring** that detects dangerous conditions, and **custom alert rules** you define to track specific aircraft or situations.
+# SkySpy CLI
 
-```mermaid
-%%{init: {'theme': 'dark', 'themeVariables': { 'primaryColor': '#1e3a5f', 'primaryTextColor': '#fff', 'primaryBorderColor': '#3b82f6', 'lineColor': '#60a5fa'}}}%%
-flowchart LR
-    subgraph Input["📡 Live Traffic"]
-        AC["✈️ Aircraft Data"]
-    end
+The SkySpy CLI is a powerful, native Go terminal application for real-time aircraft tracking and monitoring. Built with modern terminal UI libraries, it provides an immersive radar-style experience directly in your terminal.
 
-    subgraph Detection["🔍 Detection"]
-        SAFETY["🛡️ Safety Engine"]
-        RULES["📋 Custom Rules"]
-    end
+## Features
 
-    subgraph Output["📬 Alerts"]
-        DASH["🖥️ Dashboard"]
-        PUSH["📱 Push Notifications"]
-    end
+- **Interactive Radar Display** - Full-screen radar scope with animated sweep, range rings, and compass rose
+- **Real-time Aircraft Tracking** - Live ADS-B data with position, altitude, speed, and heading
+- **ACARS/VDL2 Message Feed** - Decode and display aircraft data link messages
+- **VU Meters & Spectrum Analyzer** - Visual signal strength indicators and frequency spectrum display
+- **10 Color Themes** - Classic green phosphor, amber, cyberpunk, military, and more
+- **GeoJSON/Shapefile Overlays** - Load custom map overlays for airspace boundaries, coastlines, etc.
+- **Custom Alert Rules** - Define alerts for military aircraft, emergencies, geofence entry, and more
+- **Export Capabilities** - Export data to CSV, JSON, or HTML screenshots
+- **Authentication Support** - OIDC and API key authentication for secure server connections
 
-    AC --> SAFETY
-    AC --> RULES
-    SAFETY --> DASH
-    SAFETY --> PUSH
-    RULES --> DASH
-    RULES --> PUSH
-
-    style Input fill:#0d4f8b,stroke:#3b82f6,stroke-width:2px,color:#fff
-    style Detection fill:#7c4a03,stroke:#f59e0b,stroke-width:2px,color:#fff
-    style Output fill:#065f46,stroke:#10b981,stroke-width:2px,color:#fff
-```
-
-## Safety Monitoring
-
-The safety engine continuously analyzes live traffic and automatically detects dangerous conditions.
-
-- **TCAS RA** - **Critical** — Resolution Advisory detected
-- **TCAS TA** - **Warning** — Traffic Advisory detected
-- **Proximity Conflict** - **Critical** — Aircraft within threshold distance
-- **Extreme Vertical Rate** - **Warning** — Climb/descent exceeding 4,500 ft/min
-- **Emergency Squawk** - **Critical** — 7700, 7600, or 7500 detected
-
-### Emergency Squawk Codes
-
-> ❗️ Critical
->
-> These codes indicate serious aviation emergencies. SkySpy triggers immediate alerts when detected.
-
-| Code | Icon | Meaning | Priority |
-| :--- | :--- | :--- | :--- |
-| `7700` | 🚨 | **General Emergency** — Aircraft in distress | Critical |
-| `7600` | 📻 | **Radio Failure** — Lost communications (NORDO) | High |
-| `7500` | ⚠️ | **Hijack** — Unlawful interference | Critical |
-
-### Configuration
+## Quick Start
 
 ```bash
-SAFETY_MONITORING_ENABLED=true
-SAFETY_PROXIMITY_NM=1.0        # Nautical miles
-SAFETY_ALTITUDE_DIFF_FT=1000   # Feet
+# Connect to a local SkySpy server
+skyspy --host localhost --port 80
+
+# Use a specific theme
+skyspy --theme cyberpunk
+
+# Set receiver location for distance/bearing calculations
+skyspy --lat 40.7128 --lon -74.0060
+
+# Load map overlays
+skyspy --overlay airspace.geojson --overlay coastline.shp
 ```
 
----
+## Installation
 
-## Custom Alert Rules
+See [Installation](cli/installation) for detailed installation instructions including:
+- Building from source
+- Cross-platform compilation
+- Binary distribution
 
-Create rules to get notified when specific aircraft appear or conditions are met.
+## Documentation
 
-```mermaid
-%%{init: {'theme': 'dark', 'themeVariables': { 'primaryColor': '#1e3a5f', 'primaryTextColor': '#fff', 'primaryBorderColor': '#3b82f6', 'lineColor': '#60a5fa'}}}%%
-flowchart TB
-    subgraph Rule["📋 Alert Rule"]
-        direction TB
-        NAME["📝 Rule Name"]
-        COND["⚙️ Conditions"]
-        PRIO["🎯 Priority Level"]
-    end
+<Cards columns={3}>
+  <Card title="Installation" icon="fa-download" href="/docs/cli/installation">
+    Build from source or download binaries
+  </Card>
+  <Card title="Commands" icon="fa-terminal" href="/docs/cli/commands">
+    Complete command and flag reference
+  </Card>
+  <Card title="Configuration" icon="fa-cog" href="/docs/cli/configuration">
+    Configuration file format and options
+  </Card>
+  <Card title="Keyboard Controls" icon="fa-keyboard" href="/docs/cli/keyboard-controls">
+    Interactive keyboard shortcuts
+  </Card>
+  <Card title="Themes" icon="fa-palette" href="/docs/cli/themes">
+    10 color themes available
+  </Card>
+  <Card title="Authentication" icon="fa-lock" href="/docs/cli/authentication">
+    OIDC and API key authentication
+  </Card>
+</Cards>
 
-    subgraph Fields["📊 Available Fields"]
-        direction LR
-        ICAO["🔢 ICAO Hex"]
-        CALL["🏷️ Callsign"]
-        ALT["📏 Altitude"]
-        DIST["📍 Distance"]
-        MIL["🎖️ Military"]
-    end
+## System Requirements
 
-    Rule --> Fields
+- **Terminal**: Any modern terminal with 256-color support
+- **Size**: Minimum 80x24 characters recommended (larger terminals show more detail)
+- **OS**: Linux, macOS, Windows (with Windows Terminal recommended)
 
-    style Rule fill:#0d4f8b,stroke:#3b82f6,stroke-width:2px,color:#fff
-    style Fields fill:#065f46,stroke:#10b981,stroke-width:2px,color:#fff
-```
+## Screenshots
 
-### Quick Example
+The CLI provides multiple interface modes:
+
+### Main Radar View
+The default view shows a radar scope with aircraft positions, an aircraft list panel, ACARS message feed, and signal meters.
+
+### Radio Mode
+A retro-styled interface focused on aircraft monitoring with a classic radio aesthetic.
+
+### Radio Pro Mode
+Enhanced radio interface with VU meters, spectrum analyzer, and waterfall display.
+
+## Getting Help
+
+Press `?` or `h` while running the CLI to view the built-in help screen with all keyboard shortcuts.
 
 ```bash
-curl -X POST http://localhost:5000/api/alerts/rules \
-  -H "Content-Type: application/json" \
-  -d '{
-    "name": "Military Aircraft Nearby",
-    "enabled": true,
-    "priority": "high",
-    "conditions": {
-      "operator": "AND",
-      "conditions": [
-        { "field": "military", "operator": "eq", "value": true },
-        { "field": "distance", "operator": "lt", "value": 50 }
-      ]
-    },
-    "notification_enabled": true
-  }'
+# List available themes
+skyspy --list-themes
+
+# Show command help
+skyspy --help
+skyspy radio --help
+skyspy login --help
 ```
-
----
-
-## Notifications
-
-When alerts trigger, SkySpy sends push notifications via [Apprise](https://github.com/caronc/apprise).
-
-```mermaid
-%%{init: {'theme': 'dark', 'themeVariables': { 'primaryColor': '#1e3a5f', 'primaryTextColor': '#fff', 'primaryBorderColor': '#3b82f6', 'lineColor': '#60a5fa'}}}%%
-flowchart LR
-    ALERT["🔔 Alert Triggered"] --> APPRISE["📤 Apprise"]
-
-    APPRISE --> PO["📱 Pushover"]
-    APPRISE --> TG["✈️ Telegram"]
-    APPRISE --> DC["💬 Discord"]
-    APPRISE --> MORE["🔌 80+ more..."]
-
-    style ALERT fill:#991b1b,stroke:#ef4444,stroke-width:2px,color:#fff
-    style APPRISE fill:#7c4a03,stroke:#f59e0b,stroke-width:2px,color:#fff
-```
-
-```bash
-APPRISE_URLS="pushover://user@token;tgram://bot/chat"
-NOTIFICATION_COOLDOWN=300
-```
-
----
-
-## Implementation
-
-- **Custom Rules** - Rule structure, conditions, and operators. [Learn more →](/docs/safety-and-alerts/custom-rules)
-- **Rule Examples** - Common rule patterns and use cases. [Learn more →](/docs/safety-and-alerts/examples)
-
----
-
-## Troubleshooting
-
-<Accordion title="Alerts not triggering" icon="fa-bell-slash">
-
-**Check that safety monitoring is enabled:**
-```bash
-# In your .env file
-SAFETY_MONITORING_ENABLED=true
-```
-
-**Verify the safety engine is running:**
-```bash
-curl http://localhost:5000/api/v1/safety/monitor/status
-```
-
-**Check alert rule is enabled:**
-```bash
-curl http://localhost:5000/api/alerts/rules | jq '.[] | {name, enabled}'
-```
-
-</Accordion>
-
-<Accordion title="Too many notifications" icon="fa-volume-up">
-
-**Increase the notification cooldown:**
-```bash
-# In your .env file - cooldown in seconds
-NOTIFICATION_COOLDOWN=600  # 10 minutes between repeat alerts
-```
-
-**Adjust proximity thresholds:**
-```bash
-SAFETY_PROXIMITY_NM=2.0        # Increase to 2 nautical miles
-SAFETY_ALTITUDE_DIFF_FT=2000   # Increase to 2000 feet vertical
-```
-
-</Accordion>
-
-<Accordion title="Missing emergency squawk alerts" icon="fa-exclamation-circle">
-
-Emergency squawk detection requires the aircraft to broadcast squawk codes via ADS-B. Not all aircraft transmit squawk codes.
-
-**Verify your receiver is capturing squawk data:**
-```bash
-curl http://localhost:5000/api/v1/aircraft | jq '.[] | select(.squawk != null) | {hex, squawk}'
-```
-
-</Accordion>
-
----
-
-## Next Steps
-
-- **Real-Time API** - Subscribe to safety events via Socket.IO. [Learn more →](/docs/real-time-api)
-- **SSE Streaming** - Receive alerts via Server-Sent Events. [Learn more →](/docs/sse)
