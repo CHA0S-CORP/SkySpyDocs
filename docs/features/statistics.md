@@ -1,5 +1,6 @@
 ---
 title: Statistics & Analytics
+hidden: false
 ---
 
 # 📊 Statistics & Analytics
