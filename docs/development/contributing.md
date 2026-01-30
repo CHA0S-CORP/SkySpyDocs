@@ -3,132 +3,68 @@ title: Contributing Guide
 hidden: false
 ---
 
-# 🤝 Contributing to SkySpy
+# Contributing to SkySpy
 
 Welcome to the SkySpy contributor community! We're thrilled you're interested in helping build the future of aircraft tracking.
 
-> 📖 **New to Contributing?** This guide covers everything you need to know, from setting up your environment to getting your first PR merged.
+> **New to Contributing?** This guide covers everything you need to know, from setting up your environment to getting your first PR merged.
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
-[block:embed]
-{
-  "html": false,
-  "url": "https://github.com/your-org/skyspy",
-  "title": "SkySpy Repository",
-  "favicon": "https://github.com/favicon.ico"
-}
-[/block]
+[SkySpy Repository](https://github.com/your-org/skyspy)
 
-[block:html]
-{
-  "html": "<div style=\"display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px;\">\n  <img src=\"https://img.shields.io/badge/PRs-welcome-brightgreen.svg\" alt=\"PRs Welcome\">\n  <img src=\"https://img.shields.io/badge/License-MIT-blue.svg\" alt=\"License\">\n  <img src=\"https://img.shields.io/badge/code%20style-black-000000.svg\" alt=\"Code Style: Black\">\n  <img src=\"https://img.shields.io/badge/code%20style-prettier-ff69b4.svg\" alt=\"Code Style: Prettier\">\n</div>"
-}
-[/block]
+![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg) ![License](https://img.shields.io/badge/License-MIT-blue.svg) ![Code Style: Black](https://img.shields.io/badge/code%20style-black-000000.svg) ![Code Style: Prettier](https://img.shields.io/badge/code%20style-prettier-ff69b4.svg)
 
-[block:callout]
-{
-  "type": "success",
-  "title": "Ways to Contribute",
-  "body": "🐛 **Bug Reports** - Found an issue? Let us know!\n💡 **Feature Ideas** - Have a great idea? We'd love to hear it!\n💻 **Code** - Submit PRs for bug fixes or new features\n📝 **Documentation** - Help improve our docs\n🧪 **Testing** - Write tests and improve coverage\n👀 **Code Review** - Review open pull requests"
-}
-[/block]
+> **Ways to Contribute**
+>
+> - **Bug Reports** - Found an issue? Let us know!
+> - **Feature Ideas** - Have a great idea? We'd love to hear it!
+> - **Code** - Submit PRs for bug fixes or new features
+> - **Documentation** - Help improve our docs
+> - **Testing** - Write tests and improve coverage
+> - **Code Review** - Review open pull requests
 
 ---
 
-## 🗺️ Project Architecture
+## Project Architecture
 
 SkySpy is a sophisticated real-time ADS-B aircraft tracking platform with multiple components:
 
-[block:parameters]
-{
-  "data": {
-    "h-0": "Component",
-    "h-1": "Technology",
-    "h-2": "Location",
-    "h-3": "Badge",
-    "0-0": "🐍 Backend API",
-    "0-1": "Django 5.0+ / Django Channels",
-    "0-2": "`skyspy_django/`",
-    "0-3": "![Python](https://img.shields.io/badge/python-3.12+-blue?logo=python&logoColor=white)",
-    "1-0": "⚛️ Web Dashboard",
-    "1-1": "React 18 / Vite 5",
-    "1-2": "`web/`",
-    "1-3": "![React](https://img.shields.io/badge/react-18+-61dafb?logo=react&logoColor=white)",
-    "2-0": "🔷 CLI Tools",
-    "2-1": "Go 1.23+",
-    "2-2": "`skyspy-go/`",
-    "2-3": "![Go](https://img.shields.io/badge/go-1.23+-00add8?logo=go&logoColor=white)",
-    "3-0": "📦 Shared Libraries",
-    "3-1": "Python",
-    "3-2": "`skyspy_common/`",
-    "3-3": "![Python](https://img.shields.io/badge/python-lib-blue?logo=python&logoColor=white)",
-    "4-0": "🧪 Mock Services",
-    "4-1": "Docker",
-    "4-2": "`test/`",
-    "4-3": "![Docker](https://img.shields.io/badge/docker-compose-2496ed?logo=docker&logoColor=white)"
-  },
-  "cols": 4,
-  "rows": 5
-}
-[/block]
+| Component | Technology | Location | Badge |
+|-----------|------------|----------|-------|
+| Backend API | Django 5.0+ / Django Channels | `skyspy_django/` | ![Python](https://img.shields.io/badge/python-3.12+-blue?logo=python&logoColor=white) |
+| Web Dashboard | React 18 / Vite 5 | `web/` | ![React](https://img.shields.io/badge/react-18+-61dafb?logo=react&logoColor=white) |
+| CLI Tools | Go 1.23+ | `skyspy-go/` | ![Go](https://img.shields.io/badge/go-1.23+-00add8?logo=go&logoColor=white) |
+| Shared Libraries | Python | `skyspy_common/` | ![Python](https://img.shields.io/badge/python-lib-blue?logo=python&logoColor=white) |
+| Mock Services | Docker | `test/` | ![Docker](https://img.shields.io/badge/docker-compose-2496ed?logo=docker&logoColor=white) |
 
 ---
 
-## 📋 Before You Start
+## Before You Start
 
-[block:callout]
-{
-  "type": "warning",
-  "title": "Prerequisites Checklist",
-  "body": "- [ ] Read through this contributing guide\n- [ ] Check existing issues and PRs for similar work\n- [ ] For major changes, open an issue first to discuss\n- [ ] Sign off on the Developer Certificate of Origin (DCO)"
-}
-[/block]
+> **Warning: Prerequisites Checklist**
+>
+> - Read through this contributing guide
+> - Check existing issues and PRs for similar work
+> - For major changes, open an issue first to discuss
+> - Sign off on the Developer Certificate of Origin (DCO)
 
 ---
 
-## 🛠️ Development Environment Setup
+## Development Environment Setup
 
 ### Step 1: Install Prerequisites
 
-[block:parameters]
-{
-  "data": {
-    "h-0": "Tool",
-    "h-1": "Version",
-    "h-2": "Purpose",
-    "h-3": "Required",
-    "0-0": "🐳 Docker",
-    "0-1": "Latest",
-    "0-2": "Container orchestration",
-    "0-3": "✅ Yes",
-    "1-0": "🐳 Docker Compose",
-    "1-1": "v2+",
-    "1-2": "Multi-container development",
-    "1-3": "✅ Yes",
-    "2-0": "🐍 Python",
-    "2-1": "3.12+",
-    "2-2": "Backend development",
-    "2-3": "✅ Yes",
-    "3-0": "📦 Node.js",
-    "3-1": "20+",
-    "3-2": "Frontend development",
-    "3-3": "✅ Yes",
-    "4-0": "🔷 Go",
-    "4-1": "1.23+",
-    "4-2": "CLI development",
-    "4-3": "⚪ Optional",
-    "5-0": "🔀 Git",
-    "5-1": "Latest",
-    "5-2": "Version control",
-    "5-3": "✅ Yes"
-  },
-  "cols": 4,
-  "rows": 6
-}
-[/block]
+| Tool | Version | Purpose | Required |
+|------|---------|---------|----------|
+| Docker | Latest | Container orchestration | Yes |
+| Docker Compose | v2+ | Multi-container development | Yes |
+| Python | 3.12+ | Backend development | Yes |
+| Node.js | 20+ | Frontend development | Yes |
+| Go | 1.23+ | CLI development | Optional |
+| Git | Latest | Version control | Yes |
 
 ### Step 2: Clone & Configure
 
@@ -141,34 +77,42 @@ cd skyspy
 cp .env.example .env
 ```
 
-[block:callout]
-{
-  "type": "info",
-  "title": "🔧 Essential Environment Variables",
-  "body": "Edit `.env` with your configuration:\n\n```bash\n# Required: Feeder location (your antenna position)\nFEEDER_LAT=47.9377\nFEEDER_LON=-121.9687\n\n# Required: ADS-B receiver host\nULTRAFEEDER_HOST=ultrafeeder\nULTRAFEEDER_PORT=80\n\n# For development, use public auth mode\nAUTH_MODE=public\n```"
-}
-[/block]
+> **Essential Environment Variables**
+>
+> Edit `.env` with your configuration:
+>
+> ```bash
+> # Required: Feeder location (your antenna position)
+> FEEDER_LAT=47.9377
+> FEEDER_LON=-121.9687
+>
+> # Required: ADS-B receiver host
+> ULTRAFEEDER_HOST=ultrafeeder
+> ULTRAFEEDER_PORT=80
+>
+> # For development, use public auth mode
+> AUTH_MODE=public
+> ```
 
-[block:callout]
-{
-  "type": "info",
-  "title": "📄 Full Configuration",
-  "body": "The `.env.example` file contains extensive documentation for all available options including authentication, OIDC SSO, notifications, transcription, and external data sources."
-}
-[/block]
+> **Full Configuration**
+>
+> The `.env.example` file contains extensive documentation for all available options including authentication, OIDC SSO, notifications, transcription, and external data sources.
 
 ### Step 3: Database Setup
 
-[block:callout]
-{
-  "type": "success",
-  "title": "💡 Recommended: Docker Setup",
-  "body": "The development environment automatically provisions PostgreSQL and Redis:\n\n```bash\n# Start all services including database\nmake dev\n\n# Database is automatically migrated on startup\n```"
-}
-[/block]
+> **Recommended: Docker Setup**
+>
+> The development environment automatically provisions PostgreSQL and Redis:
+>
+> ```bash
+> # Start all services including database
+> make dev
+>
+> # Database is automatically migrated on startup
+> ```
 
 <details>
-<summary>📌 Alternative: Local PostgreSQL</summary>
+<summary>Alternative: Local PostgreSQL</summary>
 
 If running PostgreSQL locally:
 
@@ -185,22 +129,29 @@ python manage.py migrate
 
 ### Step 4: Start Development Services
 
-[block:code]
-{
-  "codes": [
-    {
-      "code": "# Start full development environment with mock data\nmake dev\n\n# Services available:\n#   Dashboard:     http://localhost:3000\n#   Django API:    http://localhost:8000\n#   PostgreSQL:    localhost:5432 (via pgbouncer)\n#   Redis:         localhost:6379\n#   Ultrafeeder:   http://localhost:18080\n#   Dump978:       http://localhost:18081\n\n# View logs\nmake dev-logs\n\n# Stop services\nmake dev-down",
-      "language": "bash",
-      "name": "Quick Start (Docker)"
-    }
-  ]
-}
-[/block]
+```bash
+# Start full development environment with mock data
+make dev
+
+# Services available:
+#   Dashboard:     http://localhost:3000
+#   Django API:    http://localhost:8000
+#   PostgreSQL:    localhost:5432 (via pgbouncer)
+#   Redis:         localhost:6379
+#   Ultrafeeder:   http://localhost:18080
+#   Dump978:       http://localhost:18081
+
+# View logs
+make dev-logs
+
+# Stop services
+make dev-down
+```
 
 <details>
-<summary>🔧 Running Components Individually</summary>
+<summary>Running Components Individually</summary>
 
-#### 🐍 Backend API (Django)
+#### Backend API (Django)
 
 ```bash
 cd skyspy_django
@@ -223,7 +174,7 @@ python manage.py runserver 0.0.0.0:8000
 daphne -b 0.0.0.0 -p 8000 skyspy.asgi:application
 ```
 
-#### ⚡ Celery Worker (Background Tasks)
+#### Celery Worker (Background Tasks)
 
 ```bash
 # In a separate terminal
@@ -231,7 +182,7 @@ cd skyspy_django
 celery -A skyspy worker --loglevel=info --pool=gevent --concurrency=10
 ```
 
-#### ⏰ Celery Beat (Scheduled Tasks)
+#### Celery Beat (Scheduled Tasks)
 
 ```bash
 # In a separate terminal
@@ -239,7 +190,7 @@ cd skyspy_django
 celery -A skyspy beat --loglevel=info
 ```
 
-#### ⚛️ Frontend Dashboard (React)
+#### Frontend Dashboard (React)
 
 ```bash
 cd web
@@ -253,7 +204,7 @@ npm run dev
 # Dashboard available at http://localhost:3000
 ```
 
-#### 🔷 Go CLI
+#### Go CLI
 
 ```bash
 cd skyspy-go
@@ -272,94 +223,61 @@ make build
 
 ---
 
-## 🎨 Code Style Guidelines
+## Code Style Guidelines
 
-### 🐍 Python (Backend)
+### Python (Backend)
 
-[block:html]
-{
-  "html": "<div style=\"display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px;\">\n  <img src=\"https://img.shields.io/badge/code%20style-black-000000.svg\" alt=\"Code Style: Black\">\n  <img src=\"https://img.shields.io/badge/linting-ruff-261230.svg?logo=ruff\" alt=\"Linting: Ruff\">\n  <img src=\"https://img.shields.io/badge/typing-mypy-blue.svg\" alt=\"Typing: mypy\">\n  <img src=\"https://img.shields.io/badge/python-3.12+-blue.svg?logo=python&logoColor=white\" alt=\"Python 3.12+\">\n</div>"
-}
-[/block]
+![Code Style: Black](https://img.shields.io/badge/code%20style-black-000000.svg) ![Linting: Ruff](https://img.shields.io/badge/linting-ruff-261230.svg?logo=ruff) ![Typing: mypy](https://img.shields.io/badge/typing-mypy-blue.svg) ![Python 3.12+](https://img.shields.io/badge/python-3.12+-blue.svg?logo=python&logoColor=white)
 
-[block:parameters]
-{
-  "data": {
-    "h-0": "Tool",
-    "h-1": "Purpose",
-    "h-2": "Command",
-    "0-0": "Ruff",
-    "0-1": "Linting + import sorting",
-    "0-2": "`ruff check .`",
-    "1-0": "Black",
-    "1-1": "Code formatting",
-    "1-2": "`black .`",
-    "2-0": "mypy",
-    "2-1": "Static type checking",
-    "2-2": "`mypy .`"
-  },
-  "cols": 3,
-  "rows": 3
-}
-[/block]
+| Tool | Purpose | Command |
+|------|---------|---------|
+| Ruff | Linting + import sorting | `ruff check .` |
+| Black | Code formatting | `black .` |
+| mypy | Static type checking | `mypy .` |
 
-[block:callout]
-{
-  "type": "info",
-  "title": "⚙️ Configuration (pyproject.toml)",
-  "body": "```toml\n[tool.ruff]\ntarget-version = \"py312\"\nline-length = 120\n\n[tool.black]\ntarget-version = [\"py312\"]\nline-length = 120\n```"
-}
-[/block]
+> **Configuration (pyproject.toml)**
+>
+> ```toml
+> [tool.ruff]
+> target-version = "py312"
+> line-length = 120
+>
+> [tool.black]
+> target-version = ["py312"]
+> line-length = 120
+> ```
 
-**📏 Key Rules:**
+**Key Rules:**
 - Line length: 120 characters maximum
 - Use type hints for function signatures
 - Follow PEP 8 naming conventions
 - Avoid unused imports and variables
 - Use `isort`-compatible import ordering
 
-[block:code]
-{
-  "codes": [
-    {
-      "code": "# Check for issues\nruff check .\nblack --check --diff .\nmypy --ignore-missing-imports .\n\n# Auto-fix issues\nruff check --fix .\nblack .",
-      "language": "bash",
-      "name": "Python Linting Commands"
-    }
-  ]
-}
-[/block]
+```bash
+# Check for issues
+ruff check .
+black --check --diff .
+mypy --ignore-missing-imports .
+
+# Auto-fix issues
+ruff check --fix .
+black .
+```
 
 ---
 
-### ⚛️ JavaScript/React (Frontend)
+### JavaScript/React (Frontend)
 
-[block:html]
-{
-  "html": "<div style=\"display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px;\">\n  <img src=\"https://img.shields.io/badge/code%20style-prettier-ff69b4.svg\" alt=\"Code Style: Prettier\">\n  <img src=\"https://img.shields.io/badge/linting-eslint-4B32C3.svg?logo=eslint\" alt=\"Linting: ESLint\">\n  <img src=\"https://img.shields.io/badge/react-18-61dafb.svg?logo=react&logoColor=white\" alt=\"React 18\">\n</div>"
-}
-[/block]
+![Code Style: Prettier](https://img.shields.io/badge/code%20style-prettier-ff69b4.svg) ![Linting: ESLint](https://img.shields.io/badge/linting-eslint-4B32C3.svg?logo=eslint) ![React 18](https://img.shields.io/badge/react-18-61dafb.svg?logo=react&logoColor=white)
 
-[block:parameters]
-{
-  "data": {
-    "h-0": "Tool",
-    "h-1": "Config File",
-    "h-2": "Command",
-    "0-0": "ESLint",
-    "0-1": "`.eslintrc.cjs`",
-    "0-2": "`npm run lint`",
-    "1-0": "Prettier",
-    "1-1": "`.prettierrc`",
-    "1-2": "`npm run format`"
-  },
-  "cols": 3,
-  "rows": 2
-}
-[/block]
+| Tool | Config File | Command |
+|------|-------------|---------|
+| ESLint | `.eslintrc.cjs` | `npm run lint` |
+| Prettier | `.prettierrc` | `npm run format` |
 
 <details>
-<summary>📋 Prettier Configuration</summary>
+<summary>Prettier Configuration</summary>
 
 ```json
 {
@@ -376,35 +294,31 @@ make build
 
 </details>
 
-**📏 ESLint Rules:**
-- ✅ React Hooks rules enforced (`rules-of-hooks`, `exhaustive-deps`)
-- ❌ No `console.log` (use `console.warn` or `console.error`)
-- ✅ Prefer `const` over `let`
-- ✅ Use strict equality (`===`)
+**ESLint Rules:**
+- React Hooks rules enforced (`rules-of-hooks`, `exhaustive-deps`)
+- No `console.log` (use `console.warn` or `console.error`)
+- Prefer `const` over `let`
+- Use strict equality (`===`)
 
-[block:code]
-{
-  "codes": [
-    {
-      "code": "cd web\n\n# Check for issues\nnpm run lint\nnpm run format:check\n\n# Auto-fix issues\nnpm run lint:fix\nnpm run format",
-      "language": "bash",
-      "name": "JavaScript Linting Commands"
-    }
-  ]
-}
-[/block]
+```bash
+cd web
+
+# Check for issues
+npm run lint
+npm run format:check
+
+# Auto-fix issues
+npm run lint:fix
+npm run format
+```
 
 ---
 
-### 🔷 Go (CLI)
+### Go (CLI)
 
-[block:html]
-{
-  "html": "<div style=\"display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px;\">\n  <img src=\"https://img.shields.io/badge/linting-golangci--lint-00add8.svg?logo=go&logoColor=white\" alt=\"Linting: golangci-lint\">\n  <img src=\"https://img.shields.io/badge/go-1.23+-00add8.svg?logo=go&logoColor=white\" alt=\"Go 1.23+\">\n</div>"
-}
-[/block]
+![Linting: golangci-lint](https://img.shields.io/badge/linting-golangci--lint-00add8.svg?logo=go&logoColor=white) ![Go 1.23+](https://img.shields.io/badge/go-1.23+-00add8.svg?logo=go&logoColor=white)
 
-**🔍 Enabled Linters:**
+**Enabled Linters:**
 
 | Linter | Purpose |
 |--------|---------|
@@ -415,21 +329,25 @@ make build
 | `misspell` | Common misspellings |
 | `revive` | Go best practices |
 
-[block:code]
-{
-  "codes": [
-    {
-      "code": "cd skyspy-go\n\n# Run all linters\nmake lint\n\n# Format code\nmake fmt\n\n# Check formatting\nmake fmt-check\n\n# Run go vet\nmake vet",
-      "language": "bash",
-      "name": "Go Linting Commands"
-    }
-  ]
-}
-[/block]
+```bash
+cd skyspy-go
+
+# Run all linters
+make lint
+
+# Format code
+make fmt
+
+# Check formatting
+make fmt-check
+
+# Run go vet
+make vet
+```
 
 ---
 
-## 🔀 Git Workflow
+## Git Workflow
 
 ### Branch Strategy
 
@@ -454,35 +372,14 @@ gitGraph
     merge develop tag: "v2.6.0"
 ```
 
-[block:parameters]
-{
-  "data": {
-    "h-0": "Branch",
-    "h-1": "Purpose",
-    "h-2": "Protection",
-    "0-0": "`main`",
-    "0-1": "🚀 Production-ready code",
-    "0-2": "🔒 Protected, requires PR",
-    "1-0": "`develop`",
-    "1-1": "🔧 Integration branch",
-    "1-2": "🔒 Protected, requires PR",
-    "2-0": "`feature/*`",
-    "2-1": "✨ New features",
-    "2-2": "🔓 None",
-    "3-0": "`fix/*`",
-    "3-1": "🐛 Bug fixes",
-    "3-2": "🔓 None",
-    "4-0": "`docs/*`",
-    "4-1": "📝 Documentation updates",
-    "4-2": "🔓 None",
-    "5-0": "`refactor/*`",
-    "5-1": "♻️ Code refactoring",
-    "5-2": "🔓 None"
-  },
-  "cols": 3,
-  "rows": 6
-}
-[/block]
+| Branch | Purpose | Protection |
+|--------|---------|------------|
+| `main` | Production-ready code | Protected, requires PR |
+| `develop` | Integration branch | Protected, requires PR |
+| `feature/*` | New features | None |
+| `fix/*` | Bug fixes | None |
+| `docs/*` | Documentation updates | None |
+| `refactor/*` | Code refactoring | None |
 
 ### Creating a Branch
 
@@ -500,7 +397,7 @@ git checkout -b fix/bug-description
 
 ---
 
-## 📝 Commit Messages
+## Commit Messages
 
 Follow **Conventional Commits** for clear history:
 
@@ -514,113 +411,91 @@ Follow **Conventional Commits** for clear history:
 
 ### Commit Types
 
-[block:parameters]
-{
-  "data": {
-    "h-0": "Type",
-    "h-1": "Emoji",
-    "h-2": "Description",
-    "h-3": "Example",
-    "0-0": "`feat`",
-    "0-1": "✨",
-    "0-2": "New feature",
-    "0-3": "Add proximity alert configuration",
-    "1-0": "`fix`",
-    "1-1": "🐛",
-    "1-2": "Bug fix",
-    "1-3": "Handle reconnection on timeout",
-    "2-0": "`docs`",
-    "2-1": "📝",
-    "2-2": "Documentation only",
-    "2-3": "Update API endpoint examples",
-    "3-0": "`style`",
-    "3-1": "🎨",
-    "3-2": "Formatting, no code change",
-    "3-3": "Format with Black",
-    "4-0": "`refactor`",
-    "4-1": "♻️",
-    "4-2": "Code restructuring",
-    "4-3": "Extract safety monitoring logic",
-    "5-0": "`test`",
-    "5-1": "🧪",
-    "5-2": "Adding or updating tests",
-    "5-3": "Add WebSocket integration tests",
-    "6-0": "`chore`",
-    "6-1": "🔧",
-    "6-2": "Build process, tooling",
-    "6-3": "Update CI workflow",
-    "7-0": "`perf`",
-    "7-1": "⚡",
-    "7-2": "Performance improvement",
-    "7-3": "Optimize database queries"
-  },
-  "cols": 4,
-  "rows": 8
-}
-[/block]
+| Type | Emoji | Description | Example |
+|------|-------|-------------|---------|
+| `feat` | | New feature | Add proximity alert configuration |
+| `fix` | | Bug fix | Handle reconnection on timeout |
+| `docs` | | Documentation only | Update API endpoint examples |
+| `style` | | Formatting, no code change | Format with Black |
+| `refactor` | | Code restructuring | Extract safety monitoring logic |
+| `test` | | Adding or updating tests | Add WebSocket integration tests |
+| `chore` | | Build process, tooling | Update CI workflow |
+| `perf` | | Performance improvement | Optimize database queries |
 
 ### Commit Examples
 
-[block:code]
-{
-  "codes": [
-    {
-      "code": "# Feature\ngit commit -m \"feat(alerts): add proximity alert distance configuration\"\n\n# Bug fix\ngit commit -m \"fix(websocket): handle reconnection on network timeout\"\n\n# Documentation\ngit commit -m \"docs(api): update alert rule endpoint examples\"\n\n# Refactoring\ngit commit -m \"refactor(services): extract safety monitoring logic\"",
-      "language": "bash",
-      "name": "Example Commits"
-    }
-  ]
-}
-[/block]
+```bash
+# Feature
+git commit -m "feat(alerts): add proximity alert distance configuration"
+
+# Bug fix
+git commit -m "fix(websocket): handle reconnection on network timeout"
+
+# Documentation
+git commit -m "docs(api): update alert rule endpoint examples"
+
+# Refactoring
+git commit -m "refactor(services): extract safety monitoring logic"
+```
 
 ---
 
-## 🔄 Pull Request Process
+## Pull Request Process
 
 ### PR Workflow
 
 ```mermaid
 flowchart LR
-    A[🔧 Make Changes] --> B[🧪 Run Tests]
-    B --> C[📤 Push Branch]
-    C --> D[📝 Create PR]
-    D --> E[🤖 CI Checks]
+    A[Make Changes] --> B[Run Tests]
+    B --> C[Push Branch]
+    C --> D[Create PR]
+    D --> E[CI Checks]
     E --> F{Pass?}
     F -->|No| A
-    F -->|Yes| G[👀 Code Review]
+    F -->|Yes| G[Code Review]
     G --> H{Approved?}
     H -->|No| A
-    H -->|Yes| I[✅ Merge]
+    H -->|Yes| I[Merge]
 ```
 
-### ✅ PR Checklist
+### PR Checklist
 
-[block:callout]
-{
-  "type": "warning",
-  "title": "Before Submitting Your PR",
-  "body": "- [ ] 🧪 All tests pass locally (`make test`)\n- [ ] 🎨 Code follows project style guidelines\n- [ ] 📝 Documentation updated (if needed)\n- [ ] 🚫 No `console.log` or debug code\n- [ ] 🔒 No hardcoded secrets or credentials\n- [ ] ⚡ Code is performant (no N+1 queries)\n- [ ] ✨ New functionality has tests"
-}
-[/block]
+> **Warning: Before Submitting Your PR**
+>
+> - All tests pass locally (`make test`)
+> - Code follows project style guidelines
+> - Documentation updated (if needed)
+> - No `console.log` or debug code
+> - No hardcoded secrets or credentials
+> - Code is performant (no N+1 queries)
+> - New functionality has tests
 
 ### Running Tests Before PR
 
-[block:code]
-{
-  "codes": [
-    {
-      "code": "# Full test suite in Docker (recommended)\nmake test\n\n# Backend tests only\ncd skyspy_django && pytest\n\n# Frontend linting\ncd web && npm run lint\n\n# Go tests\ncd skyspy-go && make test",
-      "language": "bash",
-      "name": "Test Commands"
-    },
-    {
-      "code": "# Python\nruff check . && black --check .\n\n# JavaScript\ncd web && npm run lint && npm run format:check\n\n# Go\ncd skyspy-go && make lint",
-      "language": "bash",
-      "name": "Lint Commands"
-    }
-  ]
-}
-[/block]
+```bash
+# Full test suite in Docker (recommended)
+make test
+
+# Backend tests only
+cd skyspy_django && pytest
+
+# Frontend linting
+cd web && npm run lint
+
+# Go tests
+cd skyspy-go && make test
+```
+
+```bash
+# Python
+ruff check . && black --check .
+
+# JavaScript
+cd web && npm run lint && npm run format:check
+
+# Go
+cd skyspy-go && make lint
+```
 
 ### PR Description Template
 
@@ -653,33 +528,16 @@ Before/after screenshots for visual changes.
 
 ### PR Requirements
 
-[block:parameters]
-{
-  "data": {
-    "h-0": "Requirement",
-    "h-1": "Description",
-    "h-2": "Status",
-    "0-0": "🤖 CI Pipeline",
-    "0-1": "All automated checks pass",
-    "0-2": "Required",
-    "1-0": "👀 Code Review",
-    "1-1": "At least one approving review",
-    "1-2": "Required",
-    "2-0": "📊 Coverage",
-    "2-1": "Maintain 40% minimum (60% target)",
-    "2-2": "Required",
-    "3-0": "🔀 No Conflicts",
-    "3-1": "Mergeable with target branch",
-    "3-2": "Required"
-  },
-  "cols": 3,
-  "rows": 4
-}
-[/block]
+| Requirement | Description | Status |
+|-------------|-------------|--------|
+| CI Pipeline | All automated checks pass | Required |
+| Code Review | At least one approving review | Required |
+| Coverage | Maintain 40% minimum (60% target) | Required |
+| No Conflicts | Mergeable with target branch | Required |
 
 ---
 
-## 👀 Code Review Process
+## Code Review Process
 
 ### Review Flow
 
@@ -711,91 +569,90 @@ flowchart TB
 
 ### For Authors
 
-[block:callout]
-{
-  "type": "info",
-  "title": "✍️ Before Requesting Review",
-  "body": "- [ ] Code follows project style guidelines\n- [ ] All tests pass locally\n- [ ] New functionality has tests\n- [ ] Documentation updated\n- [ ] No debug code or console.log statements\n- [ ] No hardcoded secrets or credentials\n- [ ] Error handling is appropriate\n- [ ] Code is performant (no N+1 queries)"
-}
-[/block]
+> **Before Requesting Review**
+>
+> - Code follows project style guidelines
+> - All tests pass locally
+> - New functionality has tests
+> - Documentation updated
+> - No debug code or console.log statements
+> - No hardcoded secrets or credentials
+> - Error handling is appropriate
+> - Code is performant (no N+1 queries)
 
 ### For Reviewers
 
-[block:callout]
-{
-  "type": "success",
-  "title": "👀 Review Checklist",
-  "body": "**Functionality**\n- [ ] Code does what it claims to do\n- [ ] Edge cases are handled\n- [ ] Error conditions handled gracefully\n\n**Code Quality**\n- [ ] Code is readable and maintainable\n- [ ] No code duplication\n- [ ] Functions are focused and appropriately sized\n\n**Testing**\n- [ ] Tests are meaningful and comprehensive\n- [ ] Test coverage is adequate\n\n**Security**\n- [ ] No SQL injection vulnerabilities\n- [ ] No XSS vulnerabilities\n- [ ] Auth/authz is correct"
-}
-[/block]
+> **Review Checklist**
+>
+> **Functionality**
+> - Code does what it claims to do
+> - Edge cases are handled
+> - Error conditions handled gracefully
+>
+> **Code Quality**
+> - Code is readable and maintainable
+> - No code duplication
+> - Functions are focused and appropriately sized
+>
+> **Testing**
+> - Tests are meaningful and comprehensive
+> - Test coverage is adequate
+>
+> **Security**
+> - No SQL injection vulnerabilities
+> - No XSS vulnerabilities
+> - Auth/authz is correct
 
-[block:callout]
-{
-  "type": "warning",
-  "title": "💬 Review Etiquette",
-  "body": "- Be constructive and specific\n- Explain the \"why\" behind suggestions\n- Distinguish between required changes and suggestions\n- Approve when satisfied, request changes when needed"
-}
-[/block]
+> **Warning: Review Etiquette**
+>
+> - Be constructive and specific
+> - Explain the "why" behind suggestions
+> - Distinguish between required changes and suggestions
+> - Approve when satisfied, request changes when needed
 
 ---
 
-## 🐛 Issue Guidelines
+## Issue Guidelines
 
 ### Bug Reports
 
-[block:callout]
-{
-  "type": "danger",
-  "title": "🐛 Bug Report Template",
-  "body": "**Title:** `[BUG] Brief description`\n\n**Include:**\n- Environment (OS, Docker version, Browser)\n- SkySpy version or commit hash\n- Steps to reproduce\n- Expected vs actual behavior\n- Relevant logs/screenshots"
-}
-[/block]
+> **Bug Report Template**
+>
+> **Title:** `[BUG] Brief description`
+>
+> **Include:**
+> - Environment (OS, Docker version, Browser)
+> - SkySpy version or commit hash
+> - Steps to reproduce
+> - Expected vs actual behavior
+> - Relevant logs/screenshots
 
 ### Feature Requests
 
-[block:callout]
-{
-  "type": "info",
-  "title": "💡 Feature Request Template",
-  "body": "**Title:** `[FEATURE] Brief description`\n\n**Include:**\n- Problem statement\n- Proposed solution\n- Alternatives considered\n- Mockups or examples (if applicable)"
-}
-[/block]
+> **Feature Request Template**
+>
+> **Title:** `[FEATURE] Brief description`
+>
+> **Include:**
+> - Problem statement
+> - Proposed solution
+> - Alternatives considered
+> - Mockups or examples (if applicable)
 
 ### Issue Labels
 
-[block:parameters]
-{
-  "data": {
-    "h-0": "Label",
-    "h-1": "Description",
-    "h-2": "Color",
-    "0-0": "`bug`",
-    "0-1": "🐛 Something isn't working",
-    "0-2": "🔴 Red",
-    "1-0": "`enhancement`",
-    "1-1": "✨ New feature or improvement",
-    "1-2": "🔵 Blue",
-    "2-0": "`documentation`",
-    "2-1": "📝 Documentation updates",
-    "2-2": "🟢 Green",
-    "3-0": "`good first issue`",
-    "3-1": "👋 Good for newcomers",
-    "3-2": "🟣 Purple",
-    "4-0": "`help wanted`",
-    "4-1": "🆘 Extra attention needed",
-    "4-2": "🟡 Yellow",
-    "5-0": "`priority: high`",
-    "5-1": "🔥 Critical issue",
-    "5-2": "🔴 Red"
-  },
-  "cols": 3,
-  "rows": 6
-}
-[/block]
+| Label | Description | Color |
+|-------|-------------|-------|
+| `bug` | Something isn't working | Red |
+| `enhancement` | New feature or improvement | Blue |
+| `documentation` | Documentation updates | Green |
+| `good first issue` | Good for newcomers | Purple |
+| `help wanted` | Extra attention needed | Yellow |
+| `priority: high` | Critical issue | Red |
 
 ---
 
-## 🚀 Release Process
+## Release Process
 
 ### Semantic Versioning
 
@@ -811,9 +668,9 @@ flowchart LR
 
 | Version | Change Type | Example |
 |---------|-------------|---------|
-| **MAJOR** (x.0.0) | Breaking API changes | `1.0.0` → `2.0.0` |
-| **MINOR** (0.x.0) | New features | `2.5.0` → `2.6.0` |
-| **PATCH** (0.0.x) | Bug fixes | `2.6.0` → `2.6.1` |
+| **MAJOR** (x.0.0) | Breaking API changes | `1.0.0` -> `2.0.0` |
+| **MINOR** (0.x.0) | New features | `2.5.0` -> `2.6.0` |
+| **PATCH** (0.0.x) | Bug fixes | `2.6.0` -> `2.6.1` |
 
 ### CI/CD Pipeline
 
@@ -840,173 +697,81 @@ flowchart LR
     Tag --> BUILD --> PUSH
 ```
 
-[block:parameters]
-{
-  "data": {
-    "h-0": "Stage",
-    "h-1": "Trigger",
-    "h-2": "Actions",
-    "0-0": "🧪 Test",
-    "0-1": "All PRs, pushes",
-    "0-2": "Run pytest, coverage",
-    "1-0": "🐍 Lint Python",
-    "1-1": "All PRs, pushes",
-    "1-2": "Ruff, Black, mypy",
-    "2-0": "⚛️ Lint Frontend",
-    "2-1": "All PRs, pushes",
-    "2-2": "ESLint, Prettier",
-    "3-0": "🔷 Test Go",
-    "3-1": "All PRs, pushes",
-    "3-2": "golangci-lint, go test",
-    "4-0": "🎭 E2E Tests",
-    "4-1": "After unit tests",
-    "4-2": "Playwright tests",
-    "5-0": "🔒 Security Scan",
-    "5-1": "All PRs, pushes",
-    "5-2": "Bandit, pip-audit, npm audit",
-    "6-0": "🐳 Build & Push",
-    "6-1": "Push to main/develop, tags",
-    "6-2": "Multi-arch images to GHCR"
-  },
-  "cols": 3,
-  "rows": 7
-}
-[/block]
+| Stage | Trigger | Actions |
+|-------|---------|---------|
+| Test | All PRs, pushes | Run pytest, coverage |
+| Lint Python | All PRs, pushes | Ruff, Black, mypy |
+| Lint Frontend | All PRs, pushes | ESLint, Prettier |
+| Test Go | All PRs, pushes | golangci-lint, go test |
+| E2E Tests | After unit tests | Playwright tests |
+| Security Scan | All PRs, pushes | Bandit, pip-audit, npm audit |
+| Build & Push | Push to main/develop, tags | Multi-arch images to GHCR |
 
 ### Docker Images
 
-[block:callout]
-{
-  "type": "success",
-  "title": "📦 Published Images",
-  "body": "- `ghcr.io/{org}/skyspy` - Main API image\n- `ghcr.io/{org}/skyspy-rtl-airband-uploader` - RTL-Airband uploader\n- `ghcr.io/{org}/skyspy-1090-mock` - Mock ADS-B receiver\n- `ghcr.io/{org}/skyspy-acarshub-mock` - Mock ACARS hub"
-}
-[/block]
+> **Published Images**
+>
+> - `ghcr.io/{org}/skyspy` - Main API image
+> - `ghcr.io/{org}/skyspy-rtl-airband-uploader` - RTL-Airband uploader
+> - `ghcr.io/{org}/skyspy-1090-mock` - Mock ADS-B receiver
+> - `ghcr.io/{org}/skyspy-acarshub-mock` - Mock ACARS hub
 
 ---
 
-## 📚 Quick Reference
+## Quick Reference
 
 ### Common Commands
 
-[block:parameters]
-{
-  "data": {
-    "h-0": "Task",
-    "h-1": "Command",
-    "0-0": "🚀 Start dev environment",
-    "0-1": "`make dev`",
-    "1-0": "📋 View logs",
-    "1-1": "`make dev-logs`",
-    "2-0": "🛑 Stop services",
-    "2-1": "`make dev-down`",
-    "3-0": "🧪 Run all tests",
-    "3-1": "`make test`",
-    "4-0": "🐍 Python lint",
-    "4-1": "`ruff check . && black .`",
-    "5-0": "⚛️ JS lint",
-    "5-1": "`cd web && npm run lint`",
-    "6-0": "🔷 Go lint",
-    "6-1": "`cd skyspy-go && make lint`",
-    "7-0": "🐳 Build images",
-    "7-1": "`make build`"
-  },
-  "cols": 2,
-  "rows": 8
-}
-[/block]
+| Task | Command |
+|------|---------|
+| Start dev environment | `make dev` |
+| View logs | `make dev-logs` |
+| Stop services | `make dev-down` |
+| Run all tests | `make test` |
+| Python lint | `ruff check . && black .` |
+| JS lint | `cd web && npm run lint` |
+| Go lint | `cd skyspy-go && make lint` |
+| Build images | `make build` |
 
 ### Service URLs (Development)
 
-[block:parameters]
-{
-  "data": {
-    "h-0": "Service",
-    "h-1": "URL",
-    "h-2": "Port",
-    "0-0": "🌐 Dashboard",
-    "0-1": "http://localhost:3000",
-    "0-2": "3000",
-    "1-0": "🔌 Django API",
-    "1-1": "http://localhost:8000",
-    "1-2": "8000",
-    "2-0": "🐘 PostgreSQL",
-    "2-1": "localhost:5432",
-    "2-2": "5432",
-    "3-0": "📮 Redis",
-    "3-1": "localhost:6379",
-    "3-2": "6379",
-    "4-0": "📡 Ultrafeeder",
-    "4-1": "http://localhost:18080",
-    "4-2": "18080"
-  },
-  "cols": 3,
-  "rows": 5
-}
-[/block]
+| Service | URL | Port |
+|---------|-----|------|
+| Dashboard | http://localhost:3000 | 3000 |
+| Django API | http://localhost:8000 | 8000 |
+| PostgreSQL | localhost:5432 | 5432 |
+| Redis | localhost:6379 | 6379 |
+| Ultrafeeder | http://localhost:18080 | 18080 |
 
 ---
 
-## 🌟 Community Guidelines
+## Community Guidelines
 
-[block:callout]
-{
-  "type": "success",
-  "title": "💚 Be Welcoming",
-  "body": "We welcome contributors of all experience levels. Everyone was new once!"
-}
-[/block]
+> **Be Welcoming**
+>
+> We welcome contributors of all experience levels. Everyone was new once!
 
-[block:callout]
-{
-  "type": "info",
-  "title": "🤝 Be Respectful",
-  "body": "Treat everyone with respect. Constructive criticism is welcome; personal attacks are not."
-}
-[/block]
+> **Be Respectful**
+>
+> Treat everyone with respect. Constructive criticism is welcome; personal attacks are not.
 
-[block:callout]
-{
-  "type": "warning",
-  "title": "📣 Communicate Clearly",
-  "body": "When in doubt, over-communicate. Ask questions if something is unclear."
-}
-[/block]
+> **Warning: Communicate Clearly**
+>
+> When in doubt, over-communicate. Ask questions if something is unclear.
 
 ---
 
-## 🆘 Getting Help
+## Getting Help
 
-[block:parameters]
-{
-  "data": {
-    "h-0": "Resource",
-    "h-1": "Description",
-    "h-2": "Link",
-    "0-0": "📚 Documentation",
-    "0-1": "Check the docs/ directory",
-    "0-2": "README",
-    "1-0": "🐛 Issues",
-    "1-1": "Search existing issues first",
-    "1-2": "GitHub Issues",
-    "2-0": "💬 Discussions",
-    "2-1": "Ask questions",
-    "2-2": "GitHub Discussions",
-    "3-0": "📜 Code of Conduct",
-    "3-1": "Be respectful and inclusive",
-    "3-2": "CODE_OF_CONDUCT.md"
-  },
-  "cols": 3,
-  "rows": 4
-}
-[/block]
+| Resource | Description | Link |
+|----------|-------------|------|
+| Documentation | Check the docs/ directory | README |
+| Issues | Search existing issues first | GitHub Issues |
+| Discussions | Ask questions | GitHub Discussions |
+| Code of Conduct | Be respectful and inclusive | CODE_OF_CONDUCT.md |
 
 ---
 
-[block:callout]
-{
-  "type": "success",
-  "title": "🎉 Thank You!",
-  "body": "Thank you for contributing to SkySpy! Your contributions help make aircraft tracking better for everyone."
-}
-[/block]
+> **Thank You!**
+>
+> Thank you for contributing to SkySpy! Your contributions help make aircraft tracking better for everyone.
