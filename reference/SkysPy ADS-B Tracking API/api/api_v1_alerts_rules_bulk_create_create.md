@@ -1,0 +1,9 @@
+---
+title: Bulk create rules
+excerpt: Create multiple rules at once (up to 100).
+api:
+  file: >-
+    privatetmpclaude-Users-maxwatermolen-source-skyspycfddf7bd-246f-4143-b242-257ab7f89c1ascratchpadopenapi_fixed.yaml
+  operationId: api_v1_alerts_rules_bulk_create_create
+hidden: false
+---
