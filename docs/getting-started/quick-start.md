@@ -82,40 +82,12 @@ flowchart TB
 
 SkysPy requires an ADS-B data source. Choose one of the supported options:
 
-<table>
-<tr>
-<td width="25%" align="center">
-
-**🌟 Ultrafeeder**
-
-⭐ Recommended
-
-Includes readsb + tar1090
-
-</td>
-<td width="25%" align="center">
-
-**📻 readsb**
-
-Standalone ADS-B decoder
-
-</td>
-<td width="25%" align="center">
-
-**✈️ dump1090-fa**
-
-FlightAware's decoder
-
-</td>
-<td width="25%" align="center">
-
-**🇺🇸 dump978**
-
-UAT (978 MHz) for US
-
-</td>
-</tr>
-</table>
+| Option | Description |
+|:------:|:------------|
+| **🌟 Ultrafeeder** (Recommended) | Includes readsb + tar1090 |
+| **📻 readsb** | Standalone ADS-B decoder |
+| **✈️ dump1090-fa** | FlightAware's decoder |
+| **🇺🇸 dump978** | UAT (978 MHz) for US |
 
 > ⚠️ **No ADS-B Receiver?**
 >
@@ -259,31 +231,11 @@ You should see the SkysPy dashboard with a live map showing aircraft in your are
 
 The main dashboard displays all aircraft currently being tracked:
 
-<table>
-<tr>
-<td width="33%" align="center">
-
-**🗺️ Map View**
-
-Interactive map with aircraft icons and trails
-
-</td>
-<td width="33%" align="center">
-
-**📋 Aircraft List**
-
-Sortable table with flight details
-
-</td>
-<td width="33%" align="center">
-
-**✈️ Aircraft Detail**
-
-Click any aircraft for detailed info
-
-</td>
-</tr>
-</table>
+| Feature | Description |
+|:-------:|:------------|
+| **🗺️ Map View** | Interactive map with aircraft icons and trails |
+| **📋 Aircraft List** | Sortable table with flight details |
+| **✈️ Aircraft Detail** | Click any aircraft for detailed info |
 
 **Aircraft Detail includes:**
 - 📍 Live position and telemetry
@@ -346,16 +298,8 @@ Notifications:
 APPRISE_URLS=telegram://bot_token/chat_id,discord://webhook_id/webhook_token
 ```
 
-<table>
-<tr>
-<td align="center">💬<br/><b>Telegram</b></td>
-<td align="center">🎮<br/><b>Discord</b></td>
-<td align="center">💼<br/><b>Slack</b></td>
-<td align="center">📱<br/><b>Pushover</b></td>
-<td align="center">📧<br/><b>Email</b></td>
-<td align="center">🔗<br/><b>Webhooks</b></td>
-</tr>
-</table>
+| 💬 Telegram | 🎮 Discord | 💼 Slack | 📱 Pushover | 📧 Email | 🔗 Webhooks |
+|:-----------:|:----------:|:--------:|:-----------:|:--------:|:-----------:|
 
 ---
 
@@ -377,22 +321,21 @@ SkysPy provides a comprehensive REST API for integration.
 
 #### 💻 Example API Requests
 
-<!--
-code-tabs
--->
+**Get all aircraft:**
 
 ```bash
-# Get all aircraft
 curl http://localhost:8000/api/v1/aircraft/
 ```
 
+**Get specific aircraft by ICAO hex:**
+
 ```bash
-# Get specific aircraft by ICAO hex
 curl http://localhost:8000/api/v1/aircraft/A12345/
 ```
 
+**Get system status:**
+
 ```bash
-# Get system status
 curl http://localhost:8000/api/v1/system/status/
 ```
 
@@ -679,37 +622,10 @@ curl http://localhost:8000/api/v1/system/status/
 
 ## 💬 Support
 
-<table>
-<tr>
-<td align="center" width="33%">
-
-### 🐛 Issues
-
-[GitHub Issues](https://github.com/your-org/skyspy/issues)
-
-Report bugs & request features
-
-</td>
-<td align="center" width="33%">
-
-### 💭 Discussions
-
-[GitHub Discussions](https://github.com/your-org/skyspy/discussions)
-
-Ask questions & share ideas
-
-</td>
-<td align="center" width="33%">
-
-### 📚 Documentation
-
-[Full Documentation](./README.md)
-
-Complete guides & references
-
-</td>
-</tr>
-</table>
+| 🐛 Issues | 💭 Discussions | 📚 Documentation |
+|:---------:|:--------------:|:----------------:|
+| [GitHub Issues](https://github.com/your-org/skyspy/issues) | [GitHub Discussions](https://github.com/your-org/skyspy/discussions) | [Full Documentation](./README.md) |
+| Report bugs and request features | Ask questions and share ideas | Complete guides and references |
 
 ---
 
