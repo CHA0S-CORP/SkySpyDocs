@@ -1,5 +1,6 @@
 ---
 title: Deployment Guide
+hidden: false
 ---
 
 # 🚀 Deployment Guide
