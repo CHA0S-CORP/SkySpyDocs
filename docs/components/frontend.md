@@ -1,5 +1,6 @@
 ---
 title: Frontend Architecture
+hidden: false
 ---
 
 # ⚛️ SkySpy Frontend Architecture
