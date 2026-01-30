@@ -1,5 +1,6 @@
 ---
 title: Cannonball Mode
+hidden: false
 ---
 
 # 🎯 Cannonball Mode
