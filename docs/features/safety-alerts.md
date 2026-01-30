@@ -1,5 +1,6 @@
 ---
 title: Safety Events & Alerts
+hidden: false
 ---
 
 # 🛡️ Safety Events & Alert System
