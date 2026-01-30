@@ -1,5 +1,6 @@
 ---
 title: REST API Reference
+hidden: false
 ---
 
 # SkySpy REST API Reference
