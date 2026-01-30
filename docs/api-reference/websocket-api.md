@@ -1,5 +1,6 @@
 ---
 title: WebSocket API Reference
+hidden: false
 ---
 
 # 🔌 WebSocket API Reference
