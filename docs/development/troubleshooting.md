@@ -1,5 +1,6 @@
 ---
 title: Troubleshooting
+hidden: false
 ---
 
 # 🔧 Troubleshooting Guide
