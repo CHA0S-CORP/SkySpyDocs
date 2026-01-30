@@ -1,5 +1,6 @@
 ---
 title: Contributing Guide
+hidden: false
 ---
 
 # 🤝 Contributing to SkySpy
