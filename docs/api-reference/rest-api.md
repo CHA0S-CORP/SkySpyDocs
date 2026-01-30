@@ -5,13 +5,13 @@ hidden: false
 
 # SkySpy REST API Reference
 
-> 🛫 **Enterprise-Ready API for Real-Time Aircraft Tracking and Aviation Intelligence**
+> **Enterprise-Ready API for Real-Time Aircraft Tracking and Aviation Intelligence**
 
 Welcome to the SkySpy API documentation. This comprehensive guide covers authentication, endpoints, request/response formats, and error handling for integrating with SkySpy's powerful aircraft tracking platform.
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ```mermaid
 sequenceDiagram
@@ -29,7 +29,7 @@ sequenceDiagram
 
 ---
 
-## 📍 API Overview
+## API Overview
 
 ### Base URL
 
@@ -38,7 +38,7 @@ sequenceDiagram
 | **Production** | `https://your-domain.com/api/v1/` |
 | **Development** | `http://localhost:8000/api/v1/` |
 
-> 📌 **API Version**: `v1` - All endpoints are prefixed with `/api/v1/`
+> **API Version**: `v1` - All endpoints are prefixed with `/api/v1/`
 
 ### Content Type
 
@@ -49,7 +49,7 @@ Content-Type: application/json
 Accept: application/json
 ```
 
-### 📖 Interactive Documentation
+### Interactive Documentation
 
 | Tool | URL | Description |
 |------|-----|-------------|
@@ -57,11 +57,11 @@ Accept: application/json
 | **ReDoc** | `/api/v1/redoc/` | Beautiful API reference |
 | **OpenAPI Schema** | `/api/v1/schema/` | Raw OpenAPI 3.0 spec |
 
-> 💡 **Try it!** Visit `/api/v1/docs/` for an interactive playground where you can test endpoints directly.
+> **Tip:** Visit `/api/v1/docs/` for an interactive playground where you can test endpoints directly.
 
 ---
 
-## 🔐 Authentication
+## Authentication
 
 SkySpy supports multiple authentication methods to accommodate different use cases.
 
@@ -73,10 +73,10 @@ SkySpy supports multiple authentication methods to accommodate different use cas
 | `authenticated` | ![Auth Required](https://img.shields.io/badge/mode-authenticated-important) | All endpoints require valid authentication |
 | `hybrid` | ![Hybrid](https://img.shields.io/badge/mode-hybrid-blue) | Public read access, authentication required for writes |
 
-> 📌 Check `/api/v1/auth/config` to discover the current authentication mode.
+> Check `/api/v1/auth/config` to discover the current authentication mode.
 
 <details>
-<summary><strong>🔑 JWT Bearer Token (Primary)</strong></summary>
+<summary><strong>JWT Bearer Token (Primary)</strong></summary>
 
 The primary authentication method using JSON Web Tokens.
 
@@ -87,27 +87,39 @@ Authorization: Bearer <access_token>
 
 **Obtaining Tokens:**
 
-[block:code]
-{
-  "codes": [
-    {
-      "code": "curl -X POST https://your-domain.com/api/v1/auth/login \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\n    \"username\": \"your-username\",\n    \"password\": \"your-password\"\n  }'",
-      "language": "bash",
-      "name": "cURL"
-    },
-    {
-      "code": "const response = await fetch('/api/v1/auth/login', {\n  method: 'POST',\n  headers: { 'Content-Type': 'application/json' },\n  body: JSON.stringify({\n    username: 'your-username',\n    password: 'your-password'\n  })\n});\nconst { access, refresh } = await response.json();",
-      "language": "javascript",
-      "name": "JavaScript"
-    },
-    {
-      "code": "import requests\n\nresponse = requests.post(\n    'https://your-domain.com/api/v1/auth/login',\n    json={\n        'username': 'your-username',\n        'password': 'your-password'\n    }\n)\ntokens = response.json()",
-      "language": "python",
-      "name": "Python"
+```bash
+curl -X POST https://your-domain.com/api/v1/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{
+    "username": "your-username",
+    "password": "your-password"
+  }'
+```
+
+```javascript
+const response = await fetch('/api/v1/auth/login', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    username: 'your-username',
+    password: 'your-password'
+  })
+});
+const { access, refresh } = await response.json();
+```
+
+```python
+import requests
+
+response = requests.post(
+    'https://your-domain.com/api/v1/auth/login',
+    json={
+        'username': 'your-username',
+        'password': 'your-password'
     }
-  ]
-}
-[/block]
+)
+tokens = response.json()
+```
 
 **Response:**
 ```json
@@ -135,7 +147,7 @@ curl -X POST https://your-domain.com/api/v1/auth/refresh \
 </details>
 
 <details>
-<summary><strong>🗝️ API Key Authentication</strong></summary>
+<summary><strong>API Key Authentication</strong></summary>
 
 For server-to-server integrations and automated systems.
 
@@ -148,12 +160,12 @@ or
 X-API-Key: sk_live_xxxxxxxxxxxx
 ```
 
-> 📌 API keys are scoped with specific permissions and can be managed through the user profile or admin interface.
+> API keys are scoped with specific permissions and can be managed through the user profile or admin interface.
 
 </details>
 
 <details>
-<summary><strong>🍪 Cookie-Based Authentication</strong></summary>
+<summary><strong>Cookie-Based Authentication</strong></summary>
 
 JWT tokens can also be stored in HTTP-only cookies for browser-based applications:
 
@@ -165,7 +177,7 @@ JWT tokens can also be stored in HTTP-only cookies for browser-based application
 </details>
 
 <details>
-<summary><strong>🏢 OIDC (OpenID Connect)</strong></summary>
+<summary><strong>OIDC (OpenID Connect)</strong></summary>
 
 Enterprise single sign-on support via OIDC providers.
 
@@ -199,7 +211,7 @@ GET /api/v1/auth/oidc/callback?code=<authorization_code>&state=<state>
 
 ---
 
-## ⚠️ Error Handling
+## Error Handling
 
 ### Standard Error Format
 
@@ -212,36 +224,36 @@ GET /api/v1/auth/oidc/callback?code=<authorization_code>&state=<state>
 
 ### HTTP Status Codes
 
-| Status | Emoji | Description |
-|--------|-------|-------------|
-| `200` | ✅ | Success |
-| `201` | ✅ | Created |
-| `204` | ✅ | No Content (successful deletion) |
-| `400` | ⚠️ | Bad Request - Invalid parameters |
-| `401` | ❌ | Unauthorized - Authentication required |
-| `403` | ❌ | Forbidden - Insufficient permissions |
-| `404` | ⚠️ | Not Found |
-| `429` | ⚠️ | Too Many Requests - Rate limit exceeded |
-| `500` | ❌ | Internal Server Error |
+| Status | Description |
+|--------|-------------|
+| `200` | Success |
+| `201` | Created |
+| `204` | No Content (successful deletion) |
+| `400` | Bad Request - Invalid parameters |
+| `401` | Unauthorized - Authentication required |
+| `403` | Forbidden - Insufficient permissions |
+| `404` | Not Found |
+| `429` | Too Many Requests - Rate limit exceeded |
+| `500` | Internal Server Error |
 
 <details>
-<summary><strong>📋 Error Examples</strong></summary>
+<summary><strong>Error Examples</strong></summary>
 
-**❌ Authentication Error (401):**
+**Authentication Error (401):**
 ```json
 {
   "detail": "Authentication credentials were not provided."
 }
 ```
 
-**❌ Permission Error (403):**
+**Permission Error (403):**
 ```json
 {
   "detail": "You do not have permission to perform this action."
 }
 ```
 
-**⚠️ Validation Error (400):**
+**Validation Error (400):**
 ```json
 {
   "error": "validation_error",
@@ -249,7 +261,7 @@ GET /api/v1/auth/oidc/callback?code=<authorization_code>&state=<state>
 }
 ```
 
-**⚠️ Rate Limit Error (429):**
+**Rate Limit Error (429):**
 ```json
 {
   "detail": "Request was throttled. Expected available in 60 seconds."
@@ -260,7 +272,7 @@ GET /api/v1/auth/oidc/callback?code=<authorization_code>&state=<state>
 
 ---
 
-## ⏱️ Rate Limiting
+## Rate Limiting
 
 API requests are subject to rate limiting to ensure fair usage.
 
@@ -282,7 +294,7 @@ X-RateLimit-Reset: 1640000000
 
 ---
 
-## 📄 Pagination
+## Pagination
 
 List endpoints support cursor-based or offset pagination.
 
@@ -306,16 +318,16 @@ List endpoints support cursor-based or offset pagination.
 
 ---
 
-## 📡 Endpoints
+## Endpoints
 
 ---
 
 <details open>
-<summary><h3>🔐 Authentication</h3></summary>
+<summary><h3>Authentication</h3></summary>
 
 ---
 
-#### 🟢 GET `/auth/config`
+#### GET `/auth/config`
 
 > Get Auth Configuration
 
@@ -323,41 +335,18 @@ List endpoints support cursor-based or offset pagination.
 
 Returns the current authentication configuration for the API.
 
-[block:code]
-{
-  "codes": [
-    {
-      "code": "curl https://your-domain.com/api/v1/auth/config",
-      "language": "bash",
-      "name": "cURL"
-    }
-  ]
-}
-[/block]
+```bash
+curl https://your-domain.com/api/v1/auth/config
+```
 
-[block:parameters]
-{
-  "data": {
-    "h-0": "Field",
-    "h-1": "Type",
-    "h-2": "Description",
-    "0-0": "`auth_mode`",
-    "0-1": "`string`",
-    "0-2": "Current auth mode (public, authenticated, hybrid)",
-    "1-0": "`local_login_enabled`",
-    "1-1": "`boolean`",
-    "1-2": "Whether username/password login is enabled",
-    "2-0": "`oidc_enabled`",
-    "2-1": "`boolean`",
-    "2-2": "Whether OIDC SSO is available",
-    "3-0": "`api_key_enabled`",
-    "3-1": "`boolean`",
-    "3-2": "Whether API key auth is available"
-  },
-  "cols": 3,
-  "rows": 4
-}
-[/block]
+**Response Fields:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `auth_mode` | `string` | Current auth mode (public, authenticated, hybrid) |
+| `local_login_enabled` | `boolean` | Whether username/password login is enabled |
+| `oidc_enabled` | `boolean` | Whether OIDC SSO is available |
+| `api_key_enabled` | `boolean` | Whether API key auth is available |
 
 **Response:**
 ```json
@@ -373,7 +362,7 @@ Returns the current authentication configuration for the API.
 
 ---
 
-#### 🟡 POST `/auth/login`
+#### POST `/auth/login`
 
 > Authenticate User
 
@@ -385,25 +374,28 @@ Authenticate with username and password to obtain JWT tokens.
 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
-| `username` | `string` | ✅ | User's username |
-| `password` | `string` | ✅ | User's password |
+| `username` | `string` | Yes | User's username |
+| `password` | `string` | Yes | User's password |
 
-[block:code]
-{
-  "codes": [
-    {
-      "code": "curl -X POST https://your-domain.com/api/v1/auth/login \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\n    \"username\": \"admin\",\n    \"password\": \"your-password\"\n  }'",
-      "language": "bash",
-      "name": "cURL"
-    },
-    {
-      "code": "const response = await fetch('/api/v1/auth/login', {\n  method: 'POST',\n  headers: { 'Content-Type': 'application/json' },\n  body: JSON.stringify({\n    username: 'admin',\n    password: 'your-password'\n  })\n});",
-      "language": "javascript",
-      "name": "JavaScript"
-    }
-  ]
-}
-[/block]
+```bash
+curl -X POST https://your-domain.com/api/v1/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{
+    "username": "admin",
+    "password": "your-password"
+  }'
+```
+
+```javascript
+const response = await fetch('/api/v1/auth/login', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    username: 'admin',
+    password: 'your-password'
+  })
+});
+```
 
 **Response:**
 ```json
@@ -423,7 +415,7 @@ Authenticate with username and password to obtain JWT tokens.
 
 ---
 
-#### 🟡 POST `/auth/logout`
+#### POST `/auth/logout`
 
 > Invalidate Session
 
@@ -431,17 +423,12 @@ Authenticate with username and password to obtain JWT tokens.
 
 Invalidate the current session and blacklist the refresh token.
 
-[block:code]
-{
-  "codes": [
-    {
-      "code": "curl -X POST https://your-domain.com/api/v1/auth/logout \\\n  -H \"Authorization: Bearer $ACCESS_TOKEN\" \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"refresh\": \"<refresh_token>\"}'",
-      "language": "bash",
-      "name": "cURL"
-    }
-  ]
-}
-[/block]
+```bash
+curl -X POST https://your-domain.com/api/v1/auth/logout \
+  -H "Authorization: Bearer $ACCESS_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"refresh": "<refresh_token>"}'
+```
 
 **Response:**
 ```json
@@ -453,7 +440,7 @@ Invalidate the current session and blacklist the refresh token.
 
 ---
 
-#### 🟡 POST `/auth/refresh`
+#### POST `/auth/refresh`
 
 > Refresh Access Token
 
@@ -465,7 +452,7 @@ Obtain a new access token using a refresh token.
 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
-| `refresh` | `string` | ✅ | Valid refresh token |
+| `refresh` | `string` | Yes | Valid refresh token |
 
 **Response:**
 ```json
@@ -476,7 +463,7 @@ Obtain a new access token using a refresh token.
 
 ---
 
-#### 🟢 GET `/auth/profile`
+#### GET `/auth/profile`
 
 > Get User Profile
 
@@ -484,17 +471,10 @@ Obtain a new access token using a refresh token.
 
 Retrieve the authenticated user's profile including roles and permissions.
 
-[block:code]
-{
-  "codes": [
-    {
-      "code": "curl https://your-domain.com/api/v1/auth/profile \\\n  -H \"Authorization: Bearer $ACCESS_TOKEN\"",
-      "language": "bash",
-      "name": "cURL"
-    }
-  ]
-}
-[/block]
+```bash
+curl https://your-domain.com/api/v1/auth/profile \
+  -H "Authorization: Bearer $ACCESS_TOKEN"
+```
 
 **Response:**
 ```json
@@ -528,7 +508,7 @@ Retrieve the authenticated user's profile including roles and permissions.
 
 ---
 
-#### 🔵 PATCH `/auth/profile`
+#### PATCH `/auth/profile`
 
 > Update User Profile
 
@@ -540,13 +520,13 @@ Update the authenticated user's profile.
 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
-| `first_name` | `string` | ❌ | User's first name |
-| `last_name` | `string` | ❌ | User's last name |
-| `email` | `string` | ❌ | User's email address |
+| `first_name` | `string` | No | User's first name |
+| `last_name` | `string` | No | User's last name |
+| `email` | `string` | No | User's email address |
 
 ---
 
-#### 🟡 POST `/auth/password`
+#### POST `/auth/password`
 
 > Change Password
 
@@ -558,19 +538,19 @@ Change the authenticated user's password.
 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
-| `current_password` | `string` | ✅ | Current password |
-| `new_password` | `string` | ✅ | New password |
+| `current_password` | `string` | Yes | Current password |
+| `new_password` | `string` | Yes | New password |
 
 </details>
 
 ---
 
 <details open>
-<summary><h3>✈️ Aircraft Tracking</h3></summary>
+<summary><h3>Aircraft Tracking</h3></summary>
 
 ---
 
-#### 🟢 GET `/aircraft/`
+#### GET `/aircraft/`
 
 > List All Aircraft
 
@@ -588,22 +568,20 @@ Get all currently tracked aircraft with optional filtering.
 | `min_distance` | `float` | - | Minimum distance in NM |
 | `max_distance` | `float` | - | Maximum distance in NM |
 
-[block:code]
-{
-  "codes": [
-    {
-      "code": "# Get all aircraft\ncurl https://your-domain.com/api/v1/aircraft/\n\n# Get military aircraft under 10,000 ft\ncurl \"https://your-domain.com/api/v1/aircraft/?military=true&max_alt=10000\"",
-      "language": "bash",
-      "name": "cURL"
-    },
-    {
-      "code": "const aircraft = await fetch('/api/v1/aircraft/?military=true')\n  .then(r => r.json());\n\nconsole.log(`Tracking ${aircraft.count} military aircraft`);",
-      "language": "javascript",
-      "name": "JavaScript"
-    }
-  ]
-}
-[/block]
+```bash
+# Get all aircraft
+curl https://your-domain.com/api/v1/aircraft/
+
+# Get military aircraft under 10,000 ft
+curl "https://your-domain.com/api/v1/aircraft/?military=true&max_alt=10000"
+```
+
+```javascript
+const aircraft = await fetch('/api/v1/aircraft/?military=true')
+  .then(r => r.json());
+
+console.log(`Tracking ${aircraft.count} military aircraft`);
+```
 
 **Response:**
 ```json
@@ -636,7 +614,7 @@ Get all currently tracked aircraft with optional filtering.
 
 ---
 
-#### 🟢 GET `/aircraft/{icao_hex}/`
+#### GET `/aircraft/{icao_hex}/`
 
 > Get Aircraft Detail
 
@@ -650,17 +628,9 @@ Get detailed information for a specific aircraft including airframe data, photos
 |-----------|------|-------------|
 | `icao_hex` | `string` | ICAO 24-bit hex identifier (e.g., `A1B2C3`) |
 
-[block:code]
-{
-  "codes": [
-    {
-      "code": "curl https://your-domain.com/api/v1/aircraft/A1B2C3/",
-      "language": "bash",
-      "name": "cURL"
-    }
-  ]
-}
-[/block]
+```bash
+curl https://your-domain.com/api/v1/aircraft/A1B2C3/
+```
 
 **Response:**
 ```json
@@ -692,7 +662,7 @@ Get detailed information for a specific aircraft including airframe data, photos
 
 ---
 
-#### 🟢 GET `/aircraft/top/`
+#### GET `/aircraft/top/`
 
 > Get Top Aircraft
 
@@ -721,7 +691,7 @@ Get notable aircraft sorted by various criteria (closest, highest, fastest, etc.
 
 ---
 
-#### 🟢 GET `/aircraft/stats/`
+#### GET `/aircraft/stats/`
 
 > Get Aircraft Statistics
 
@@ -754,7 +724,7 @@ Get statistical summary of currently tracked aircraft.
 
 ---
 
-#### 🟢 GET `/aircraft/geojson/`
+#### GET `/aircraft/geojson/`
 
 > Get Aircraft GeoJSON
 
@@ -791,7 +761,7 @@ Get aircraft positions in GeoJSON format for mapping applications.
 
 ---
 
-#### 🟡 POST `/aircraft/bulk-info/`
+#### POST `/aircraft/bulk-info/`
 
 > Bulk Aircraft Info
 
@@ -803,19 +773,13 @@ Get information for multiple aircraft at once.
 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
-| `icao_list` | `array` | ✅ | Array of ICAO hex codes |
+| `icao_list` | `array` | Yes | Array of ICAO hex codes |
 
-[block:code]
-{
-  "codes": [
-    {
-      "code": "curl -X POST https://your-domain.com/api/v1/aircraft/bulk-info/ \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"icao_list\": [\"A1B2C3\", \"D4E5F6\", \"G7H8I9\"]}'",
-      "language": "bash",
-      "name": "cURL"
-    }
-  ]
-}
-[/block]
+```bash
+curl -X POST https://your-domain.com/api/v1/aircraft/bulk-info/ \
+  -H "Content-Type: application/json" \
+  -d '{"icao_list": ["A1B2C3", "D4E5F6", "G7H8I9"]}'
+```
 
 **Response:**
 ```json
@@ -842,11 +806,11 @@ Get information for multiple aircraft at once.
 ---
 
 <details>
-<summary><h3>📸 Aircraft Photos</h3></summary>
+<summary><h3>Aircraft Photos</h3></summary>
 
 ---
 
-#### 🟢 GET `/photos/{icao_hex}`
+#### GET `/photos/{icao_hex}`
 
 > Get Aircraft Photo
 
@@ -856,7 +820,7 @@ Retrieve a cached aircraft photo. Returns the image file directly with appropria
 
 ---
 
-#### 🟢 GET `/photos/{icao_hex}/thumb`
+#### GET `/photos/{icao_hex}/thumb`
 
 > Get Aircraft Thumbnail
 
@@ -869,11 +833,11 @@ Retrieve a cached aircraft photo thumbnail.
 ---
 
 <details open>
-<summary><h3>🚨 Alert Rules</h3></summary>
+<summary><h3>Alert Rules</h3></summary>
 
 ---
 
-#### 🟢 GET `/alerts/rules/`
+#### GET `/alerts/rules/`
 
 > List Alert Rules
 
@@ -918,7 +882,7 @@ Get all alert rules accessible to the current user.
 
 ---
 
-#### 🟡 POST `/alerts/rules/`
+#### POST `/alerts/rules/`
 
 > Create Alert Rule
 
@@ -941,34 +905,57 @@ flowchart LR
 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
-| `name` | `string` | ✅ | Rule name |
-| `type` | `string` | ✅ | Rule type (military, squawk, callsign, etc.) |
-| `operator` | `string` | ✅ | Comparison operator (eq, ne, lt, gt, in, contains) |
-| `value` | `string` | ✅ | Value to compare against |
-| `priority` | `string` | ❌ | Priority level (info, warning, critical) |
-| `enabled` | `boolean` | ❌ | Whether rule is active |
-| `cooldown_minutes` | `integer` | ❌ | Minutes between repeat alerts |
+| `name` | `string` | Yes | Rule name |
+| `type` | `string` | Yes | Rule type (military, squawk, callsign, etc.) |
+| `operator` | `string` | Yes | Comparison operator (eq, ne, lt, gt, in, contains) |
+| `value` | `string` | Yes | Value to compare against |
+| `priority` | `string` | No | Priority level (info, warning, critical) |
+| `enabled` | `boolean` | No | Whether rule is active |
+| `cooldown_minutes` | `integer` | No | Minutes between repeat alerts |
 
-[block:code]
-{
-  "codes": [
-    {
-      "code": "# Simple rule: Alert on emergency squawks\ncurl -X POST https://your-domain.com/api/v1/alerts/rules/ \\\n  -H \"Authorization: Bearer $TOKEN\" \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\n    \"name\": \"Emergency Squawk\",\n    \"type\": \"squawk\",\n    \"operator\": \"in\",\n    \"value\": \"7500,7600,7700\",\n    \"priority\": \"critical\",\n    \"cooldown_minutes\": 0\n  }'",
-      "language": "bash",
-      "name": "Simple Rule"
+**Simple Rule Example - Alert on emergency squawks:**
+
+```bash
+curl -X POST https://your-domain.com/api/v1/alerts/rules/ \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Emergency Squawk",
+    "type": "squawk",
+    "operator": "in",
+    "value": "7500,7600,7700",
+    "priority": "critical",
+    "cooldown_minutes": 0
+  }'
+```
+
+**Complex Rule Example - Low-flying military aircraft:**
+
+```bash
+curl -X POST https://your-domain.com/api/v1/alerts/rules/ \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Low Military Aircraft",
+    "conditions": {
+      "logic": "AND",
+      "groups": [
+        {
+          "logic": "AND",
+          "conditions": [
+            {"type": "military", "operator": "eq", "value": "true"},
+            {"type": "altitude", "operator": "lt", "value": "5000"}
+          ]
+        }
+      ]
     },
-    {
-      "code": "# Complex rule: Low-flying military aircraft\ncurl -X POST https://your-domain.com/api/v1/alerts/rules/ \\\n  -H \"Authorization: Bearer $TOKEN\" \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\n    \"name\": \"Low Military Aircraft\",\n    \"conditions\": {\n      \"logic\": \"AND\",\n      \"groups\": [\n        {\n          \"logic\": \"AND\",\n          \"conditions\": [\n            {\"type\": \"military\", \"operator\": \"eq\", \"value\": \"true\"},\n            {\"type\": \"altitude\", \"operator\": \"lt\", \"value\": \"5000\"}\n          ]\n        }\n      ]\n    },\n    \"priority\": \"warning\"\n  }'",
-      "language": "bash",
-      "name": "Complex Rule"
-    }
-  ]
-}
-[/block]
+    "priority": "warning"
+  }'
+```
 
 ---
 
-#### 🔵 PATCH `/alerts/rules/{id}/`
+#### PATCH `/alerts/rules/{id}/`
 
 > Update Alert Rule
 
@@ -978,7 +965,7 @@ Update an existing alert rule.
 
 ---
 
-#### 🔴 DELETE `/alerts/rules/{id}/`
+#### DELETE `/alerts/rules/{id}/`
 
 > Delete Alert Rule
 
@@ -988,7 +975,7 @@ Delete an alert rule. Returns `204 No Content` on success.
 
 ---
 
-#### 🟡 POST `/alerts/rules/test/`
+#### POST `/alerts/rules/test/`
 
 > Test Alert Rule
 
@@ -996,17 +983,22 @@ Delete an alert rule. Returns `204 No Content` on success.
 
 Test a rule configuration against current or provided aircraft data.
 
-[block:code]
-{
-  "codes": [
-    {
-      "code": "curl -X POST https://your-domain.com/api/v1/alerts/rules/test/ \\\n  -H \"Authorization: Bearer $TOKEN\" \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\n    \"rule\": {\n      \"type\": \"altitude\",\n      \"operator\": \"lt\",\n      \"value\": \"1000\"\n    },\n    \"aircraft\": [\n      {\"hex\": \"A1B2C3\", \"alt_baro\": 500},\n      {\"hex\": \"D4E5F6\", \"alt_baro\": 5000}\n    ]\n  }'",
-      "language": "bash",
-      "name": "cURL"
-    }
-  ]
-}
-[/block]
+```bash
+curl -X POST https://your-domain.com/api/v1/alerts/rules/test/ \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "rule": {
+      "type": "altitude",
+      "operator": "lt",
+      "value": "1000"
+    },
+    "aircraft": [
+      {"hex": "A1B2C3", "alt_baro": 500},
+      {"hex": "D4E5F6", "alt_baro": 5000}
+    ]
+  }'
+```
 
 **Response:**
 ```json
@@ -1021,7 +1013,7 @@ Test a rule configuration against current or provided aircraft data.
 
 ---
 
-#### 🟡 POST `/alerts/rules/bulk-toggle/`
+#### POST `/alerts/rules/bulk-toggle/`
 
 > Bulk Toggle Rules
 
@@ -1031,7 +1023,7 @@ Enable or disable multiple rules at once.
 
 ---
 
-#### 🟢 GET `/alerts/rules/export/`
+#### GET `/alerts/rules/export/`
 
 > Export Rules
 
@@ -1041,7 +1033,7 @@ Export alert rules as JSON for backup or sharing.
 
 ---
 
-#### 🟡 POST `/alerts/rules/import/`
+#### POST `/alerts/rules/import/`
 
 > Import Rules
 
@@ -1054,11 +1046,11 @@ Import alert rules from JSON.
 ---
 
 <details>
-<summary><h3>📜 Alert History</h3></summary>
+<summary><h3>Alert History</h3></summary>
 
 ---
 
-#### 🟢 GET `/alerts/history/`
+#### GET `/alerts/history/`
 
 > List Alert History
 
@@ -1105,7 +1097,7 @@ Get triggered alert history.
 
 ---
 
-#### 🟡 POST `/alerts/history/{id}/acknowledge/`
+#### POST `/alerts/history/{id}/acknowledge/`
 
 > Acknowledge Alert
 
@@ -1115,7 +1107,7 @@ Mark an alert as acknowledged.
 
 ---
 
-#### 🟡 POST `/alerts/history/bulk-acknowledge/`
+#### POST `/alerts/history/bulk-acknowledge/`
 
 > Bulk Acknowledge Alerts
 
@@ -1128,11 +1120,11 @@ Acknowledge multiple alerts at once.
 ---
 
 <details>
-<summary><h3>🔔 Notification Channels</h3></summary>
+<summary><h3>Notification Channels</h3></summary>
 
 ---
 
-#### 🟢 GET `/notifications/channels/`
+#### GET `/notifications/channels/`
 
 > List Notification Channels
 
@@ -1162,7 +1154,7 @@ Get configured notification channels.
 
 ---
 
-#### 🟡 POST `/notifications/channels/`
+#### POST `/notifications/channels/`
 
 > Create Notification Channel
 
@@ -1170,31 +1162,56 @@ Get configured notification channels.
 
 Create a new notification channel.
 
-[block:code]
-{
-  "codes": [
-    {
-      "code": "# Discord webhook\ncurl -X POST https://your-domain.com/api/v1/notifications/channels/ \\\n  -H \"Authorization: Bearer $TOKEN\" \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\n    \"name\": \"Discord Alerts\",\n    \"channel_type\": \"discord\",\n    \"config\": {\n      \"webhook_url\": \"https://discord.com/api/webhooks/...\"\n    }\n  }'",
-      "language": "bash",
-      "name": "Discord"
-    },
-    {
-      "code": "# Email channel\ncurl -X POST https://your-domain.com/api/v1/notifications/channels/ \\\n  -H \"Authorization: Bearer $TOKEN\" \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\n    \"name\": \"Email Alerts\",\n    \"channel_type\": \"email\",\n    \"config\": {\n      \"recipients\": [\"alerts@example.com\"]\n    }\n  }'",
-      "language": "bash",
-      "name": "Email"
-    },
-    {
-      "code": "# Custom webhook\ncurl -X POST https://your-domain.com/api/v1/notifications/channels/ \\\n  -H \"Authorization: Bearer $TOKEN\" \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\n    \"name\": \"Custom Webhook\",\n    \"channel_type\": \"webhook\",\n    \"config\": {\n      \"url\": \"https://your-server.com/webhook\",\n      \"method\": \"POST\",\n      \"headers\": {\"Authorization\": \"Bearer your-token\"}\n    }\n  }'",
-      "language": "bash",
-      "name": "Webhook"
+**Discord webhook:**
+
+```bash
+curl -X POST https://your-domain.com/api/v1/notifications/channels/ \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Discord Alerts",
+    "channel_type": "discord",
+    "config": {
+      "webhook_url": "https://discord.com/api/webhooks/..."
     }
-  ]
-}
-[/block]
+  }'
+```
+
+**Email channel:**
+
+```bash
+curl -X POST https://your-domain.com/api/v1/notifications/channels/ \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Email Alerts",
+    "channel_type": "email",
+    "config": {
+      "recipients": ["alerts@example.com"]
+    }
+  }'
+```
+
+**Custom webhook:**
+
+```bash
+curl -X POST https://your-domain.com/api/v1/notifications/channels/ \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Custom Webhook",
+    "channel_type": "webhook",
+    "config": {
+      "url": "https://your-server.com/webhook",
+      "method": "POST",
+      "headers": {"Authorization": "Bearer your-token"}
+    }
+  }'
+```
 
 ---
 
-#### 🟡 POST `/notifications/channels/{id}/test/`
+#### POST `/notifications/channels/{id}/test/`
 
 > Test Notification Channel
 
@@ -1207,11 +1224,11 @@ Send a test notification to verify configuration.
 ---
 
 <details>
-<summary><h3>⚠️ Safety Events</h3></summary>
+<summary><h3>Safety Events</h3></summary>
 
 ---
 
-#### 🟢 GET `/safety/events/`
+#### GET `/safety/events/`
 
 > List Safety Events
 
@@ -1255,7 +1272,7 @@ Get safety monitoring events (TCAS alerts, conflicts, etc.).
 
 ---
 
-#### 🟢 GET `/safety/events/{id}/`
+#### GET `/safety/events/{id}/`
 
 > Get Safety Event Detail
 
@@ -1265,7 +1282,7 @@ Get detailed information about a specific safety event.
 
 ---
 
-#### 🟡 POST `/safety/events/{id}/acknowledge/`
+#### POST `/safety/events/{id}/acknowledge/`
 
 > Acknowledge Safety Event
 
@@ -1275,7 +1292,7 @@ Mark a safety event as reviewed.
 
 ---
 
-#### 🟢 GET `/safety/stats/`
+#### GET `/safety/stats/`
 
 > Get Safety Statistics
 
@@ -1309,7 +1326,7 @@ Get safety monitoring statistics.
 
 ---
 
-#### 🟢 GET `/safety/aircraft/{icao_hex}/stats/`
+#### GET `/safety/aircraft/{icao_hex}/stats/`
 
 > Get Aircraft Safety Stats
 
@@ -1322,11 +1339,11 @@ Get safety statistics for a specific aircraft.
 ---
 
 <details>
-<summary><h3>📚 History</h3></summary>
+<summary><h3>History</h3></summary>
 
 ---
 
-#### 🟢 GET `/history/sightings/`
+#### GET `/history/sightings/`
 
 > List Sightings
 
@@ -1348,7 +1365,7 @@ Get historical aircraft sighting records.
 
 ---
 
-#### 🟢 GET `/history/sessions/`
+#### GET `/history/sessions/`
 
 > List Sessions
 
@@ -1368,7 +1385,7 @@ Get aircraft tracking sessions.
 
 ---
 
-#### 🟢 GET `/history/stats/`
+#### GET `/history/stats/`
 
 > Get History Statistics
 
@@ -1378,7 +1395,7 @@ Get historical tracking statistics.
 
 ---
 
-#### 🟢 GET `/history/trends/`
+#### GET `/history/trends/`
 
 > Get Trends
 
@@ -1395,7 +1412,7 @@ Get time-series trend data.
 
 ---
 
-#### 🟢 GET `/history/top/`
+#### GET `/history/top/`
 
 > Get Top Performers
 
@@ -1408,11 +1425,11 @@ Get notable tracking sessions (longest tracked, furthest distance, etc.).
 ---
 
 <details>
-<summary><h3>🌤️ Aviation Data</h3></summary>
+<summary><h3>Aviation Data</h3></summary>
 
 ---
 
-#### 🟢 GET `/aviation/metar/`
+#### GET `/aviation/metar/`
 
 > Get METAR
 
@@ -1429,17 +1446,13 @@ Get current METAR weather observations.
 | `lon` | `float` | Center longitude for area search |
 | `radius_nm` | `float` | Search radius in nautical miles |
 
-[block:code]
-{
-  "codes": [
-    {
-      "code": "# Get METAR for specific airport\ncurl \"https://your-domain.com/api/v1/aviation/metar/?icao=KSEA\"\n\n# Get METARs within 50nm of a location\ncurl \"https://your-domain.com/api/v1/aviation/metar/?lat=47.6&lon=-122.3&radius_nm=50\"",
-      "language": "bash",
-      "name": "cURL"
-    }
-  ]
-}
-[/block]
+```bash
+# Get METAR for specific airport
+curl "https://your-domain.com/api/v1/aviation/metar/?icao=KSEA"
+
+# Get METARs within 50nm of a location
+curl "https://your-domain.com/api/v1/aviation/metar/?lat=47.6&lon=-122.3&radius_nm=50"
+```
 
 **Response:**
 ```json
@@ -1467,7 +1480,7 @@ Get current METAR weather observations.
 
 ---
 
-#### 🟢 GET `/aviation/taf/`
+#### GET `/aviation/taf/`
 
 > Get TAF
 
@@ -1477,7 +1490,7 @@ Get terminal aerodrome forecasts.
 
 ---
 
-#### 🟢 GET `/aviation/pireps/`
+#### GET `/aviation/pireps/`
 
 > Get PIREPs
 
@@ -1496,7 +1509,7 @@ Get pilot reports.
 
 ---
 
-#### 🟢 GET `/aviation/airports/`
+#### GET `/aviation/airports/`
 
 > Get Airports
 
@@ -1506,7 +1519,7 @@ Get airport information.
 
 ---
 
-#### 🟢 GET `/aviation/navaids/`
+#### GET `/aviation/navaids/`
 
 > Get Navaids
 
@@ -1516,7 +1529,7 @@ Get navigation aids.
 
 ---
 
-#### 🟢 GET `/aviation/airspace/`
+#### GET `/aviation/airspace/`
 
 > Get Airspace
 
@@ -1529,11 +1542,11 @@ Get airspace boundaries and advisories.
 ---
 
 <details>
-<summary><h3>📋 NOTAMs</h3></summary>
+<summary><h3>NOTAMs</h3></summary>
 
 ---
 
-#### 🟢 GET `/notams/`
+#### GET `/notams/`
 
 > List NOTAMs
 
@@ -1555,7 +1568,7 @@ Get Notices to Air Missions.
 
 ---
 
-#### 🟢 GET `/notams/tfrs/`
+#### GET `/notams/tfrs/`
 
 > Get TFRs
 
@@ -1565,7 +1578,7 @@ Get Temporary Flight Restrictions.
 
 ---
 
-#### 🟢 GET `/notams/nearby/`
+#### GET `/notams/nearby/`
 
 > Get Nearby NOTAMs
 
@@ -1577,13 +1590,13 @@ Get NOTAMs near a specific location.
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
-| `lat` | `float` | ✅ | Center latitude |
-| `lon` | `float` | ✅ | Center longitude |
-| `radius_nm` | `float` | ❌ | Search radius (default: 50) |
+| `lat` | `float` | Yes | Center latitude |
+| `lon` | `float` | Yes | Center longitude |
+| `radius_nm` | `float` | No | Search radius (default: 50) |
 
 ---
 
-#### 🟢 GET `/notams/airport/{icao}/`
+#### GET `/notams/airport/{icao}/`
 
 > Get Airport NOTAMs
 
@@ -1593,7 +1606,7 @@ Get all NOTAMs for a specific airport.
 
 ---
 
-#### 🟢 GET `/notams/stats/`
+#### GET `/notams/stats/`
 
 > Get NOTAM Statistics
 
@@ -1603,7 +1616,7 @@ Get NOTAM cache statistics.
 
 ---
 
-#### 🟡 POST `/notams/refresh/`
+#### POST `/notams/refresh/`
 
 > Refresh NOTAMs
 
@@ -1616,11 +1629,11 @@ Manually trigger a NOTAM cache refresh.
 ---
 
 <details>
-<summary><h3>📨 ACARS Messages</h3></summary>
+<summary><h3>ACARS Messages</h3></summary>
 
 ---
 
-#### 🟢 GET `/acars/`
+#### GET `/acars/`
 
 > List ACARS Messages
 
@@ -1664,7 +1677,7 @@ Get ACARS/CPDLC messages.
 
 ---
 
-#### 🟢 GET `/acars/stats/`
+#### GET `/acars/stats/`
 
 > Get ACARS Statistics
 
@@ -1677,11 +1690,11 @@ Get ACARS reception statistics.
 ---
 
 <details>
-<summary><h3>🎙️ Audio Transmissions</h3></summary>
+<summary><h3>Audio Transmissions</h3></summary>
 
 ---
 
-#### 🟢 GET `/audio/`
+#### GET `/audio/`
 
 > List Audio Transmissions
 
@@ -1701,7 +1714,7 @@ Get recorded radio transmissions.
 
 ---
 
-#### 🟢 GET `/audio/{id}/file`
+#### GET `/audio/{id}/file`
 
 > Get Audio File
 
@@ -1711,7 +1724,7 @@ Download an audio transmission file. Returns audio file with appropriate Content
 
 ---
 
-#### 🟢 GET `/audio/stats/`
+#### GET `/audio/stats/`
 
 > Get Audio Statistics
 
@@ -1724,11 +1737,11 @@ Get audio reception statistics.
 ---
 
 <details>
-<summary><h3>🗺️ Map Data</h3></summary>
+<summary><h3>Map Data</h3></summary>
 
 ---
 
-#### 🟢 GET `/map/overlays/`
+#### GET `/map/overlays/`
 
 > Get Map Overlays
 
@@ -1745,7 +1758,7 @@ Get GeoJSON overlays for map display.
 
 ---
 
-#### 🟢 GET `/map/routes/`
+#### GET `/map/routes/`
 
 > Get Routes
 
@@ -1765,7 +1778,7 @@ Get common flight routes.
 ---
 
 <details>
-<summary><h3>🎯 Cannonball Mode</h3></summary>
+<summary><h3>Cannonball Mode</h3></summary>
 
 > Law enforcement aircraft detection and tracking
 
@@ -1792,7 +1805,7 @@ sequenceDiagram
 
 ---
 
-#### 🟢 GET `/cannonball/threats/`
+#### GET `/cannonball/threats/`
 
 > Get Threats
 
@@ -1804,9 +1817,9 @@ Get real-time threat data based on user location.
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
-| `lat` | `float` | ✅ | User latitude |
-| `lon` | `float` | ✅ | User longitude |
-| `range_nm` | `float` | ❌ | Detection range (default: 15) |
+| `lat` | `float` | Yes | User latitude |
+| `lon` | `float` | Yes | User longitude |
+| `range_nm` | `float` | No | Detection range (default: 15) |
 
 **Response:**
 ```json
@@ -1843,7 +1856,7 @@ Get real-time threat data based on user location.
 
 ---
 
-#### 🟡 POST `/cannonball/location/`
+#### POST `/cannonball/location/`
 
 > Update Location
 
@@ -1855,14 +1868,14 @@ Update user location for threat tracking.
 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
-| `lat` | `float` | ✅ | Current latitude |
-| `lon` | `float` | ✅ | Current longitude |
-| `heading` | `integer` | ❌ | Current heading (0-360) |
-| `speed` | `float` | ❌ | Current speed |
+| `lat` | `float` | Yes | Current latitude |
+| `lon` | `float` | Yes | Current longitude |
+| `heading` | `integer` | No | Current heading (0-360) |
+| `speed` | `float` | No | Current speed |
 
 ---
 
-#### 🟡 POST `/cannonball/activate/`
+#### POST `/cannonball/activate/`
 
 > Activate Cannonball Mode
 
@@ -1870,21 +1883,25 @@ Update user location for threat tracking.
 
 Activate threat detection mode with custom settings.
 
-[block:code]
-{
-  "codes": [
-    {
-      "code": "curl -X POST https://your-domain.com/api/v1/cannonball/activate/ \\\n  -H \"Authorization: Bearer $TOKEN\" \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\n    \"lat\": 47.6062,\n    \"lon\": -122.3321,\n    \"settings\": {\n      \"max_range_nm\": 15,\n      \"alert_distance_nm\": 5,\n      \"voice_enabled\": true,\n      \"patterns_enabled\": [\"circling\", \"loitering\", \"grid_search\"]\n    }\n  }'",
-      "language": "bash",
-      "name": "cURL"
+```bash
+curl -X POST https://your-domain.com/api/v1/cannonball/activate/ \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "lat": 47.6062,
+    "lon": -122.3321,
+    "settings": {
+      "max_range_nm": 15,
+      "alert_distance_nm": 5,
+      "voice_enabled": true,
+      "patterns_enabled": ["circling", "loitering", "grid_search"]
     }
-  ]
-}
-[/block]
+  }'
+```
 
 ---
 
-#### 🔴 DELETE `/cannonball/activate/`
+#### DELETE `/cannonball/activate/`
 
 > Deactivate Cannonball Mode
 
@@ -1894,7 +1911,7 @@ Deactivate threat detection mode.
 
 ---
 
-#### 🟢 GET `/cannonball/sessions/`
+#### GET `/cannonball/sessions/`
 
 > List Sessions
 
@@ -1904,7 +1921,7 @@ Get Cannonball tracking sessions.
 
 ---
 
-#### 🟢 GET `/cannonball/patterns/`
+#### GET `/cannonball/patterns/`
 
 > List Patterns
 
@@ -1914,7 +1931,7 @@ Get detected flight patterns.
 
 ---
 
-#### 🟢 GET `/cannonball/alerts/`
+#### GET `/cannonball/alerts/`
 
 > List Cannonball Alerts
 
@@ -1924,7 +1941,7 @@ Get Cannonball-specific alerts.
 
 ---
 
-#### 🟢 GET `/cannonball/known/`
+#### GET `/cannonball/known/`
 
 > Get Known Aircraft Database
 
@@ -1934,7 +1951,7 @@ Get known law enforcement aircraft.
 
 ---
 
-#### 🟡 POST `/cannonball/known/`
+#### POST `/cannonball/known/`
 
 > Add Known Aircraft
 
@@ -1947,13 +1964,13 @@ Add an aircraft to the known LE database.
 ---
 
 <details>
-<summary><h3>📱 Mobile Position API</h3></summary>
+<summary><h3>Mobile Position API</h3></summary>
 
 > Mobile device position tracking for Cannonball mode
 
 ---
 
-#### 🟡 POST `/mobile/position/`
+#### POST `/mobile/position/`
 
 > Update Position
 
@@ -1965,15 +1982,15 @@ Update mobile device position and get nearby threats.
 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
-| `lat` | `float` | ✅ | Current latitude |
-| `lon` | `float` | ✅ | Current longitude |
-| `session_id` | `string` | ❌ | Optional session ID |
-| `heading` | `integer` | ❌ | Current heading |
-| `radius_nm` | `float` | ❌ | Search radius (default: 25) |
+| `lat` | `float` | Yes | Current latitude |
+| `lon` | `float` | Yes | Current longitude |
+| `session_id` | `string` | No | Optional session ID |
+| `heading` | `integer` | No | Current heading |
+| `radius_nm` | `float` | No | Search radius (default: 25) |
 
 ---
 
-#### 🟢 GET `/mobile/threats/`
+#### GET `/mobile/threats/`
 
 > Get Threats
 
@@ -1985,12 +2002,12 @@ Get threats for a stored session position.
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
-| `session_id` | `string` | ✅ | Session ID from position update |
-| `radius_nm` | `float` | ❌ | Threat radius (default: 25) |
+| `session_id` | `string` | Yes | Session ID from position update |
+| `radius_nm` | `float` | No | Threat radius (default: 25) |
 
 ---
 
-#### 🟡 POST `/mobile/session/start/`
+#### POST `/mobile/session/start/`
 
 > Start Session
 
@@ -2000,7 +2017,7 @@ Start a new mobile tracking session.
 
 ---
 
-#### 🟡 POST `/mobile/session/end/`
+#### POST `/mobile/session/end/`
 
 > End Session
 
@@ -2010,7 +2027,7 @@ End a mobile tracking session.
 
 ---
 
-#### 🟢 GET `/mobile/session/history/`
+#### GET `/mobile/session/history/`
 
 > Get Session History
 
@@ -2023,11 +2040,11 @@ Get encounter history for a persistent session.
 ---
 
 <details>
-<summary><h3>🖥️ System</h3></summary>
+<summary><h3>System</h3></summary>
 
 ---
 
-#### 🟢 GET `/health`
+#### GET `/health`
 
 > Health Check
 
@@ -2035,17 +2052,9 @@ Get encounter history for a persistent session.
 
 Basic health check endpoint (no authentication required).
 
-[block:code]
-{
-  "codes": [
-    {
-      "code": "curl https://your-domain.com/health",
-      "language": "bash",
-      "name": "cURL"
-    }
-  ]
-}
-[/block]
+```bash
+curl https://your-domain.com/health
+```
 
 **Response:**
 ```json
@@ -2062,7 +2071,7 @@ Basic health check endpoint (no authentication required).
 
 ---
 
-#### 🟢 GET `/system/status/`
+#### GET `/system/status/`
 
 > System Status
 
@@ -2088,7 +2097,7 @@ Get comprehensive system status.
 
 ---
 
-#### 🟢 GET `/system/info/`
+#### GET `/system/info/`
 
 > API Info
 
@@ -2098,7 +2107,7 @@ Get API information and available endpoints.
 
 ---
 
-#### 🟢 GET `/metrics`
+#### GET `/metrics`
 
 > Prometheus Metrics
 
@@ -2121,11 +2130,11 @@ skyspy_messages_total 1250000
 ---
 
 <details>
-<summary><h3>📦 Archive</h3></summary>
+<summary><h3>Archive</h3></summary>
 
 ---
 
-#### 🟢 GET `/archive/export/`
+#### GET `/archive/export/`
 
 > Export Data
 
@@ -2147,11 +2156,11 @@ Export historical data for archival.
 ---
 
 <details>
-<summary><h3>📊 Statistics</h3></summary>
+<summary><h3>Statistics</h3></summary>
 
 ---
 
-#### 🟢 GET `/stats/`
+#### GET `/stats/`
 
 > Get Current Statistics
 
@@ -2176,13 +2185,13 @@ Get real-time feeder statistics.
     "best_rssi": -15.2
   },
   "uptime_seconds": 86400,
-  "timestamp": "2024-01-01T12:00:00Z"
+  "timestamp": "2024-01-01T00:00:00Z"
 }
 ```
 
 ---
 
-#### 🟢 GET `/stats/antenna/`
+#### GET `/stats/antenna/`
 
 > Get Antenna Statistics
 
@@ -2195,11 +2204,11 @@ Get antenna performance metrics.
 ---
 
 <details>
-<summary><h3>🔍 Airframe Data</h3></summary>
+<summary><h3>Airframe Data</h3></summary>
 
 ---
 
-#### 🟢 GET `/airframe/{identifier}/`
+#### GET `/airframe/{identifier}/`
 
 > Lookup Airframe
 
@@ -2215,7 +2224,7 @@ Look up aircraft information by ICAO hex or registration.
 
 ---
 
-#### 🟡 POST `/airframe/{icao_hex}/refresh/`
+#### POST `/airframe/{icao_hex}/refresh/`
 
 > Refresh Airframe Data
 
@@ -2227,7 +2236,7 @@ Force refresh of airframe data from external sources.
 
 ---
 
-## 🔌 WebSocket API
+## WebSocket API
 
 Real-time data is available via Django Channels WebSocket connections.
 
@@ -2295,7 +2304,7 @@ sequenceDiagram
 
 ---
 
-## 💻 SDK and Code Examples
+## SDK and Code Examples
 
 <details open>
 <summary><strong>Python</strong></summary>
@@ -2413,28 +2422,28 @@ curl -s "$API_URL/aviation/metar/?icao=KSEA" | jq '.data[0].raw_text'
 
 ---
 
-## 📝 Changelog
+## Changelog
 
 ### Version 2.0.0
 
-- ✨ Added Cannonball Mode endpoints for law enforcement aircraft detection
-- ✨ Added Mobile Position API for real-time threat tracking
-- ✨ Added notification channel management
-- ✨ Added complex alert conditions with nested logic
-- ✨ Added safety event monitoring and statistics
-- ✨ Added OIDC authentication support
-- ✨ Added API key authentication with scopes
-- ✨ Added feature-based permissions system
+- Added Cannonball Mode endpoints for law enforcement aircraft detection
+- Added Mobile Position API for real-time threat tracking
+- Added notification channel management
+- Added complex alert conditions with nested logic
+- Added safety event monitoring and statistics
+- Added OIDC authentication support
+- Added API key authentication with scopes
+- Added feature-based permissions system
 
 ### Version 1.0.0
 
-- 🎉 Initial release with core aircraft tracking
-- 🚨 Alert rules and history
-- 📚 Historical sightings and sessions
-- 🌤️ Aviation data (METAR, TAF, PIREPs)
-- 📨 ACARS message handling
-- 🎙️ Audio transmission recording
+- Initial release with core aircraft tracking
+- Alert rules and history
+- Historical sightings and sessions
+- Aviation data (METAR, TAF, PIREPs)
+- ACARS message handling
+- Audio transmission recording
 
 ---
 
-> 📖 **Need help?** Check out our [Getting Started Guide](./getting-started) or visit the [interactive API explorer](/api/v1/docs/).
+> **Need help?** Check out our [Getting Started Guide](./getting-started) or visit the [interactive API explorer](/api/v1/docs/).
