@@ -19,65 +19,39 @@ SkySpy offers two distinct map visualization modes optimized for different use c
 
 > 🖼️ **Screenshot Placeholder**: *Side-by-side comparison of CRT Mode vs Pro Mode*
 
-[block:callout]
-{
-  "type": "info",
-  "title": "💡 Mode Selection Tip",
-  "body": "CRT Mode works great on mobile and touch devices. Pro Mode is recommended for desktop power users who want ATC-style precision."
-}
-[/block]
+> 💡 **Mode Selection Tip**: CRT Mode works great on mobile and touch devices. Pro Mode is recommended for desktop power users who want ATC-style precision.
 
-[block:parameters]
-{
-  "data": {
-    "h-0": "Mode",
-    "h-1": "Description",
-    "h-2": "Best For",
-    "0-0": "🖥️ **CRT Mode**",
-    "0-1": "Classic radar-style display with Leaflet-based interactive maps",
-    "0-2": "General use, touch devices",
-    "1-0": "🎯 **Pro Mode**",
-    "1-1": "Professional ATC-style canvas-based radar display",
-    "1-2": "Desktop power users, ATC simulation"
-  },
-  "cols": 3,
-  "rows": 2
-}
-[/block]
+| Mode | Description | Best For |
+|------|-------------|----------|
+| 🖥️ **CRT Mode** | Classic radar-style display with Leaflet-based interactive maps | General use, touch devices |
+| 🎯 **Pro Mode** | Professional ATC-style canvas-based radar display | Desktop power users, ATC simulation |
 
 ---
 
 ## 🎯 Pro Mode Features
 
-[block:callout]
-{
-  "type": "success",
-  "title": "⚡ High-Performance Radar Display",
-  "body": "Pro Mode renders aircraft using HTML5 Canvas for smooth 60fps performance even with hundreds of targets."
-}
-[/block]
+> ⚡ **High-Performance Radar Display**: Pro Mode renders aircraft using HTML5 Canvas for smooth 60fps performance even with hundreds of targets.
 
 > 📸 **Screenshot Placeholder**: *Pro Mode interface showing compass rose, data blocks, and velocity vectors*
 
 ### Feature Cards
 
-[block:html]
-{
-  "html": "<div style=\"display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin: 20px 0;\">\n  <div style=\"border: 1px solid #e0e0e0; border-radius: 8px; padding: 16px; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);\">\n    <h4 style=\"margin: 0 0 8px 0; color: #00d4ff;\">🎨 Color Themes</h4>\n    <p style=\"margin: 0; color: #a0a0a0; font-size: 14px;\">Classic Cyan, Amber/Gold, Green Phosphor, High Contrast</p>\n  </div>\n  <div style=\"border: 1px solid #e0e0e0; border-radius: 8px; padding: 16px; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);\">\n    <h4 style=\"margin: 0 0 8px 0; color: #00d4ff;\">🧭 Compass Rose</h4>\n    <p style=\"margin: 0; color: #a0a0a0; font-size: 14px;\">Toggleable directional reference overlay with cardinal markers</p>\n  </div>\n  <div style=\"border: 1px solid #e0e0e0; border-radius: 8px; padding: 16px; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);\">\n    <h4 style=\"margin: 0 0 8px 0; color: #00d4ff;\">📊 Data Blocks</h4>\n    <p style=\"margin: 0; color: #a0a0a0; font-size: 14px;\">Customizable aircraft information callouts</p>\n  </div>\n  <div style=\"border: 1px solid #e0e0e0; border-radius: 8px; padding: 16px; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);\">\n    <h4 style=\"margin: 0 0 8px 0; color: #00d4ff;\">➡️ Velocity Vectors</h4>\n    <p style=\"margin: 0; color: #a0a0a0; font-size: 14px;\">Prediction lines showing future aircraft positions</p>\n  </div>\n  <div style=\"border: 1px solid #e0e0e0; border-radius: 8px; padding: 16px; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);\">\n    <h4 style=\"margin: 0 0 8px 0; color: #00d4ff;\">🌈 Speed Coloring</h4>\n    <p style=\"margin: 0; color: #a0a0a0; font-size: 14px;\">Visual speed differentiation by color gradient</p>\n  </div>\n  <div style=\"border: 1px solid #e0e0e0; border-radius: 8px; padding: 16px; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);\">\n    <h4 style=\"margin: 0 0 8px 0; color: #00d4ff;\">📏 Measurement Tools</h4>\n    <p style=\"margin: 0; color: #a0a0a0; font-size: 14px;\">Distance and bearing between any two points</p>\n  </div>\n  <div style=\"border: 1px solid #e0e0e0; border-radius: 8px; padding: 16px; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);\">\n    <h4 style=\"margin: 0 0 8px 0; color: #00d4ff;\">⚠️ Conflict Detection</h4>\n    <p style=\"margin: 0; color: #a0a0a0; font-size: 14px;\">Automatic proximity alerts visualization</p>\n  </div>\n  <div style=\"border: 1px solid #e0e0e0; border-radius: 8px; padding: 16px; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);\">\n    <h4 style=\"margin: 0 0 8px 0; color: #00d4ff;\">📐 Grid Controls</h4>\n    <p style=\"margin: 0; color: #a0a0a0; font-size: 14px;\">Adjustable lat/lon grid opacity</p>\n  </div>\n</div>"
-}
-[/block]
+| Feature | Description |
+|---------|-------------|
+| 🎨 **Color Themes** | Classic Cyan, Amber/Gold, Green Phosphor, High Contrast |
+| 🧭 **Compass Rose** | Toggleable directional reference overlay with cardinal markers |
+| 📊 **Data Blocks** | Customizable aircraft information callouts |
+| ➡️ **Velocity Vectors** | Prediction lines showing future aircraft positions |
+| 🌈 **Speed Coloring** | Visual speed differentiation by color gradient |
+| 📏 **Measurement Tools** | Distance and bearing between any two points |
+| ⚠️ **Conflict Detection** | Automatic proximity alerts visualization |
+| 📐 **Grid Controls** | Adjustable lat/lon grid opacity |
 
 ---
 
 ## ⌨️ Keyboard Shortcuts (Pro Mode)
 
-[block:callout]
-{
-  "type": "warning",
-  "title": "🎮 Pro Tip",
-  "body": "Master these shortcuts to navigate the radar display like a professional controller!"
-}
-[/block]
+> ⚠️ **Pro Tip**: Master these shortcuts to navigate the radar display like a professional controller!
 
 | Shortcut | Action | Description |
 |:--------:|--------|-------------|
@@ -172,13 +146,7 @@ Each aircraft broadcasts comprehensive telemetry data:
 
 ## 🚨 Emergency Squawk Codes
 
-[block:callout]
-{
-  "type": "danger",
-  "title": "⚠️ Emergency Detection",
-  "body": "SkySpy automatically highlights aircraft transmitting emergency transponder codes with visual and audible alerts."
-}
-[/block]
+> ⚠️ **Emergency Detection**: SkySpy automatically highlights aircraft transmitting emergency transponder codes with visual and audible alerts.
 
 | Squawk | Meaning | Visual Display |
 |:------:|---------|----------------|
@@ -203,11 +171,12 @@ Each aircraft broadcasts comprehensive telemetry data:
 
 ### 🌈 Altitude Color Coding
 
-[block:html]
-{
-  "html": "<div style=\"display: flex; flex-direction: column; gap: 8px; margin: 16px 0;\">\n  <div style=\"display: flex; align-items: center; padding: 12px; border-radius: 6px; background: linear-gradient(90deg, #00CED1 0%, #00CED1 100%);\">\n    <span style=\"font-weight: bold; color: white; width: 150px;\">FL350+ (35,000+ ft)</span>\n    <span style=\"color: white;\">🔵 Cyan — High altitude cruise</span>\n  </div>\n  <div style=\"display: flex; align-items: center; padding: 12px; border-radius: 6px; background: linear-gradient(90deg, #32CD32 0%, #32CD32 100%);\">\n    <span style=\"font-weight: bold; color: white; width: 150px;\">FL180-FL350</span>\n    <span style=\"color: white;\">🟢 Green — Medium altitude</span>\n  </div>\n  <div style=\"display: flex; align-items: center; padding: 12px; border-radius: 6px; background: linear-gradient(90deg, #FFD700 0%, #FFD700 100%);\">\n    <span style=\"font-weight: bold; color: #333; width: 150px;\">0-FL180</span>\n    <span style=\"color: #333;\">🟡 Yellow — Low altitude</span>\n  </div>\n  <div style=\"display: flex; align-items: center; padding: 12px; border-radius: 6px; background: linear-gradient(90deg, #808080 0%, #808080 100%);\">\n    <span style=\"font-weight: bold; color: white; width: 150px;\">Ground/Unknown</span>\n    <span style=\"color: white;\">⚪ Gray — Surface or no data</span>\n  </div>\n</div>"
-}
-[/block]
+| Altitude Range | Color | Description |
+|----------------|-------|-------------|
+| FL350+ (35,000+ ft) | 🔵 Cyan | High altitude cruise |
+| FL180-FL350 | 🟢 Green | Medium altitude |
+| 0-FL180 | 🟡 Yellow | Low altitude |
+| Ground/Unknown | ⚪ Gray | Surface or no data |
 
 ---
 
@@ -271,13 +240,7 @@ flowchart TB
 
 ## ✈️ Airframe Database
 
-[block:callout]
-{
-  "type": "info",
-  "title": "📷 Photo Caching",
-  "body": "Aircraft photos are automatically fetched and cached locally or in S3 with a 24-hour refresh cycle."
-}
-[/block]
+> ℹ️ **Photo Caching**: Aircraft photos are automatically fetched and cached locally or in S3 with a 24-hour refresh cycle.
 
 ### Aircraft Info Fields
 
@@ -355,11 +318,14 @@ Navigation aids are displayed as diamond markers on the map:
 
 ### Standard Layer Toggles
 
-[block:html]
-{
-  "html": "<div style=\"display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin: 16px 0;\">\n  <div style=\"display: flex; align-items: center; padding: 12px; border-radius: 6px; border: 1px solid #27ae60; background: rgba(39, 174, 96, 0.1);\">\n    <span style=\"color: #27ae60; margin-right: 8px;\">✅</span>\n    <span><strong>Aircraft</strong> — Default ON</span>\n  </div>\n  <div style=\"display: flex; align-items: center; padding: 12px; border-radius: 6px; border: 1px solid #95a5a6; background: rgba(149, 165, 166, 0.1);\">\n    <span style=\"color: #95a5a6; margin-right: 8px;\">⬜</span>\n    <span><strong>VORs & NAVAIDs</strong></span>\n  </div>\n  <div style=\"display: flex; align-items: center; padding: 12px; border-radius: 6px; border: 1px solid #95a5a6; background: rgba(149, 165, 166, 0.1);\">\n    <span style=\"color: #95a5a6; margin-right: 8px;\">⬜</span>\n    <span><strong>Airports</strong></span>\n  </div>\n  <div style=\"display: flex; align-items: center; padding: 12px; border-radius: 6px; border: 1px solid #95a5a6; background: rgba(149, 165, 166, 0.1);\">\n    <span style=\"color: #95a5a6; margin-right: 8px;\">⬜</span>\n    <span><strong>Airspace</strong></span>\n  </div>\n  <div style=\"display: flex; align-items: center; padding: 12px; border-radius: 6px; border: 1px solid #95a5a6; background: rgba(149, 165, 166, 0.1);\">\n    <span style=\"color: #95a5a6; margin-right: 8px;\">⬜</span>\n    <span><strong>METARs</strong></span>\n  </div>\n  <div style=\"display: flex; align-items: center; padding: 12px; border-radius: 6px; border: 1px solid #95a5a6; background: rgba(149, 165, 166, 0.1);\">\n    <span style=\"color: #95a5a6; margin-right: 8px;\">⬜</span>\n    <span><strong>PIREPs</strong></span>\n  </div>\n</div>"
-}
-[/block]
+| Layer | Default |
+|-------|---------|
+| ✅ **Aircraft** | ON |
+| ⬜ **VORs & NAVAIDs** | OFF |
+| ⬜ **Airports** | OFF |
+| ⬜ **Airspace** | OFF |
+| ⬜ **METARs** | OFF |
+| ⬜ **PIREPs** | OFF |
 
 ### Pro Mode Terrain Overlays
 
@@ -411,44 +377,17 @@ layerOpacities: {
 
 ### Traffic Filters
 
-[block:parameters]
-{
-  "data": {
-    "h-0": "Filter",
-    "h-1": "Options",
-    "h-2": "Default",
-    "0-0": "🚨 Safety Events Only",
-    "0-1": "Show only safety event aircraft",
-    "0-2": "⬜ Off",
-    "1-0": "🎖️ Military",
-    "1-1": "Show military aircraft",
-    "1-2": "✅ On",
-    "2-0": "✈️ Civil",
-    "2-1": "Show civil aircraft",
-    "2-2": "✅ On",
-    "3-0": "🛩️ GA / Light",
-    "3-1": "General aviation aircraft",
-    "3-2": "✅ On",
-    "4-0": "🛫 Airliners / Heavy",
-    "4-1": "Commercial aircraft",
-    "4-2": "✅ On",
-    "5-0": "☁️ Airborne",
-    "5-1": "Aircraft in flight",
-    "5-2": "✅ On",
-    "6-0": "🛬 On Ground",
-    "6-1": "Surface vehicles/aircraft",
-    "6-2": "⬜ Off",
-    "7-0": "📻 With Squawk",
-    "7-1": "Mode A/C transponder",
-    "7-2": "✅ On",
-    "8-0": "📡 No Squawk (ADS-B)",
-    "8-1": "ADS-B only aircraft",
-    "8-2": "✅ On"
-  },
-  "cols": 3,
-  "rows": 9
-}
-[/block]
+| Filter | Options | Default |
+|--------|---------|---------|
+| 🚨 Safety Events Only | Show only safety event aircraft | ⬜ Off |
+| 🎖️ Military | Show military aircraft | ✅ On |
+| ✈️ Civil | Show civil aircraft | ✅ On |
+| 🛩️ GA / Light | General aviation aircraft | ✅ On |
+| 🛫 Airliners / Heavy | Commercial aircraft | ✅ On |
+| ☁️ Airborne | Aircraft in flight | ✅ On |
+| 🛬 On Ground | Surface vehicles/aircraft | ⬜ Off |
+| 📻 With Squawk | Mode A/C transponder | ✅ On |
+| 📡 No Squawk (ADS-B) | ADS-B only aircraft | ✅ On |
 
 ### Altitude Filter
 
@@ -518,13 +457,7 @@ The system tracks aircraft bounding box:
 
 ### METARs
 
-[block:callout]
-{
-  "type": "info",
-  "title": "🌡️ Real-Time Weather",
-  "body": "METAR observations are fetched from aviationweather.gov and cached for 2-5 minutes."
-}
-[/block]
+> ℹ️ **Real-Time Weather**: METAR observations are fetched from aviationweather.gov and cached for 2-5 minutes.
 
 | Field | Description | Icon |
 |-------|-------------|:----:|
@@ -540,11 +473,12 @@ The system tracks aircraft bounding box:
 
 ### 🎨 Flight Category Visualization
 
-[block:html]
-{
-  "html": "<div style=\"display: flex; flex-direction: column; gap: 8px; margin: 16px 0;\">\n  <div style=\"display: flex; align-items: center; padding: 12px; border-radius: 6px; background: #27ae60;\">\n    <span style=\"font-weight: bold; color: white; width: 80px;\">VFR</span>\n    <span style=\"color: white; flex: 1;\">🟢 Green — Ceiling >3000 ft AGL, Visibility >5 SM</span>\n  </div>\n  <div style=\"display: flex; align-items: center; padding: 12px; border-radius: 6px; background: #3498db;\">\n    <span style=\"font-weight: bold; color: white; width: 80px;\">MVFR</span>\n    <span style=\"color: white; flex: 1;\">🔵 Blue — Ceiling 1000-3000 ft, Visibility 3-5 SM</span>\n  </div>\n  <div style=\"display: flex; align-items: center; padding: 12px; border-radius: 6px; background: #e74c3c;\">\n    <span style=\"font-weight: bold; color: white; width: 80px;\">IFR</span>\n    <span style=\"color: white; flex: 1;\">🔴 Red — Ceiling 500-999 ft, Visibility 1-3 SM</span>\n  </div>\n  <div style=\"display: flex; align-items: center; padding: 12px; border-radius: 6px; background: #9b59b6;\">\n    <span style=\"font-weight: bold; color: white; width: 80px;\">LIFR</span>\n    <span style=\"color: white; flex: 1;\">🟣 Magenta — Ceiling <500 ft, Visibility <1 SM</span>\n  </div>\n</div>"
-}
-[/block]
+| Category | Color | Conditions |
+|----------|-------|------------|
+| VFR | 🟢 Green | Ceiling \>3000 ft AGL, Visibility \>5 SM |
+| MVFR | 🔵 Blue | Ceiling 1000-3000 ft, Visibility 3-5 SM |
+| IFR | 🔴 Red | Ceiling 500-999 ft, Visibility 1-3 SM |
+| LIFR | 🟣 Magenta | Ceiling \<500 ft, Visibility \<1 SM |
 
 > 📸 **Screenshot Placeholder**: *Map showing METAR station markers colored by flight category*
 
@@ -593,11 +527,7 @@ Active SIGMETs, AIRMETs, and G-AIRMETs display:
 
 ### Map Data Endpoints
 
-[block:api-header]
-{
-  "title": "🗺️ Get GeoJSON Aircraft Data"
-}
-[/block]
+#### 🗺️ Get GeoJSON Aircraft Data
 
 ```http
 GET /api/v1/map/geojson/
@@ -642,11 +572,7 @@ GET /api/v1/map/geojson/
 
 ---
 
-[block:api-header]
-{
-  "title": "📍 Get Map Bounds"
-}
-[/block]
+#### 📍 Get Map Bounds
 
 ```http
 GET /api/v1/map/bounds/
@@ -673,11 +599,7 @@ GET /api/v1/map/bounds/
 
 ---
 
-[block:api-header]
-{
-  "title": "🔗 Get Clustered Aircraft"
-}
-[/block]
+#### 🔗 Get Clustered Aircraft
 
 ```http
 GET /api/v1/map/cluster/?zoom=8
@@ -694,11 +616,7 @@ GET /api/v1/map/cluster/?zoom=8
 
 ---
 
-[block:api-header]
-{
-  "title": "📡 Get SSE/WebSocket Status"
-}
-[/block]
+#### 📡 Get SSE/WebSocket Status
 
 ```http
 GET /api/v1/map/sse/status/
@@ -710,11 +628,7 @@ GET /api/v1/map/sse/status/
 
 ### Aviation Data Endpoints
 
-[block:api-header]
-{
-  "title": "🗺️ Get GeoJSON Overlay Data"
-}
-[/block]
+#### 🗺️ Get GeoJSON Overlay Data
 
 ```http
 GET /api/v1/aviation/geojson/{data_type}/?lat={lat}&lon={lon}&radius_nm={radius}
@@ -735,11 +649,7 @@ GET /api/v1/aviation/geojson/{data_type}/?lat={lat}&lon={lon}&radius_nm={radius}
 
 ---
 
-[block:api-header]
-{
-  "title": "🌤️ Get METARs"
-}
-[/block]
+#### 🌤️ Get METARs
 
 ```http
 GET /api/v1/aviation/metars/?lat={lat}&lon={lon}&radius_nm={radius}
@@ -764,11 +674,7 @@ GET /api/v1/aviation/metars/?icao={icao}&hours={hours}
 
 ---
 
-[block:api-header]
-{
-  "title": "📋 Get PIREPs"
-}
-[/block]
+#### 📋 Get PIREPs
 
 ```http
 GET /api/v1/aviation/pireps/?lat={lat}&lon={lon}&radius_nm={radius}&hours={hours}
@@ -787,11 +693,7 @@ GET /api/v1/aviation/pireps/?lat={lat}&lon={lon}&radius_nm={radius}&hours={hours
 
 ---
 
-[block:api-header]
-{
-  "title": "⚠️ Get SIGMETs & AIRMETs"
-}
-[/block]
+#### ⚠️ Get SIGMETs & AIRMETs
 
 ```http
 GET /api/v1/aviation/sigmets/
@@ -801,11 +703,7 @@ GET /api/v1/aviation/sigmets/
 
 ---
 
-[block:api-header]
-{
-  "title": "🛫 Get Airports"
-}
-[/block]
+#### 🛫 Get Airports
 
 ```http
 GET /api/v1/aviation/airports/?lat={lat}&lon={lon}&radius_nm={radius}&type={type}&limit={limit}
@@ -825,11 +723,7 @@ GET /api/v1/aviation/airports/?lat={lat}&lon={lon}&radius_nm={radius}&type={type
 
 ---
 
-[block:api-header]
-{
-  "title": "📍 Get NAVAIDs"
-}
-[/block]
+#### 📍 Get NAVAIDs
 
 ```http
 GET /api/v1/aviation/navaids/?lat={lat}&lon={lon}&radius_nm={radius}&type={type}
@@ -841,11 +735,7 @@ GET /api/v1/aviation/navaids/?lat={lat}&lon={lon}&radius_nm={radius}&type={type}
 
 ### Airframe Data Endpoints
 
-[block:api-header]
-{
-  "title": "✈️ Get Aircraft Info"
-}
-[/block]
+#### ✈️ Get Aircraft Info
 
 ```http
 GET /api/v1/airframes/{icao}/
@@ -880,11 +770,7 @@ GET /api/v1/airframes/{icao}/
 
 ---
 
-[block:api-header]
-{
-  "title": "📦 Bulk Aircraft Lookup"
-}
-[/block]
+#### 📦 Bulk Aircraft Lookup
 
 ```http
 GET /api/v1/airframes/bulk/?icao={icao1},{icao2},{icao3}
@@ -894,11 +780,7 @@ GET /api/v1/airframes/bulk/?icao={icao1},{icao2},{icao3}
 
 ---
 
-[block:api-header]
-{
-  "title": "🔍 Search Aircraft"
-}
-[/block]
+#### 🔍 Search Aircraft
 
 ```http
 GET /api/v1/airframes/search/?q={query}&operator={operator}&type={type}&limit={limit}
@@ -917,11 +799,7 @@ GET /api/v1/airframes/search/?q={query}&operator={operator}&type={type}&limit={l
 
 ---
 
-[block:api-header]
-{
-  "title": "🔄 Refresh Aircraft Info"
-}
-[/block]
+#### 🔄 Refresh Aircraft Info
 
 ```http
 POST /api/v1/airframes/{icao}/refresh/
@@ -931,11 +809,7 @@ POST /api/v1/airframes/{icao}/refresh/
 
 ---
 
-[block:api-header]
-{
-  "title": "📊 Get Cache Statistics"
-}
-[/block]
+#### 📊 Get Cache Statistics
 
 ```http
 GET /api/v1/airframes/cache/stats/
@@ -947,11 +821,7 @@ GET /api/v1/airframes/cache/stats/
 
 ### Photo Endpoints
 
-[block:api-header]
-{
-  "title": "🖼️ Get Full Photo"
-}
-[/block]
+#### 🖼️ Get Full Photo
 
 ```http
 GET /api/v1/photos/{icao}/
@@ -961,11 +831,7 @@ GET /api/v1/photos/{icao}/
 
 ---
 
-[block:api-header]
-{
-  "title": "📷 Get Thumbnail"
-}
-[/block]
+#### 📷 Get Thumbnail
 
 ```http
 GET /api/v1/photos/{icao}/thumb/
@@ -1091,13 +957,11 @@ flowchart LR
 
 ### 💡 Recommended Practices
 
-[block:callout]
-{
-  "type": "success",
-  "title": "✅ Performance Tips",
-  "body": "• Enable only necessary overlays to reduce rendering overhead\n• Use clustering for areas with dense traffic\n• Consider shorter trail lengths in high-traffic scenarios\n• Use Pro mode's canvas rendering for better performance with many aircraft"
-}
-[/block]
+> ✅ **Performance Tips**:
+> - Enable only necessary overlays to reduce rendering overhead
+> - Use clustering for areas with dense traffic
+> - Consider shorter trail lengths in high-traffic scenarios
+> - Use Pro mode's canvas rendering for better performance with many aircraft
 
 ### ⏱️ Timeouts
 
