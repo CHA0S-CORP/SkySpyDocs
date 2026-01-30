@@ -1,6 +1,7 @@
 ---
 title: Authentication & Authorization
 excerpt: OIDC and API key authentication for secure server connections
+hidden: false
 ---
 
 # 🔐 Authentication and Authorization
