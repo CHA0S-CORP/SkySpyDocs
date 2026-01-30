@@ -3,49 +3,34 @@ title: Authentication & Authorization
 hidden: false
 ---
 
-# 🔐 Authentication and Authorization
+# Authentication and Authorization
 
 SkySpy provides a comprehensive, enterprise-ready authentication and authorization system supporting multiple authentication methods, role-based access control (RBAC), and fine-grained feature permissions.
 
 ---
 
-## ⚡ Quick Reference
+## Quick Reference
 
-> 📋 **TL;DR** - Everything you need to get started in 30 seconds
+> **TL;DR** - Everything you need to get started in 30 seconds
 
 | What | Where | Example |
 |------|-------|---------|
-| 🔑 **Login** | `POST /api/v1/auth/login` | `{"username": "...", "password": "..."}` |
-| 🔄 **Refresh Token** | `POST /api/v1/auth/refresh` | `{"refresh": "eyJ..."}` |
-| 📤 **Use Token** | `Authorization` header | `Bearer eyJ0eXAiOiJKV1Q...` |
-| 🔗 **API Key** | `X-API-Key` header | `sk_a1B2c3D4e5F6g7H8...` |
-| 🌐 **SSO/OIDC** | `GET /api/v1/auth/oidc/authorize` | Redirects to IdP |
-| 👤 **Current User** | `GET /api/v1/auth/profile` | Returns user + permissions |
+| **Login** | `POST /api/v1/auth/login` | `{"username": "...", "password": "..."}` |
+| **Refresh Token** | `POST /api/v1/auth/refresh` | `{"refresh": "eyJ..."}` |
+| **Use Token** | `Authorization` header | `Bearer eyJ0eXAiOiJKV1Q...` |
+| **API Key** | `X-API-Key` header | `sk_a1B2c3D4e5F6g7H8...` |
+| **SSO/OIDC** | `GET /api/v1/auth/oidc/authorize` | Redirects to IdP |
+| **Current User** | `GET /api/v1/auth/profile` | Returns user + permissions |
 
-[block:parameters]
-{
-  "data": {
-    "h-0": "Auth Method",
-    "h-1": "Best For",
-    "h-2": "Token Lifetime",
-    "0-0": "🔑 JWT",
-    "0-1": "Web apps, SPAs",
-    "0-2": "60 min (access) / 2 days (refresh)",
-    "1-0": "🔗 API Key",
-    "1-1": "Scripts, integrations, CI/CD",
-    "1-2": "Custom (up to years)",
-    "2-0": "🌐 OIDC/SSO",
-    "2-1": "Enterprise, corporate IdP",
-    "2-2": "Follows IdP settings"
-  },
-  "cols": 3,
-  "rows": 3
-}
-[/block]
+| Auth Method | Best For | Token Lifetime |
+|-------------|----------|----------------|
+| JWT | Web apps, SPAs | 60 min (access) / 2 days (refresh) |
+| API Key | Scripts, integrations, CI/CD | Custom (up to years) |
+| OIDC/SSO | Enterprise, corporate IdP | Follows IdP settings |
 
 ---
 
-## 🏗️ Authentication Overview
+## Authentication Overview
 
 SkySpy's authentication system is designed with flexibility and security in mind. It supports three operational modes and multiple authentication methods to accommodate various deployment scenarios.
 
@@ -53,23 +38,23 @@ SkySpy's authentication system is designed with flexibility and security in mind
 
 ```mermaid
 flowchart TB
-    subgraph Frontend["🖥️ Frontend"]
+    subgraph Frontend["Frontend"]
         WEB[Web App<br/>React]
         AUTH_CTX[AuthContext<br/>JWT + OIDC]
     end
 
-    subgraph API["⚙️ Backend API"]
+    subgraph API["Backend API"]
         REST[REST API<br/>Django REST]
         WS[WebSocket<br/>Channels]
     end
 
-    subgraph AuthLayer["🔐 Auth Layer"]
+    subgraph AuthLayer["Auth Layer"]
         JWT_AUTH[JWT Auth]
         API_KEY[API Key Auth]
         OIDC[OIDC/SSO]
     end
 
-    subgraph Permissions["🛡️ Authorization"]
+    subgraph Permissions["Authorization"]
         RBAC[Role-Based<br/>Access Control]
         FEATURE[Feature-Based<br/>Permissions]
     end
@@ -88,34 +73,15 @@ flowchart TB
     RBAC --> FEATURE
 ```
 
-### 🎛️ Authentication Modes
+### Authentication Modes
 
 SkySpy operates in one of three authentication modes, configured via the `AUTH_MODE` environment variable:
 
-[block:parameters]
-{
-  "data": {
-    "h-0": "Mode",
-    "h-1": "Description",
-    "h-2": "Use Case",
-    "h-3": "Security Level",
-    "0-0": "🟢 `public`",
-    "0-1": "No authentication required",
-    "0-2": "Development, demos, public kiosks",
-    "0-3": "⚠️ Low",
-    "1-0": "🔴 `private`",
-    "1-1": "Authentication required for all endpoints",
-    "1-2": "Enterprise, security-sensitive deployments",
-    "1-3": "✅ High",
-    "2-0": "🟡 `hybrid`",
-    "2-1": "Per-feature configuration **(default)**",
-    "2-2": "Most production deployments",
-    "2-3": "✅ Flexible"
-  },
-  "cols": 4,
-  "rows": 3
-}
-[/block]
+| Mode | Description | Use Case | Security Level |
+|------|-------------|----------|----------------|
+| `public` | No authentication required | Development, demos, public kiosks | Low |
+| `private` | Authentication required for all endpoints | Enterprise, security-sensitive deployments | High |
+| `hybrid` | Per-feature configuration **(default)** | Most production deployments | Flexible |
 
 ```bash
 # Environment variable configuration
@@ -124,83 +90,53 @@ AUTH_MODE=hybrid  # Options: public, private, hybrid
 
 ---
 
-## 🔑 Authentication Methods
+## Authentication Methods
 
 ### Method Comparison
 
-[block:callout]
-{
-  "type": "info",
-  "title": "🤔 Which method should I use?",
-  "body": "**Web Applications** → JWT tokens with automatic refresh\n**Scripts & Automation** → API keys with scoped access\n**Enterprise/Corporate** → OIDC/SSO with your identity provider"
-}
-[/block]
+> **Which method should I use?**
+>
+> **Web Applications** - JWT tokens with automatic refresh
+> **Scripts & Automation** - API keys with scoped access
+> **Enterprise/Corporate** - OIDC/SSO with your identity provider
 
-[block:parameters]
-{
-  "data": {
-    "h-0": "Feature",
-    "h-1": "🔑 JWT",
-    "h-2": "🔗 API Key",
-    "h-3": "🌐 OIDC",
-    "0-0": "**Stateless**",
-    "0-1": "✅",
-    "0-2": "✅",
-    "0-3": "✅",
-    "1-0": "**Auto Refresh**",
-    "1-1": "✅",
-    "1-2": "❌",
-    "1-3": "✅",
-    "2-0": "**Scoped Access**",
-    "2-1": "❌",
-    "2-2": "✅",
-    "2-3": "✅",
-    "3-0": "**User Context**",
-    "3-1": "✅",
-    "3-2": "✅",
-    "3-3": "✅",
-    "4-0": "**External IdP**",
-    "4-1": "❌",
-    "4-2": "❌",
-    "4-3": "✅",
-    "5-0": "**WebSocket Support**",
-    "5-1": "✅",
-    "5-2": "✅",
-    "5-3": "✅"
-  },
-  "cols": 4,
-  "rows": 6
-}
-[/block]
+| Feature | JWT | API Key | OIDC |
+|---------|-----|---------|------|
+| **Stateless** | Yes | Yes | Yes |
+| **Auto Refresh** | Yes | No | Yes |
+| **Scoped Access** | No | Yes | Yes |
+| **User Context** | Yes | Yes | Yes |
+| **External IdP** | No | No | Yes |
+| **WebSocket Support** | Yes | Yes | Yes |
 
 ---
 
-### 1️⃣ JWT Token Authentication
+### 1. JWT Token Authentication
 
 SkySpy uses JSON Web Tokens (JWT) for stateless authentication. The implementation is built on `djangorestframework-simplejwt`.
 
-#### 🧬 Token Structure Visual
+#### Token Structure Visual
 
 ```
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                              JWT ACCESS TOKEN                                │
-├─────────────────────────────────────────────────────────────────────────────┤
-│  HEADER              │  PAYLOAD                    │  SIGNATURE              │
-│  ───────             │  ────────                   │  ──────────             │
-│  {                   │  {                          │                         │
-│    "typ": "JWT",     │    "token_type": "access",  │  HMACSHA256(            │
-│    "alg": "HS256"    │    "exp": 1704067200,       │    base64(header) +     │
-│  }                   │    "user_id": 42,           │    base64(payload),     │
-│                      │    "jti": "unique-id"       │    secret               │
-│                      │  }                          │  )                       │
-├─────────────────────────────────────────────────────────────────────────────┤
-│  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIi4uLn0   │
-│  ─────────────────────────────────────────────────────────────────────────── │
-│  🔵 Header (Base64)    🟢 Payload (Base64)              🔴 Signature         │
-└─────────────────────────────────────────────────────────────────────────────┘
++-----------------------------------------------------------------------------+
+|                              JWT ACCESS TOKEN                                |
++-----------------------------------------------------------------------------+
+|  HEADER              |  PAYLOAD                    |  SIGNATURE              |
+|  -------             |  --------                   |  ----------             |
+|  {                   |  {                          |                         |
+|    "typ": "JWT",     |    "token_type": "access",  |  HMACSHA256(            |
+|    "alg": "HS256"    |    "exp": 1704067200,       |    base64(header) +     |
+|  }                   |    "user_id": 42,           |    base64(payload),     |
+|                      |    "jti": "unique-id"       |    secret               |
+|                      |  }                          |  )                       |
++-----------------------------------------------------------------------------+
+|  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIi4uLn0   |
+|  --------------------------------------------------------------------------- |
+|  Header (Base64)    Payload (Base64)              Signature                  |
++-----------------------------------------------------------------------------+
 ```
 
-#### ⚙️ Configuration
+#### Configuration
 
 ```bash
 # JWT Settings (environment variables)
@@ -210,38 +146,38 @@ JWT_REFRESH_TOKEN_LIFETIME_DAYS=2       # Refresh token validity (default: 2 day
 JWT_AUTH_COOKIE=false                   # Enable httpOnly cookie storage
 ```
 
-#### 📡 Token Endpoints
+#### Token Endpoints
 
 | Endpoint | Method | Description |
 |----------|--------|-------------|
-| `/api/v1/auth/login` | POST | 🔓 Obtain access and refresh tokens |
-| `/api/v1/auth/refresh` | POST | 🔄 Refresh access token |
-| `/api/v1/auth/logout` | POST | 🚪 Blacklist refresh token |
+| `/api/v1/auth/login` | POST | Obtain access and refresh tokens |
+| `/api/v1/auth/refresh` | POST | Refresh access token |
+| `/api/v1/auth/logout` | POST | Blacklist refresh token |
 
-#### 🔐 JWT Authentication Flow
+#### JWT Authentication Flow
 
 ```mermaid
 sequenceDiagram
     autonumber
-    participant User as 👤 User
-    participant App as 🖥️ Frontend
-    participant API as ⚙️ SkySpy API
-    participant DB as 🗄️ Database
+    participant User as User
+    participant App as Frontend
+    participant API as SkySpy API
+    participant DB as Database
 
     User->>App: Enter credentials
     App->>API: POST /auth/login<br/>{username, password}
     API->>DB: Validate credentials
-    DB-->>API: User verified ✅
+    DB-->>API: User verified
     API-->>App: {access_token, refresh_token, user}
     App->>App: Store tokens in localStorage
 
-    Note over User,DB: 🔄 Making Authenticated Requests
+    Note over User,DB: Making Authenticated Requests
 
     App->>API: GET /aircraft<br/>Authorization: Bearer {token}
     API->>API: Validate JWT signature
-    API-->>App: Aircraft data 📡
+    API-->>App: Aircraft data
 
-    Note over User,DB: ⏰ Token Refresh (before expiry)
+    Note over User,DB: Token Refresh (before expiry)
 
     App->>API: POST /auth/refresh<br/>{refresh_token}
     API->>DB: Validate & rotate token
@@ -249,31 +185,58 @@ sequenceDiagram
     API-->>App: {new_access_token, new_refresh_token}
 ```
 
-#### 💻 Code Examples
+#### Code Examples
 
-[block:code]
-{
-  "codes": [
-    {
-      "code": "# Login Request\ncurl -X POST https://your-skyspy-instance/api/v1/auth/login \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\n    \"username\": \"operator\",\n    \"password\": \"secure-password\"\n  }'",
-      "language": "bash",
-      "name": "cURL"
-    },
-    {
-      "code": "// Login Request\nconst response = await fetch('https://your-skyspy-instance/api/v1/auth/login', {\n  method: 'POST',\n  headers: { 'Content-Type': 'application/json' },\n  body: JSON.stringify({\n    username: 'operator',\n    password: 'secure-password'\n  })\n});\n\nconst { access, refresh, user } = await response.json();\nlocalStorage.setItem('skyspy_access_token', access);\nlocalStorage.setItem('skyspy_refresh_token', refresh);",
-      "language": "javascript",
-      "name": "JavaScript"
-    },
-    {
-      "code": "import requests\n\n# Login Request\nresponse = requests.post(\n    'https://your-skyspy-instance/api/v1/auth/login',\n    json={\n        'username': 'operator',\n        'password': 'secure-password'\n    }\n)\n\ntokens = response.json()\naccess_token = tokens['access']\nrefresh_token = tokens['refresh']",
-      "language": "python",
-      "name": "Python"
+**cURL**
+
+```bash
+# Login Request
+curl -X POST https://your-skyspy-instance/api/v1/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{
+    "username": "operator",
+    "password": "secure-password"
+  }'
+```
+
+**JavaScript**
+
+```javascript
+// Login Request
+const response = await fetch('https://your-skyspy-instance/api/v1/auth/login', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    username: 'operator',
+    password: 'secure-password'
+  })
+});
+
+const { access, refresh, user } = await response.json();
+localStorage.setItem('skyspy_access_token', access);
+localStorage.setItem('skyspy_refresh_token', refresh);
+```
+
+**Python**
+
+```python
+import requests
+
+# Login Request
+response = requests.post(
+    'https://your-skyspy-instance/api/v1/auth/login',
+    json={
+        'username': 'operator',
+        'password': 'secure-password'
     }
-  ]
-}
-[/block]
+)
 
-#### ✅ Login Response
+tokens = response.json()
+access_token = tokens['access']
+refresh_token = tokens['refresh']
+```
+
+#### Login Response
 
 ```json
 {
@@ -290,124 +253,169 @@ sequenceDiagram
 }
 ```
 
-#### 🔄 Using JWT Tokens
+#### Using JWT Tokens
 
-[block:code]
-{
-  "codes": [
-    {
-      "code": "# Include the access token in the Authorization header\ncurl https://your-skyspy-instance/api/v1/aircraft \\\n  -H \"Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...\"",
-      "language": "bash",
-      "name": "cURL"
-    },
-    {
-      "code": "// Using the token in fetch requests\nconst token = localStorage.getItem('skyspy_access_token');\n\nconst response = await fetch('https://your-skyspy-instance/api/v1/aircraft', {\n  headers: {\n    'Authorization': `Bearer ${token}`\n  }\n});",
-      "language": "javascript",
-      "name": "JavaScript"
-    },
-    {
-      "code": "import requests\n\nheaders = {\n    'Authorization': f'Bearer {access_token}'\n}\n\nresponse = requests.get(\n    'https://your-skyspy-instance/api/v1/aircraft',\n    headers=headers\n)",
-      "language": "python",
-      "name": "Python"
-    }
-  ]
-}
-[/block]
+**cURL**
 
-[block:callout]
-{
-  "type": "success",
-  "title": "🔒 Security Note",
-  "body": "Refresh tokens are **rotated on use** and the old token is blacklisted. This provides protection against token theft and replay attacks."
+```bash
+# Include the access token in the Authorization header
+curl https://your-skyspy-instance/api/v1/aircraft \
+  -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9..."
+```
+
+**JavaScript**
+
+```javascript
+// Using the token in fetch requests
+const token = localStorage.getItem('skyspy_access_token');
+
+const response = await fetch('https://your-skyspy-instance/api/v1/aircraft', {
+  headers: {
+    'Authorization': `Bearer ${token}`
+  }
+});
+```
+
+**Python**
+
+```python
+import requests
+
+headers = {
+    'Authorization': f'Bearer {access_token}'
 }
-[/block]
+
+response = requests.get(
+    'https://your-skyspy-instance/api/v1/aircraft',
+    headers=headers
+)
+```
+
+> **Security Note**
+>
+> Refresh tokens are **rotated on use** and the old token is blacklisted. This provides protection against token theft and replay attacks.
 
 ---
 
-### 2️⃣ API Key Authentication
+### 2. API Key Authentication
 
 API keys provide programmatic access for integrations, scripts, and third-party applications.
 
-#### 🔗 Key Format
+#### Key Format
 
 ```
 sk_a1B2c3D4e5F6g7H8i9J0k1L2m3N4o5P6q7R8s9T0
-└┬┘ └──────────────────────────────────────┘
- │              Random characters
- │
- └── Prefix identifier
+|  |
+|  +-- Random characters
+|
++-- Prefix identifier
 ```
 
-[block:callout]
-{
-  "type": "warning",
-  "title": "⚠️ Important",
-  "body": "The full API key is **only returned once** at creation time. Store it securely immediately - you cannot retrieve it later!"
-}
-[/block]
+> **Warning**
+>
+> The full API key is **only returned once** at creation time. Store it securely immediately - you cannot retrieve it later!
 
-#### 🔨 Creating API Keys
+#### Creating API Keys
 
-[block:code]
-{
-  "codes": [
-    {
-      "code": "curl -X POST https://your-skyspy-instance/api/v1/auth/api-keys \\\n  -H \"Authorization: Bearer <access-token>\" \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\n    \"name\": \"CI/CD Pipeline\",\n    \"scopes\": [\"aircraft\", \"alerts\"],\n    \"expires_at\": \"2025-12-31T23:59:59Z\"\n  }'",
-      "language": "bash",
-      "name": "cURL"
-    },
-    {
-      "code": "const response = await authFetch('/api/v1/auth/api-keys', {\n  method: 'POST',\n  headers: { 'Content-Type': 'application/json' },\n  body: JSON.stringify({\n    name: 'CI/CD Pipeline',\n    scopes: ['aircraft', 'alerts'],\n    expires_at: '2025-12-31T23:59:59Z'\n  })\n});\n\nconst { key } = await response.json();\n// ⚠️ Store this immediately - shown only once!\nconsole.log('API Key:', key);",
-      "language": "javascript",
-      "name": "JavaScript"
-    },
-    {
-      "code": "from skyspy.models import APIKey\nfrom django.utils import timezone\nfrom datetime import timedelta\n\napi_key = APIKey.objects.create(\n    user=user,\n    name=\"Read-only Aircraft Data\",\n    scopes=[\"aircraft\", \"history\"],\n    expires_at=timezone.now() + timedelta(days=90)\n)",
-      "language": "python",
-      "name": "Django"
-    }
-  ]
-}
-[/block]
+**cURL**
 
-#### 📤 Using API Keys
+```bash
+curl -X POST https://your-skyspy-instance/api/v1/auth/api-keys \
+  -H "Authorization: Bearer <access-token>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "CI/CD Pipeline",
+    "scopes": ["aircraft", "alerts"],
+    "expires_at": "2025-12-31T23:59:59Z"
+  }'
+```
 
-[block:code]
-{
-  "codes": [
-    {
-      "code": "# Using Authorization header (recommended)\ncurl https://your-skyspy-instance/api/v1/aircraft \\\n  -H \"Authorization: ApiKey sk_a1B2c3D4e5F6g7H8i9J0...\"\n\n# Using X-API-Key header\ncurl https://your-skyspy-instance/api/v1/aircraft \\\n  -H \"X-API-Key: sk_a1B2c3D4e5F6g7H8i9J0...\"",
-      "language": "bash",
-      "name": "cURL"
-    },
-    {
-      "code": "const API_KEY = 'sk_a1B2c3D4e5F6g7H8i9J0...';\n\n// Using Authorization header\nconst response = await fetch('https://your-skyspy-instance/api/v1/aircraft', {\n  headers: {\n    'Authorization': `ApiKey ${API_KEY}`\n  }\n});\n\n// Or using X-API-Key header\nconst response2 = await fetch('https://your-skyspy-instance/api/v1/aircraft', {\n  headers: {\n    'X-API-Key': API_KEY\n  }\n});",
-      "language": "javascript",
-      "name": "JavaScript"
-    }
-  ]
-}
-[/block]
+**JavaScript**
 
-#### 📋 Scope-Based Access
+```javascript
+const response = await authFetch('/api/v1/auth/api-keys', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    name: 'CI/CD Pipeline',
+    scopes: ['aircraft', 'alerts'],
+    expires_at: '2025-12-31T23:59:59Z'
+  })
+});
+
+const { key } = await response.json();
+// Store this immediately - shown only once!
+console.log('API Key:', key);
+```
+
+**Django**
+
+```python
+from skyspy.models import APIKey
+from django.utils import timezone
+from datetime import timedelta
+
+api_key = APIKey.objects.create(
+    user=user,
+    name="Read-only Aircraft Data",
+    scopes=["aircraft", "history"],
+    expires_at=timezone.now() + timedelta(days=90)
+)
+```
+
+#### Using API Keys
+
+**cURL**
+
+```bash
+# Using Authorization header (recommended)
+curl https://your-skyspy-instance/api/v1/aircraft \
+  -H "Authorization: ApiKey sk_a1B2c3D4e5F6g7H8i9J0..."
+
+# Using X-API-Key header
+curl https://your-skyspy-instance/api/v1/aircraft \
+  -H "X-API-Key: sk_a1B2c3D4e5F6g7H8i9J0..."
+```
+
+**JavaScript**
+
+```javascript
+const API_KEY = 'sk_a1B2c3D4e5F6g7H8i9J0...';
+
+// Using Authorization header
+const response = await fetch('https://your-skyspy-instance/api/v1/aircraft', {
+  headers: {
+    'Authorization': `ApiKey ${API_KEY}`
+  }
+});
+
+// Or using X-API-Key header
+const response2 = await fetch('https://your-skyspy-instance/api/v1/aircraft', {
+  headers: {
+    'X-API-Key': API_KEY
+  }
+});
+```
+
+#### Scope-Based Access
 
 | Scope | Access Granted | Example Endpoints |
 |-------|----------------|-------------------|
-| 🛫 `aircraft` | Aircraft tracking data | `/api/v1/aircraft/*` |
-| 🔔 `alerts` | Alert rules and history | `/api/v1/alerts/*` |
-| ⚠️ `safety` | Safety event data | `/api/v1/safety/*` |
-| 🎵 `audio` | Audio transmissions | `/api/v1/audio/*` |
-| 📡 `acars` | ACARS messages | `/api/v1/acars/*` |
-| 📜 `history` | Historical data | `/api/v1/history/*` |
-| 🖥️ `system` | System status and metrics | `/api/v1/system/*` |
+| `aircraft` | Aircraft tracking data | `/api/v1/aircraft/*` |
+| `alerts` | Alert rules and history | `/api/v1/alerts/*` |
+| `safety` | Safety event data | `/api/v1/safety/*` |
+| `audio` | Audio transmissions | `/api/v1/audio/*` |
+| `acars` | ACARS messages | `/api/v1/acars/*` |
+| `history` | Historical data | `/api/v1/history/*` |
+| `system` | System status and metrics | `/api/v1/system/*` |
 
 ---
 
-### 3️⃣ OIDC/SSO Authentication
+### 3. OIDC/SSO Authentication
 
 SkySpy supports OpenID Connect (OIDC) for enterprise single sign-on integration with identity providers like Okta, Auth0, Azure AD, and Keycloak.
 
-#### ⚙️ Configuration
+#### Configuration
 
 ```bash
 # OIDC Settings
@@ -420,15 +428,15 @@ OIDC_SCOPES=openid profile email groups
 OIDC_DEFAULT_ROLE=viewer               # Role for new OIDC users
 ```
 
-#### 🔄 OIDC Authentication Flow
+#### OIDC Authentication Flow
 
 ```mermaid
 sequenceDiagram
     autonumber
-    participant User as 👤 User
-    participant App as 🖥️ SkySpy Frontend
-    participant API as ⚙️ SkySpy Backend
-    participant IdP as 🏢 Identity Provider
+    participant User as User
+    participant App as SkySpy Frontend
+    participant API as SkySpy Backend
+    participant IdP as Identity Provider
 
     User->>App: Click "Login with SSO"
     App->>API: GET /auth/oidc/authorize
@@ -452,7 +460,7 @@ sequenceDiagram
     App->>App: Store tokens, redirect to dashboard
 ```
 
-#### 🗺️ Claim-Based Role Mapping
+#### Claim-Based Role Mapping
 
 Map your IdP groups to SkySpy roles automatically:
 
@@ -474,17 +482,15 @@ Map your IdP groups to SkySpy roles automatically:
 | `contains` | Claim must contain the string | `"admin"` matches `"skyspy-admins"` |
 | `regex` | Claim must match the pattern | `"skyspy-.*"` matches `"skyspy-operators"` |
 
-[block:callout]
-{
-  "type": "danger",
-  "title": "🚨 Security Warning",
-  "body": "**Email linking** (`OIDC_ALLOW_EMAIL_LINKING`) is disabled by default. Enabling it allows existing accounts to be linked to OIDC based on matching email addresses.\n\n**Risk**: An attacker who controls an OIDC provider with matching email addresses could gain access to existing accounts."
-}
-[/block]
+> **Security Warning**
+>
+> **Email linking** (`OIDC_ALLOW_EMAIL_LINKING`) is disabled by default. Enabling it allows existing accounts to be linked to OIDC based on matching email addresses.
+>
+> **Risk**: An attacker who controls an OIDC provider with matching email addresses could gain access to existing accounts.
 
 ---
 
-### 4️⃣ Session-Based Authentication (Admin Only)
+### 4. Session-Based Authentication (Admin Only)
 
 Django admin uses session-based authentication. This is separate from the API authentication system.
 
@@ -497,46 +503,21 @@ SESSION_COOKIE_SECURE = True  # In production
 
 ---
 
-## 👥 User Roles and Permissions
+## User Roles and Permissions
 
-### 🎭 Role-Based Access Control (RBAC)
+### Role-Based Access Control (RBAC)
 
 SkySpy implements RBAC with the following default roles:
 
-[block:parameters]
-{
-  "data": {
-    "h-0": "Role",
-    "h-1": "Priority",
-    "h-2": "Description",
-    "h-3": "Typical User",
-    "0-0": "👁️ `viewer`",
-    "0-1": "10",
-    "0-2": "Read-only access to allowed features",
-    "0-3": "Public dashboards, guests",
-    "1-0": "⚙️ `operator`",
-    "1-1": "20",
-    "1-2": "Create/manage own alerts, acknowledge safety events",
-    "1-3": "Daily users, shift workers",
-    "2-0": "📊 `analyst`",
-    "2-1": "30",
-    "2-2": "Extended access with export and transcription",
-    "2-3": "Data analysts, researchers",
-    "3-0": "🔧 `admin`",
-    "3-1": "40",
-    "3-2": "Full feature access with limited user management",
-    "3-3": "Team leads, managers",
-    "4-0": "👑 `superadmin`",
-    "4-1": "100",
-    "4-2": "Full access including user and role management",
-    "4-3": "System administrators"
-  },
-  "cols": 4,
-  "rows": 5
-}
-[/block]
+| Role | Priority | Description | Typical User |
+|------|----------|-------------|--------------|
+| `viewer` | 10 | Read-only access to allowed features | Public dashboards, guests |
+| `operator` | 20 | Create/manage own alerts, acknowledge safety events | Daily users, shift workers |
+| `analyst` | 30 | Extended access with export and transcription | Data analysts, researchers |
+| `admin` | 40 | Full feature access with limited user management | Team leads, managers |
+| `superadmin` | 100 | Full access including user and role management | System administrators |
 
-### 📋 Permission Matrix
+### Permission Matrix
 
 Permissions follow the format `feature.action`:
 
@@ -551,109 +532,76 @@ users.create           # Create new users
 roles.edit             # Modify roles
 ```
 
-### 🔐 Role Permission Comparison
+### Role Permission Comparison
 
-[block:parameters]
-{
-  "data": {
-    "h-0": "Permission",
-    "h-1": "👁️ Viewer",
-    "h-2": "⚙️ Operator",
-    "h-3": "📊 Analyst",
-    "h-4": "🔧 Admin",
-    "h-5": "👑 Super",
-    "0-0": "**aircraft.view**",
-    "0-1": "✅",
-    "0-2": "✅",
-    "0-3": "✅",
-    "0-4": "✅",
-    "0-5": "✅",
-    "1-0": "**aircraft.view_military**",
-    "1-1": "❌",
-    "1-2": "❌",
-    "1-3": "✅",
-    "1-4": "✅",
-    "1-5": "✅",
-    "2-0": "**alerts.view**",
-    "2-1": "✅",
-    "2-2": "✅",
-    "2-3": "✅",
-    "2-4": "✅",
-    "2-5": "✅",
-    "3-0": "**alerts.create**",
-    "3-1": "❌",
-    "3-2": "✅",
-    "3-3": "✅",
-    "3-4": "✅",
-    "3-5": "✅",
-    "4-0": "**alerts.manage_all**",
-    "4-1": "❌",
-    "4-2": "❌",
-    "4-3": "❌",
-    "4-4": "✅",
-    "4-5": "✅",
-    "5-0": "**safety.acknowledge**",
-    "5-1": "❌",
-    "5-2": "✅",
-    "5-3": "✅",
-    "5-4": "✅",
-    "5-5": "✅",
-    "6-0": "**audio.transcribe**",
-    "6-1": "❌",
-    "6-2": "❌",
-    "6-3": "✅",
-    "6-4": "✅",
-    "6-5": "✅",
-    "7-0": "**history.export**",
-    "7-1": "❌",
-    "7-2": "❌",
-    "7-3": "✅",
-    "7-4": "✅",
-    "7-5": "✅",
-    "8-0": "**users.view**",
-    "8-1": "❌",
-    "8-2": "❌",
-    "8-3": "❌",
-    "8-4": "✅",
-    "8-5": "✅",
-    "9-0": "**users.create**",
-    "9-1": "❌",
-    "9-2": "❌",
-    "9-3": "❌",
-    "9-4": "❌",
-    "9-5": "✅",
-    "10-0": "**roles.edit**",
-    "10-1": "❌",
-    "10-2": "❌",
-    "10-3": "❌",
-    "10-4": "❌",
-    "10-5": "✅"
-  },
-  "cols": 6,
-  "rows": 11
-}
-[/block]
+| Permission | Viewer | Operator | Analyst | Admin | Super |
+|------------|--------|----------|---------|-------|-------|
+| **aircraft.view** | Yes | Yes | Yes | Yes | Yes |
+| **aircraft.view_military** | No | No | Yes | Yes | Yes |
+| **alerts.view** | Yes | Yes | Yes | Yes | Yes |
+| **alerts.create** | No | Yes | Yes | Yes | Yes |
+| **alerts.manage_all** | No | No | No | Yes | Yes |
+| **safety.acknowledge** | No | Yes | Yes | Yes | Yes |
+| **audio.transcribe** | No | No | Yes | Yes | Yes |
+| **history.export** | No | No | Yes | Yes | Yes |
+| **users.view** | No | No | No | Yes | Yes |
+| **users.create** | No | No | No | No | Yes |
+| **roles.edit** | No | No | No | No | Yes |
 
-### 🆕 Creating Custom Roles
+### Creating Custom Roles
 
-[block:code]
-{
-  "codes": [
-    {
-      "code": "curl -X POST https://your-skyspy-instance/api/v1/roles \\\n  -H \"Authorization: Bearer <admin-token>\" \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\n    \"name\": \"shift_supervisor\",\n    \"display_name\": \"Shift Supervisor\",\n    \"description\": \"Can manage alerts and acknowledge safety events\",\n    \"permissions\": [\n      \"aircraft.view\",\n      \"aircraft.view_details\",\n      \"alerts.view\",\n      \"alerts.create\",\n      \"alerts.edit\",\n      \"alerts.delete\",\n      \"safety.view\",\n      \"safety.acknowledge\",\n      \"safety.manage\"\n    ],\n    \"priority\": 25\n  }'",
-      "language": "bash",
-      "name": "cURL"
-    },
-    {
-      "code": "const newRole = await authFetch('/api/v1/roles', {\n  method: 'POST',\n  headers: { 'Content-Type': 'application/json' },\n  body: JSON.stringify({\n    name: 'shift_supervisor',\n    display_name: 'Shift Supervisor',\n    description: 'Can manage alerts and acknowledge safety events',\n    permissions: [\n      'aircraft.view',\n      'aircraft.view_details',\n      'alerts.view',\n      'alerts.create',\n      'alerts.edit',\n      'alerts.delete',\n      'safety.view',\n      'safety.acknowledge',\n      'safety.manage'\n    ],\n    priority: 25\n  })\n});",
-      "language": "javascript",
-      "name": "JavaScript"
-    }
-  ]
-}
-[/block]
+**cURL**
 
-### ⏰ Role Assignment with Expiration
+```bash
+curl -X POST https://your-skyspy-instance/api/v1/roles \
+  -H "Authorization: Bearer <admin-token>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "shift_supervisor",
+    "display_name": "Shift Supervisor",
+    "description": "Can manage alerts and acknowledge safety events",
+    "permissions": [
+      "aircraft.view",
+      "aircraft.view_details",
+      "alerts.view",
+      "alerts.create",
+      "alerts.edit",
+      "alerts.delete",
+      "safety.view",
+      "safety.acknowledge",
+      "safety.manage"
+    ],
+    "priority": 25
+  }'
+```
+
+**JavaScript**
+
+```javascript
+const newRole = await authFetch('/api/v1/roles', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    name: 'shift_supervisor',
+    display_name: 'Shift Supervisor',
+    description: 'Can manage alerts and acknowledge safety events',
+    permissions: [
+      'aircraft.view',
+      'aircraft.view_details',
+      'alerts.view',
+      'alerts.create',
+      'alerts.edit',
+      'alerts.delete',
+      'safety.view',
+      'safety.acknowledge',
+      'safety.manage'
+    ],
+    priority: 25
+  })
+});
+```
+
+### Role Assignment with Expiration
 
 Roles can be assigned with optional expiration for temporary access:
 
@@ -668,29 +616,28 @@ curl -X POST https://your-skyspy-instance/api/v1/user-roles \
   }'
 ```
 
-[block:callout]
-{
-  "type": "info",
-  "title": "💡 Tip: Temporary Access",
-  "body": "Use role expiration for:\n- **Contractors** with limited engagement periods\n- **Trainees** who need elevated access during onboarding\n- **Incident response** requiring temporary admin privileges"
-}
-[/block]
+> **Tip: Temporary Access**
+>
+> Use role expiration for:
+> - **Contractors** with limited engagement periods
+> - **Trainees** who need elevated access during onboarding
+> - **Incident response** requiring temporary admin privileges
 
 ---
 
-## 🎛️ Feature-Based Access Control
+## Feature-Based Access Control
 
 Each feature can be configured with independent access levels:
 
-### 📊 Access Levels
+### Access Levels
 
-| Level | Description | Icon |
-|-------|-------------|------|
-| `public` | No authentication required | 🟢 |
-| `authenticated` | Any logged-in user | 🟡 |
-| `permission` | Specific permission required | 🔴 |
+| Level | Description |
+|-------|-------------|
+| `public` | No authentication required |
+| `authenticated` | Any logged-in user |
+| `permission` | Specific permission required |
 
-### ⚙️ Configuration Example
+### Configuration Example
 
 ```bash
 curl -X PATCH https://your-skyspy-instance/api/v1/feature-access/aircraft \
@@ -703,28 +650,28 @@ curl -X PATCH https://your-skyspy-instance/api/v1/feature-access/aircraft \
   }'
 ```
 
-### 🗺️ Hybrid Mode Setup Example
+### Hybrid Mode Setup Example
 
 ```json
 {
   "aircraft": {
-    "read_access": "public",      // 🟢 Anyone can view
-    "write_access": "permission", // 🔴 Requires permission
+    "read_access": "public",
+    "write_access": "permission",
     "is_enabled": true
   },
   "alerts": {
-    "read_access": "authenticated", // 🟡 Must be logged in
-    "write_access": "permission",   // 🔴 Requires permission
+    "read_access": "authenticated",
+    "write_access": "permission",
     "is_enabled": true
   },
   "safety": {
-    "read_access": "authenticated", // 🟡 Must be logged in
-    "write_access": "permission",   // 🔴 Requires permission
+    "read_access": "authenticated",
+    "write_access": "permission",
     "is_enabled": true
   },
   "users": {
-    "read_access": "permission",  // 🔴 Admin only
-    "write_access": "permission", // 🔴 Admin only
+    "read_access": "permission",
+    "write_access": "permission",
     "is_enabled": true
   }
 }
@@ -732,24 +679,24 @@ curl -X PATCH https://your-skyspy-instance/api/v1/feature-access/aircraft \
 
 ---
 
-## 🔌 WebSocket Authentication
+## WebSocket Authentication
 
 WebSocket connections support both JWT tokens and API keys for real-time data streaming.
 
-### 🔐 WebSocket Authentication Flow
+### WebSocket Authentication Flow
 
 ```mermaid
 sequenceDiagram
     autonumber
-    participant Client as 🖥️ Client
-    participant WS as 🔌 WebSocket Server
-    participant Auth as 🔐 Auth Middleware
-    participant Consumer as 📡 Consumer
+    participant Client as Client
+    participant WS as WebSocket Server
+    participant Auth as Auth Middleware
+    participant Consumer as Consumer
 
     Client->>WS: Connect with token<br/>(Sec-WebSocket-Protocol)
     WS->>Auth: Validate token
 
-    alt Token Valid ✅
+    alt Token Valid
         Auth-->>WS: User authenticated
         WS->>Consumer: Accept connection
         Consumer-->>Client: Connection accepted
@@ -758,43 +705,41 @@ sequenceDiagram
             Consumer->>Client: Aircraft data
             Consumer->>Client: Alert notifications
         end
-    else Token Invalid ❌
+    else Token Invalid
         Auth-->>WS: Authentication failed
         WS-->>Client: Close (4001)
     end
 ```
 
-### 🔧 Authentication Methods
+### Authentication Methods
 
-[block:callout]
-{
-  "type": "success",
-  "title": "✅ Recommended: Sec-WebSocket-Protocol Header",
-  "body": "```javascript\nconst ws = new WebSocket('wss://your-skyspy/ws/aircraft', ['Bearer', accessToken]);\n```"
-}
-[/block]
+> **Recommended: Sec-WebSocket-Protocol Header**
+>
+> ```javascript
+> const ws = new WebSocket('wss://your-skyspy/ws/aircraft', ['Bearer', accessToken]);
+> ```
 
-[block:callout]
-{
-  "type": "warning",
-  "title": "⚠️ Not Recommended: Query String",
-  "body": "```javascript\nconst ws = new WebSocket('wss://your-skyspy/ws/aircraft?token=eyJ...');\n```\n\n**Why?** Tokens may appear in server logs and browser history."
-}
-[/block]
+> **Warning: Not Recommended - Query String**
+>
+> ```javascript
+> const ws = new WebSocket('wss://your-skyspy/ws/aircraft?token=eyJ...');
+> ```
+>
+> **Why?** Tokens may appear in server logs and browser history.
 
-### 📋 Topic-Based Permissions
+### Topic-Based Permissions
 
 | Topic | Required Permission | Description |
 |-------|---------------------|-------------|
-| 🛫 `aircraft` | `aircraft.view` | Live aircraft positions |
-| 🎖️ `military` | `aircraft.view_military` | Military aircraft data |
-| 🔔 `alerts` | `alerts.view` | Alert notifications |
-| ⚠️ `safety` | `safety.view` | Safety events |
-| 📡 `acars` | `acars.view` | ACARS messages |
-| 🎵 `audio` | `audio.view` | Audio stream notifications |
-| 🖥️ `system` | `system.view_status` | System status updates |
+| `aircraft` | `aircraft.view` | Live aircraft positions |
+| `military` | `aircraft.view_military` | Military aircraft data |
+| `alerts` | `alerts.view` | Alert notifications |
+| `safety` | `safety.view` | Safety events |
+| `acars` | `acars.view` | ACARS messages |
+| `audio` | `audio.view` | Audio stream notifications |
+| `system` | `system.view_status` | System status updates |
 
-### ❌ Handling Connection Rejection
+### Handling Connection Rejection
 
 ```javascript
 const ws = new WebSocket('wss://your-skyspy/ws/aircraft', ['Bearer', token]);
@@ -802,11 +747,11 @@ const ws = new WebSocket('wss://your-skyspy/ws/aircraft', ['Bearer', token]);
 ws.onclose = (event) => {
   switch (event.code) {
     case 4001:
-      console.error('🔐 Authentication failed - invalid or expired token');
+      console.error('Authentication failed - invalid or expired token');
       // Trigger re-authentication
       break;
     case 4003:
-      console.error('🚫 Permission denied - insufficient access');
+      console.error('Permission denied - insufficient access');
       break;
     default:
       console.log('Connection closed:', event.code);
@@ -816,18 +761,18 @@ ws.onclose = (event) => {
 
 ---
 
-## 🖥️ Frontend Authentication Flow
+## Frontend Authentication Flow
 
 The React frontend uses the `AuthContext` provider for authentication state management.
 
-### 📦 AuthContext API
+### AuthContext API
 
 ```jsx
 import { useAuth } from '../contexts/AuthContext';
 
 function MyComponent() {
   const {
-    // 📊 State
+    // State
     status,           // 'loading' | 'anonymous' | 'authenticated'
     user,             // Current user object
     config,           // Auth configuration
@@ -836,33 +781,33 @@ function MyComponent() {
     isAuthenticated,  // Boolean shorthand
     isAnonymous,      // Boolean shorthand
 
-    // 🎬 Actions
+    // Actions
     login,            // (username, password) => Promise
     logout,           // () => Promise
     loginWithOIDC,    // () => Promise
     refreshAccessToken, // () => Promise<boolean>
     authFetch,        // Authenticated fetch wrapper
 
-    // 🔐 Permission checks
+    // Permission checks
     hasPermission,    // (permission) => boolean
     hasAnyPermission, // ([permissions]) => boolean
     hasAllPermissions,// ([permissions]) => boolean
     canAccessFeature, // (feature, action?) => boolean
 
-    // 🔑 Token access
+    // Token access
     getAccessToken,   // () => string | null
 
-    // ❌ Error handling
+    // Error handling
     clearError,       // () => void
   } = useAuth();
 }
 ```
 
-### 🔐 Frontend Login Flow
+### Frontend Login Flow
 
 ```mermaid
 flowchart LR
-    subgraph Login["🔐 Login"]
+    subgraph Login["Login"]
         A[User enters credentials] --> B[Call login]
         B --> C{Success?}
         C -->|Yes| D[Store tokens]
@@ -871,24 +816,47 @@ flowchart LR
     end
 ```
 
-[block:code]
-{
-  "codes": [
-    {
-      "code": "const { login, error } = useAuth();\n\nasync function handleLogin(username, password) {\n  const result = await login(username, password);\n  if (result.success) {\n    navigate('/dashboard');\n  } else {\n    console.error(result.error);\n  }\n}",
-      "language": "javascript",
-      "name": "Standard Login"
-    },
-    {
-      "code": "const { loginWithOIDC, config } = useAuth();\n\nasync function handleOIDCLogin() {\n  try {\n    const result = await loginWithOIDC();\n    if (result.success) {\n      navigate('/dashboard');\n    }\n  } catch (err) {\n    // User closed popup or login timed out\n    console.error(err.message);\n  }\n}\n\n// Show OIDC button if enabled\n{config.oidcEnabled && (\n  <button onClick={handleOIDCLogin}>\n    Login with {config.oidcProviderName}\n  </button>\n)}",
-      "language": "javascript",
-      "name": "OIDC/SSO Login"
-    }
-  ]
-}
-[/block]
+**Standard Login**
 
-### 🛡️ Permission Checking
+```javascript
+const { login, error } = useAuth();
+
+async function handleLogin(username, password) {
+  const result = await login(username, password);
+  if (result.success) {
+    navigate('/dashboard');
+  } else {
+    console.error(result.error);
+  }
+}
+```
+
+**OIDC/SSO Login**
+
+```javascript
+const { loginWithOIDC, config } = useAuth();
+
+async function handleOIDCLogin() {
+  try {
+    const result = await loginWithOIDC();
+    if (result.success) {
+      navigate('/dashboard');
+    }
+  } catch (err) {
+    // User closed popup or login timed out
+    console.error(err.message);
+  }
+}
+
+// Show OIDC button if enabled
+{config.oidcEnabled && (
+  <button onClick={handleOIDCLogin}>
+    Login with {config.oidcProviderName}
+  </button>
+)}
+```
+
+### Permission Checking
 
 ```jsx
 const { hasPermission, canAccessFeature } = useAuth();
@@ -909,26 +877,26 @@ if (hasAllPermissions(['alerts.view', 'alerts.edit'])) {
 }
 ```
 
-### 🔄 Automatic Token Refresh
+### Automatic Token Refresh
 
 ```
-┌────────────────────────────────────────────────────────────────────┐
-│                    TOKEN REFRESH TIMELINE                          │
-├────────────────────────────────────────────────────────────────────┤
-│                                                                    │
-│  Token Created        Refresh Scheduled       Token Expires        │
-│       │                      │                      │              │
-│       ▼                      ▼                      ▼              │
-│  ────────────────────────────────────────────────────►  Time       │
-│  │                          │                      │               │
-│  └──────── 59 min 30s ──────┘                      │               │
-│                             └───── 30s buffer ─────┘               │
-│                                                                    │
-│  ✅ New token obtained before expiry = seamless user experience    │
-└────────────────────────────────────────────────────────────────────┘
++--------------------------------------------------------------------+
+|                    TOKEN REFRESH TIMELINE                          |
++--------------------------------------------------------------------+
+|                                                                    |
+|  Token Created        Refresh Scheduled       Token Expires        |
+|       |                      |                      |              |
+|       v                      v                      v              |
+|  ------------------------------------------------------>  Time     |
+|  |                          |                      |               |
+|  +-------- 59 min 30s ------+                      |               |
+|                             +------ 30s buffer ----+               |
+|                                                                    |
+|  New token obtained before expiry = seamless user experience       |
++--------------------------------------------------------------------+
 ```
 
-### 💾 Token Storage
+### Token Storage
 
 | Key | Value | Description |
 |-----|-------|-------------|
@@ -938,19 +906,37 @@ if (hasAllPermissions(['alerts.view', 'alerts.edit'])) {
 
 ---
 
-## 🛡️ Security Best Practices
+## Security Best Practices
 
-### ✅ Security Checklist
+### Security Checklist
 
-[block:callout]
-{
-  "type": "success",
-  "title": "🔒 Production Security Checklist",
-  "body": "Before going to production, verify these settings:\n\n**Environment & Secrets**\n- [ ] ✅ `DEBUG=false`\n- [ ] ✅ Strong, unique `DJANGO_SECRET_KEY`\n- [ ] ✅ Separate `JWT_SECRET_KEY` from Django secret\n- [ ] ✅ Secrets not committed to version control\n\n**Authentication**\n- [ ] ✅ `AUTH_MODE=hybrid` or `private`\n- [ ] ✅ Rate limiting enabled on auth endpoints\n- [ ] ✅ JWT token lifetimes appropriate for use case\n\n**Cookies & Transport**\n- [ ] ✅ `SESSION_COOKIE_SECURE=true`\n- [ ] ✅ `CSRF_COOKIE_SECURE=true`\n- [ ] ✅ HTTPS enforced\n- [ ] ✅ CORS restricted to known origins\n\n**API Keys**\n- [ ] ✅ Scoped to minimum required permissions\n- [ ] ✅ Expiration dates set\n- [ ] ✅ Query parameter auth disabled"
-}
-[/block]
+> **Production Security Checklist**
+>
+> Before going to production, verify these settings:
+>
+> **Environment & Secrets**
+> - `DEBUG=false`
+> - Strong, unique `DJANGO_SECRET_KEY`
+> - Separate `JWT_SECRET_KEY` from Django secret
+> - Secrets not committed to version control
+>
+> **Authentication**
+> - `AUTH_MODE=hybrid` or `private`
+> - Rate limiting enabled on auth endpoints
+> - JWT token lifetimes appropriate for use case
+>
+> **Cookies & Transport**
+> - `SESSION_COOKIE_SECURE=true`
+> - `CSRF_COOKIE_SECURE=true`
+> - HTTPS enforced
+> - CORS restricted to known origins
+>
+> **API Keys**
+> - Scoped to minimum required permissions
+> - Expiration dates set
+> - Query parameter auth disabled
 
-### 🔧 Environment Variables
+### Environment Variables
 
 ```bash
 # Production settings
@@ -965,69 +951,35 @@ CSRF_COOKIE_SECURE=true
 JWT_AUTH_COOKIE=true
 ```
 
-### ⏱️ Rate Limiting
+### Rate Limiting
 
-[block:parameters]
-{
-  "data": {
-    "h-0": "Endpoint",
-    "h-1": "Rate Limit",
-    "h-2": "Purpose",
-    "0-0": "`/api/v1/auth/login`",
-    "0-1": "5/minute",
-    "0-2": "Prevent brute force attacks",
-    "1-0": "`/api/v1/auth/refresh`",
-    "1-1": "5/minute",
-    "1-2": "Prevent token abuse",
-    "2-0": "Anonymous requests",
-    "2-1": "100/minute",
-    "2-2": "General protection",
-    "3-0": "Authenticated requests",
-    "3-1": "1000/minute",
-    "3-2": "Fair usage"
-  },
-  "cols": 3,
-  "rows": 4
-}
-[/block]
+| Endpoint | Rate Limit | Purpose |
+|----------|------------|---------|
+| `/api/v1/auth/login` | 5/minute | Prevent brute force attacks |
+| `/api/v1/auth/refresh` | 5/minute | Prevent token abuse |
+| Anonymous requests | 100/minute | General protection |
+| Authenticated requests | 1000/minute | Fair usage |
 
-### 🔐 Token Security Best Practices
+### Token Security Best Practices
 
-[block:parameters]
-{
-  "data": {
-    "h-0": "Practice",
-    "h-1": "Implementation",
-    "h-2": "Why It Matters",
-    "0-0": "🔑 **Separate JWT Secret**",
-    "0-1": "Use different `JWT_SECRET_KEY` than `DJANGO_SECRET_KEY`",
-    "0-2": "Limits blast radius if one key is compromised",
-    "1-0": "⏱️ **Short Access Tokens**",
-    "1-1": "Default 60 minutes, adjust as needed",
-    "1-2": "Limits window for stolen tokens",
-    "2-0": "🔄 **Token Rotation**",
-    "2-1": "Refresh tokens blacklisted on use",
-    "2-2": "Prevents replay attacks",
-    "3-0": "🍪 **Secure Storage**",
-    "3-1": "Use httpOnly cookies (`JWT_AUTH_COOKIE=true`)",
-    "3-2": "Prevents XSS token theft"
-  },
-  "cols": 3,
-  "rows": 4
-}
-[/block]
+| Practice | Implementation | Why It Matters |
+|----------|----------------|----------------|
+| **Separate JWT Secret** | Use different `JWT_SECRET_KEY` than `DJANGO_SECRET_KEY` | Limits blast radius if one key is compromised |
+| **Short Access Tokens** | Default 60 minutes, adjust as needed | Limits window for stolen tokens |
+| **Token Rotation** | Refresh tokens blacklisted on use | Prevents replay attacks |
+| **Secure Storage** | Use httpOnly cookies (`JWT_AUTH_COOKIE=true`) | Prevents XSS token theft |
 
-### 🔗 API Key Security
+### API Key Security
 
-[block:callout]
-{
-  "type": "warning",
-  "title": "⚠️ API Key Best Practices",
-  "body": "1. **No Query Parameters** - API keys cannot be passed in URLs (prevents logging/leakage)\n2. **Hashed Storage** - Only SHA-256 hash stored in database\n3. **Scoped Access** - Limit API keys to required features only\n4. **Expiration** - Always set expiration dates on API keys\n5. **Rotation** - Rotate keys periodically and after team changes"
-}
-[/block]
+> **Warning: API Key Best Practices**
+>
+> 1. **No Query Parameters** - API keys cannot be passed in URLs (prevents logging/leakage)
+> 2. **Hashed Storage** - Only SHA-256 hash stored in database
+> 3. **Scoped Access** - Limit API keys to required features only
+> 4. **Expiration** - Always set expiration dates on API keys
+> 5. **Rotation** - Rotate keys periodically and after team changes
 
-### 🌐 CORS Configuration
+### CORS Configuration
 
 ```bash
 CORS_ALLOW_ALL_ORIGINS=false
@@ -1037,9 +989,9 @@ CORS_ALLOWED_ORIGINS=https://your-frontend-domain.com
 
 ---
 
-## 📚 Configuration Reference
+## Configuration Reference
 
-### 🔐 Authentication Settings
+### Authentication Settings
 
 | Setting | Default | Description |
 |---------|---------|-------------|
@@ -1051,7 +1003,7 @@ CORS_ALLOWED_ORIGINS=https://your-frontend-domain.com
 | `JWT_REFRESH_TOKEN_LIFETIME_DAYS` | `2` | Refresh token validity |
 | `JWT_AUTH_COOKIE` | `false` | Store tokens in httpOnly cookies |
 
-### 🌐 OIDC Settings
+### OIDC Settings
 
 | Setting | Default | Description |
 |---------|---------|-------------|
@@ -1062,9 +1014,9 @@ CORS_ALLOWED_ORIGINS=https://your-frontend-domain.com
 | `OIDC_PROVIDER_NAME` | `SSO` | Display name for UI |
 | `OIDC_SCOPES` | `openid profile email groups` | OAuth scopes to request |
 | `OIDC_DEFAULT_ROLE` | `viewer` | Default role for new OIDC users |
-| `OIDC_ALLOW_EMAIL_LINKING` | `false` | Allow linking by email ⚠️ |
+| `OIDC_ALLOW_EMAIL_LINKING` | `false` | Allow linking by email (security risk) |
 
-### ⏱️ Rate Limiting Settings
+### Rate Limiting Settings
 
 | Setting | Default | Description |
 |---------|---------|-------------|
@@ -1074,25 +1026,25 @@ CORS_ALLOWED_ORIGINS=https://your-frontend-domain.com
 
 ---
 
-## 📡 API Endpoints Reference
+## API Endpoints Reference
 
-### 🔐 Authentication Endpoints
+### Authentication Endpoints
 
 | Endpoint | Method | Auth | Description |
 |----------|--------|------|-------------|
-| `/api/v1/auth/config` | GET | ❌ | Get auth configuration |
-| `/api/v1/auth/login` | POST | ❌ | Login with credentials |
-| `/api/v1/auth/logout` | POST | ✅ | Logout and blacklist token |
-| `/api/v1/auth/refresh` | POST | ❌ | Refresh access token |
-| `/api/v1/auth/profile` | GET | ✅ | Get current user profile |
-| `/api/v1/auth/profile` | PATCH | ✅ | Update current user profile |
-| `/api/v1/auth/password` | POST | ✅ | Change password |
-| `/api/v1/auth/oidc/authorize` | GET | ❌ | Get OIDC authorization URL |
-| `/api/v1/auth/oidc/callback` | GET | ❌ | OIDC callback handler |
-| `/api/v1/auth/permissions` | GET | ❌ | List all permissions |
-| `/api/v1/auth/my-permissions` | GET | ✅ | Get current user permissions |
+| `/api/v1/auth/config` | GET | No | Get auth configuration |
+| `/api/v1/auth/login` | POST | No | Login with credentials |
+| `/api/v1/auth/logout` | POST | Yes | Logout and blacklist token |
+| `/api/v1/auth/refresh` | POST | No | Refresh access token |
+| `/api/v1/auth/profile` | GET | Yes | Get current user profile |
+| `/api/v1/auth/profile` | PATCH | Yes | Update current user profile |
+| `/api/v1/auth/password` | POST | Yes | Change password |
+| `/api/v1/auth/oidc/authorize` | GET | No | Get OIDC authorization URL |
+| `/api/v1/auth/oidc/callback` | GET | No | OIDC callback handler |
+| `/api/v1/auth/permissions` | GET | No | List all permissions |
+| `/api/v1/auth/my-permissions` | GET | Yes | Get current user permissions |
 
-### 👥 User Management Endpoints
+### User Management Endpoints
 
 | Endpoint | Method | Permission | Description |
 |----------|--------|------------|-------------|
@@ -1102,7 +1054,7 @@ CORS_ALLOWED_ORIGINS=https://your-frontend-domain.com
 | `/api/v1/users/{id}` | PATCH | `users.edit` | Update user |
 | `/api/v1/users/{id}` | DELETE | `users.delete` | Delete user |
 
-### 🎭 Role Management Endpoints
+### Role Management Endpoints
 
 | Endpoint | Method | Permission | Description |
 |----------|--------|------------|-------------|
@@ -1112,53 +1064,69 @@ CORS_ALLOWED_ORIGINS=https://your-frontend-domain.com
 | `/api/v1/roles/{id}` | PATCH | `roles.edit` | Update role |
 | `/api/v1/roles/{id}` | DELETE | `roles.delete` | Delete role |
 
-### 🔗 API Key Management Endpoints
+### API Key Management Endpoints
 
 | Endpoint | Method | Auth | Description |
 |----------|--------|------|-------------|
-| `/api/v1/api-keys` | GET | ✅ | List user's API keys |
-| `/api/v1/api-keys` | POST | ✅ | Create API key |
-| `/api/v1/api-keys/{id}` | DELETE | ✅ | Delete API key |
+| `/api/v1/api-keys` | GET | Yes | List user's API keys |
+| `/api/v1/api-keys` | POST | Yes | Create API key |
+| `/api/v1/api-keys/{id}` | DELETE | Yes | Delete API key |
 
 ---
 
-## 🔧 Troubleshooting
+## Troubleshooting
 
-### ❓ Common Issues
+### Common Issues
 
-[block:callout]
-{
-  "type": "danger",
-  "title": "🔴 401 Unauthorized",
-  "body": "**Possible causes:**\n- Token is expired\n- Invalid Authorization header format (should be `Bearer <token>`)\n- User account is deactivated\n\n**Solutions:**\n1. Check token expiration with a JWT decoder\n2. Verify header format: `Authorization: Bearer eyJ...`\n3. Confirm user `is_active=True` in database"
-}
-[/block]
+> **401 Unauthorized**
+>
+> **Possible causes:**
+> - Token is expired
+> - Invalid Authorization header format (should be `Bearer <token>`)
+> - User account is deactivated
+>
+> **Solutions:**
+> 1. Check token expiration with a JWT decoder
+> 2. Verify header format: `Authorization: Bearer eyJ...`
+> 3. Confirm user `is_active=True` in database
 
-[block:callout]
-{
-  "type": "warning",
-  "title": "🟡 403 Forbidden",
-  "body": "**Possible causes:**\n- User lacks required permission\n- Feature is disabled\n- API key scope doesn't include the feature\n\n**Solutions:**\n1. Check user permissions via `/api/v1/auth/my-permissions`\n2. Verify feature is enabled in admin\n3. Check API key scopes if using API key auth"
-}
-[/block]
+> **Warning: 403 Forbidden**
+>
+> **Possible causes:**
+> - User lacks required permission
+> - Feature is disabled
+> - API key scope doesn't include the feature
+>
+> **Solutions:**
+> 1. Check user permissions via `/api/v1/auth/my-permissions`
+> 2. Verify feature is enabled in admin
+> 3. Check API key scopes if using API key auth
 
-[block:callout]
-{
-  "type": "info",
-  "title": "🔵 OIDC Login Failed",
-  "body": "**Possible causes:**\n- Incorrect `OIDC_CLIENT_SECRET`\n- Redirect URIs not configured in IdP\n- Scopes not allowed by IdP\n\n**Solutions:**\n1. Double-check client secret in environment\n2. Add callback URL to IdP allowed redirects: `https://your-domain/api/v1/auth/oidc/callback`\n3. Verify scopes are enabled in IdP application settings"
-}
-[/block]
+> **OIDC Login Failed**
+>
+> **Possible causes:**
+> - Incorrect `OIDC_CLIENT_SECRET`
+> - Redirect URIs not configured in IdP
+> - Scopes not allowed by IdP
+>
+> **Solutions:**
+> 1. Double-check client secret in environment
+> 2. Add callback URL to IdP allowed redirects: `https://your-domain/api/v1/auth/oidc/callback`
+> 3. Verify scopes are enabled in IdP application settings
 
-[block:callout]
-{
-  "type": "danger",
-  "title": "🔴 WebSocket Connection Rejected (4001)",
-  "body": "**Possible causes:**\n- Token is invalid or expired\n- Using query string instead of header\n- `WS_REJECT_INVALID_TOKENS` is enabled\n\n**Solutions:**\n1. Refresh token before connecting\n2. Use `Sec-WebSocket-Protocol` header: `new WebSocket(url, ['Bearer', token])`\n3. Check WebSocket middleware configuration"
-}
-[/block]
+> **WebSocket Connection Rejected (4001)**
+>
+> **Possible causes:**
+> - Token is invalid or expired
+> - Using query string instead of header
+> - `WS_REJECT_INVALID_TOKENS` is enabled
+>
+> **Solutions:**
+> 1. Refresh token before connecting
+> 2. Use `Sec-WebSocket-Protocol` header: `new WebSocket(url, ['Bearer', token])`
+> 3. Check WebSocket middleware configuration
 
-### 🐛 Debug Logging
+### Debug Logging
 
 Enable debug logging for authentication issues:
 
@@ -1175,12 +1143,11 @@ LOGGING = {
 
 ---
 
-## 📖 Next Steps
+## Next Steps
 
-[block:callout]
-{
-  "type": "info",
-  "title": "🚀 Ready to integrate?",
-  "body": "- **Quick Start**: Try the `/api/v1/auth/login` endpoint with your credentials\n- **API Keys**: Create a scoped API key for your integration\n- **Enterprise**: Configure OIDC with your identity provider\n- **Support**: Check our GitHub issues or contact support"
-}
-[/block]
+> **Ready to integrate?**
+>
+> - **Quick Start**: Try the `/api/v1/auth/login` endpoint with your credentials
+> - **API Keys**: Create a scoped API key for your integration
+> - **Enterprise**: Configure OIDC with your identity provider
+> - **Support**: Check our GitHub issues or contact support
