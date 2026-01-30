@@ -1,5 +1,6 @@
 ---
 title: Map & Aviation Data
+hidden: false
 ---
 
 # ✈️ Map and Aviation Data
