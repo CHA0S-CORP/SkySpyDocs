@@ -1,5 +1,6 @@
 ---
 title: Database Models
+hidden: false
 ---
 
 # 🗄️ Database Architecture
