@@ -3,5 +3,5 @@
 - socketio-message-protocol
 - socketio-main-namespace
 - socketio-specialized-namespaces
-- socketio-api
 - socketio-client-implementation
+- socketio-api
