@@ -4,3 +4,4 @@
 - socketio-main-namespace
 - socketio-specialized-namespaces
 - socketio-api
+- socketio-client-implementation
