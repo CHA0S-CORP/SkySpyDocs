@@ -1,8 +1,0 @@
-- index
-- list_acars_messages_api_v1_acars_messages_get-1
-- get_recent_messages_api_v1_acars_messages_recent_get-1
-- get_aircraft_acars_api_v1_acars_messages__icao_hex__get-1
-- acars_statistics_api_v1_acars_stats_get-1
-- acars_status_api_v1_acars_status_get-1
-- cleanup_messages_api_v1_acars_messages_cleanup_delete-1
-- get_label_reference_api_v1_acars_labels_get-1

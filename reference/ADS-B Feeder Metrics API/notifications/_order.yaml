@@ -1,8 +1,0 @@
-- index
-- get_config_api_v1_notifications_config_get-1
-- update_config_api_v1_notifications_config_put-1
-- send_test_api_v1_notifications_test_post-1
-- get_history_api_v1_notifications_history_get-1
-- get_stats_api_v1_notifications_stats_get-1
-- enable_notifications_api_v1_notifications_enable_post-1
-- disable_notifications_api_v1_notifications_disable_post-1

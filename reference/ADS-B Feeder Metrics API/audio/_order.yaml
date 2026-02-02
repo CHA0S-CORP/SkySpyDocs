@@ -1,9 +1,0 @@
-- index
-- upload_audio_api_v1_audio_upload_post-1
-- list_transmissions_api_v1_audio_transmissions_get-1
-- get_transmission_api_v1_audio_transmissions__transmission_id__get-1
-- >-
-  queue_transcription_api_v1_audio_transmissions__transmission_id__transcribe_post-1
-- get_audio_stats_api_v1_audio_stats_get-1
-- get_audio_file_api_v1_audio_file__filename__get-1
-- get_audio_status_api_v1_audio_status_get-1
