@@ -1,5 +1,5 @@
 - socketio-overview
 - socketio-connection
 - socketio-message-protocol
-- socketio-api
 - socketio-main-namespace
+- socketio-api
