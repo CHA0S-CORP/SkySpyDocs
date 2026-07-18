@@ -290,6 +290,40 @@ python manage.py run_acars -v 2
 
 ---
 
+## 📡 Airframes.io Live Source
+
+> **No SDR? No problem.** SkySpy v3 can ingest real ACARS/VDL2 traffic from the open [airframes.io](https://airframes.io) network — no receiver hardware required.
+
+When `AIRFRAMES_ACARS_ENABLED=True`, `run_acars` starts an extra poller alongside the UDP listeners that reads the airframes.io firehose and keeps only ground stations near your area, then feeds them through the **same** normalize → dedupe → store → broadcast → enrich pipeline as the UDP path. The History → ACARS tab then shows real regional traffic.
+
+![ACARS history](https://raw.githubusercontent.com/CHA0S-CORP/SkySpy/main/docs/screenshots/desktop/history-acars.png)
+
+### How filtering works
+
+Each firehose message is kept if its nearest ground station is **either**:
+
+- in `AIRFRAMES_ACARS_AIRPORTS` (a CSV of ICAO codes), **or**
+- within `AIRFRAMES_ACARS_RADIUS_NM` of `AIRFRAMES_ACARS_CENTER_LAT/LON`
+
+If a station has no coordinates, its `geoip` location is used as a fallback.
+
+### Configuration
+
+| Variable | Description | Default |
+|:---------|:------------|:--------|
+| `AIRFRAMES_ACARS_ENABLED` | Enable the poller | `False` |
+| `AIRFRAMES_ACARS_URL` | Firehose endpoint | `https://api.airframes.io/v1/messages` |
+| `AIRFRAMES_ACARS_API_KEY` | Feeder key (raises rate limit) | Empty |
+| `AIRFRAMES_ACARS_POLL_INTERVAL` | Poll interval, seconds (min 2) | `4` |
+| `AIRFRAMES_ACARS_AIRPORTS` | CSV of ICAOs to keep (empty = radius only) | `KJFK,KLAX,KORD,KATL` |
+| `AIRFRAMES_ACARS_CENTER_LAT` | Radius-filter center latitude | `33.9416` |
+| `AIRFRAMES_ACARS_CENTER_LON` | Radius-filter center longitude | `-118.4085` |
+| `AIRFRAMES_ACARS_RADIUS_NM` | Radius, nautical miles | `100` |
+
+> 📘 The newest-100 firehose window is only ~5 seconds, so keep `POLL_INTERVAL` low (default 4s); a 30-second dedupe cache absorbs the overlap. Free and keyless today — add a feeder key for a higher rate limit.
+
+---
+
 ## 📋 Message Formats
 
 ### Decoder Comparison

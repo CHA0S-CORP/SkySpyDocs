@@ -2236,6 +2236,61 @@ Force refresh of airframe data from external sources.
 
 ---
 
+<details>
+<summary><h3>AI Assistant</h3></summary>
+
+---
+
+#### POST `/assistant/ask/`
+
+> Ask the Assistant
+
+![Auth Required](https://img.shields.io/badge/auth-bearer-important)
+
+Ask the tool-calling LLM agent a natural-language question. Requires `ASSISTANT_ENABLED` + `LLM_ENABLED`. See the [AI Assistant guide](../features/ai-assistant).
+
+**Request Body:**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `query` | `string` | ✅ | The question |
+| `context` | `string` | ⚪ | Page/DOM snapshot for grounding |
+| `history` | `array` | ⚪ | Prior turns `[{"role","content"}]` |
+
+```bash
+curl -X POST https://your-domain.com/api/v1/assistant/ask/ \
+  -H "Content-Type: application/json" \
+  -d '{"query": "What are the closest and highest aircraft right now?"}'
+```
+
+**Response:**
+```json
+{
+  "answer": "string or null",
+  "steps": [{"tool": "live_traffic_summary", "args": {}, "result_preview": "..."}],
+  "sources": [{"icao_hex": "A835AF", "registration": "N628TS"}],
+  "photos": [{"src": "...", "alt": "...", "photographer": "...", "source": "..."}],
+  "maps": [{"title": "...", "points": [{"lat": 0, "lon": 0}]}],
+  "status": "ok"
+}
+```
+
+`status` ∈ `ok` | `empty_query` | `unavailable` | `error`. Returns `503` when the assistant is not configured.
+
+---
+
+#### POST `/assistant/stream/`
+
+> Stream an Assistant Answer
+
+![Auth Required](https://img.shields.io/badge/auth-bearer-important)
+
+Same request body as `/assistant/ask/`, streamed as **Server-Sent Events** (`text/event-stream`). Frame `type` values: `tool`, `token`, `photo`, `map`, `final`, `error`, `unavailable`. The stream ends with `event: done`.
+
+</details>
+
+---
+
 ## WebSocket API
 
 Real-time data is available via Django Channels WebSocket connections.
@@ -2424,6 +2479,18 @@ curl -s "$API_URL/aviation/metar/?icao=KSEA" | jq '.data[0].raw_text'
 
 ## Changelog
 
+### Version 3.0.0
+
+- Added the **AI Assistant** — a tool-calling LLM agent with `/assistant/ask/` and `/assistant/stream/` (SSE) endpoints over 32 read-only analytics/search tools
+- Added **Airframe Intelligence**: per-airframe dossiers, NTSB accident/incident history, and semantic (pgvector) search over airframes, ACARS, NOTAMs, PIREPs & safety events
+- Added **Ownership & Shell-Risk Screening**: FAA-signal shell-company scoring + optional OpenSanctions/PEP owner screening (`shell_score`, `is_shell_suspected`, `owner_type`, `ownership_flags` on the airframe response)
+- Added **flight-pattern anomaly detection** (orbits, holds, survey grids, multi-orbit surveillance shapes) via the assistant
+- Added **field-level provenance** (`field_sources`) on airframe responses
+- Added new aircraft-lookup sources (ADSBdb, ADS-B Exchange, adsb.lol community pool) behind a shared circuit-breaking HTTP client
+- Added **Airframes.io live ACARS** ingestion (no SDR required) and the `adsblol` keyless aircraft stream mode
+- Expanded the photo-enrichment chain (Planespotters hex/reg → airport-data.com → hexdb.io → Flickr)
+- Rebuilt the web dashboard (v3.0.0) with a canvas Live Map default and Assistant, Analytics, and Airframes screens
+
 ### Version 2.0.0
 
 - Added Cannonball Mode endpoints for law enforcement aircraft detection
@@ -2446,4 +2513,4 @@ curl -s "$API_URL/aviation/metar/?icao=KSEA" | jq '.data[0].raw_text'
 
 ---
 
-> **Need help?** Check out our [Getting Started Guide](./getting-started) or visit the [interactive API explorer](/api/v1/docs/).
+> **Need help?** Check out our [Getting Started Guide](../getting-started/quick-start) or visit the [interactive API explorer](/api/v1/docs/).

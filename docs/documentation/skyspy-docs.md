@@ -15,7 +15,7 @@ hidden: false
 
 **Enterprise-grade ADS-B aircraft tracking and monitoring platform**
 
-[Quick Start](./00-quick-start.md) · [API Reference](./05-rest-api.md) · [Deployment](./11-deployment.md)
+[Quick Start](../getting-started/quick-start) · [API Reference](../api-reference/rest-api) · [Deployment](../operations/deployment)
 
 </div>
 
@@ -61,9 +61,9 @@ flowchart LR
 
 | | Document | Description |
 |:---:|:---------|:------------|
-| 🏁 | [**Quick Start**](./00-quick-start.md) | Get running in 5 minutes with Docker |
-| 🏗️ | [**Overview**](./01-overview.md) | Architecture, tech stack, core concepts |
-| ⚙️ | [**Configuration**](./02-configuration.md) | Complete environment and settings reference |
+| 🏁 | [**Quick Start**](../getting-started/quick-start) | Get running in 5 minutes with Docker |
+| 🏗️ | [**Overview**](../getting-started/overview) | Architecture, tech stack, core concepts |
+| ⚙️ | [**Configuration**](../getting-started/config-reference) | Complete environment and settings reference |
 
 ---
 
@@ -71,8 +71,8 @@ flowchart LR
 
 | | Document | Description |
 |:---:|:---------|:------------|
-| 🔑 | [**Authentication**](./03-authentication.md) | JWT, API keys, OIDC, permissions |
-| 🗄️ | [**Database**](./04-database.md) | Models, schema, relationships, migrations |
+| 🔑 | [**Authentication**](../core-features/authentication) | JWT, API keys, OIDC, permissions |
+| 🗄️ | [**Database**](../core-features/database) | Models, schema, relationships, migrations |
 
 ---
 
@@ -82,8 +82,8 @@ flowchart LR
 
 | | Document | Description |
 |:---:|:---------|:------------|
-| 🌐 | [**REST API**](./05-rest-api.md) | Complete HTTP endpoint reference |
-| ⚡ | [**WebSocket API**](./06-websocket-api.md) | Real-time streaming, channels, events |
+| 🌐 | [**REST API**](../api-reference/rest-api) | Complete HTTP endpoint reference |
+| ⚡ | [**WebSocket API**](../api-reference/websocket-api) | Real-time streaming, channels, events |
 
 ---
 
@@ -91,9 +91,9 @@ flowchart LR
 
 | | Document | Description |
 |:---:|:---------|:------------|
-| 🐹 | [**Go Services**](./07-go-services.md) | CLI application, radar display |
-| ⚛️ | [**Frontend**](./08-frontend.md) | React web application architecture |
-| ⏰ | [**Background Tasks**](./09-background-tasks.md) | Celery workers, scheduled jobs |
+| 🐹 | [**Go Services**](../components/go-services) | CLI application, radar display |
+| ⚛️ | [**Frontend**](../components/frontend) | React web application architecture |
+| ⏰ | [**Background Tasks**](../components/background-tasks) | Celery workers, scheduled jobs |
 
 ---
 
@@ -101,11 +101,11 @@ flowchart LR
 
 | | Document | Description |
 |:---:|:---------|:------------|
-| 🗺️ | [**Map & Aviation**](./10-map-aviation.md) | Map layers, weather, aviation data |
-| 🚨 | [**Safety & Alerts**](./13-safety-alerts.md) | Safety monitoring, alert rules |
-| 📡 | [**ACARS**](./14-acars.md) | ACARS/VDL2 message integration |
-| 🎯 | [**Cannonball Mode**](./17-cannonball-mode.md) | Mobile proximity detection |
-| 📊 | [**Statistics**](./18-statistics.md) | Analytics, gamification, exports |
+| 🗺️ | [**Map & Aviation**](../features/map-aviation) | Map layers, weather, aviation data |
+| 🚨 | [**Safety & Alerts**](../features/safety-alerts) | Safety monitoring, alert rules |
+| 📡 | [**ACARS**](../features/acars) | ACARS/VDL2 message integration |
+| 🎯 | [**Cannonball Mode**](../features/cannonball-mode) | Mobile proximity detection |
+| 📊 | [**Statistics**](../features/statistics) | Analytics, gamification, exports |
 
 ---
 
@@ -113,8 +113,8 @@ flowchart LR
 
 | | Document | Description |
 |:---:|:---------|:------------|
-| 🚀 | [**Deployment**](./11-deployment.md) | Docker, production, Raspberry Pi |
-| 🧪 | [**Testing**](./12-testing.md) | Running and writing tests |
+| 🚀 | [**Deployment**](../operations/deployment) | Docker, production, Raspberry Pi |
+| 🧪 | [**Testing**](../operations/testing) | Running and writing tests |
 
 ---
 
@@ -122,8 +122,8 @@ flowchart LR
 
 | | Document | Description |
 |:---:|:---------|:------------|
-| 🤝 | [**Contributing**](./15-contributing.md) | Dev setup, code style, PR process |
-| 🔧 | [**Troubleshooting**](./16-troubleshooting.md) | Common issues, debugging, FAQ |
+| 🤝 | [**Contributing**](../development/contributing) | Dev setup, code style, PR process |
+| 🔧 | [**Troubleshooting**](../development/troubleshooting) | Common issues, debugging, FAQ |
 
 ---
 
@@ -162,7 +162,7 @@ git pull && docker compose up -d --build
 
 ## 💬 Support
 
-> ⚠️ **Having issues?** Check the [Troubleshooting Guide](./16-troubleshooting.md) first!
+> ⚠️ **Having issues?** Check the [Troubleshooting Guide](../development/troubleshooting) first!
 
 - 🐛 **Bugs**: [GitHub Issues](https://github.com/your-org/skyspy/issues)
 - 💡 **Features**: [GitHub Discussions](https://github.com/your-org/skyspy/discussions)

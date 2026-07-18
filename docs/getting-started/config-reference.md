@@ -245,6 +245,19 @@ OIDC_SCOPES=openid profile email
 | `DB_STORE_INTERVAL` | Seconds between database position writes | `5` | ⚪ Optional |
 | `SESSION_TIMEOUT_MINUTES` | Minutes of inactivity before aircraft session ends | `30` | ⚪ Optional |
 
+### Aircraft Stream Mode
+
+| Variable | Description | Default | Status |
+|:---------|:------------|:--------|:------:|
+| `AIRCRAFT_STREAM_ENABLED` | Enable push-style streaming ingest | `False` | ⚪ Optional |
+| `AIRCRAFT_STREAM_MODE` | `sse` / `tcp` / `adsbx` / `adsblol` / `auto` | `sse` | ⚪ Optional |
+| `AIRCRAFT_STREAM_FREE_SOURCES` | Round-robin pool for `adsblol` mode | `adsb.lol,adsb.fi,airplanes.live` | ⚪ Optional |
+| `AIRCRAFT_STREAM_SSE_PORT` | HTTP port for SSE mode | `80` | ⚪ Optional |
+| `AIRCRAFT_STREAM_SSE_PATH` | SSE endpoint path | `/v2/sse` | ⚪ Optional |
+| `AIRCRAFT_STREAM_TCP_PORT` | TCP net-json port for `tcp` mode | `30047` | ⚪ Optional |
+
+> 📘 `adsblol` is a keyless community feed that round-robins the free sources (radius max 250nm around `FEEDER_LAT/LON`) with per-source exponential backoff on 429s. `sse` is preferred when your feeder exposes it.
+
 ---
 
 ## 🛡️ Safety Monitoring
@@ -319,6 +332,23 @@ APPRISE_URLS=telegram://...,discord://...,email://...
 | `ACARS_ENABLED` | Enable ACARS message processing | `True` | ⚪ Optional |
 | `ACARS_PORT` | UDP port for ACARS messages | `5555` | ⚪ Optional |
 | `VDLM2_PORT` | UDP port for VDL Mode 2 messages | `5556` | ⚪ Optional |
+
+### Airframes.io Live ACARS (no hardware)
+
+Polls the open [airframes.io](https://airframes.io) firehose and keeps only ground stations near your center, feeding them through the same decode/store/broadcast path as the UDP listener. See [ACARS Integration](../features/acars#-airframesio-live-source).
+
+| Variable | Description | Default | Status |
+|:---------|:------------|:--------|:------:|
+| `AIRFRAMES_ACARS_ENABLED` | Enable the airframes.io poller | `False` | ⚪ Optional |
+| `AIRFRAMES_ACARS_URL` | Firehose endpoint | `https://api.airframes.io/v1/messages` | ⚪ Optional |
+| `AIRFRAMES_ACARS_API_KEY` | Feeder key (raises rate limit) | Empty | ⚪ Optional |
+| `AIRFRAMES_ACARS_POLL_INTERVAL` | Poll interval in seconds (min 2) | `4` | ⚪ Optional |
+| `AIRFRAMES_ACARS_AIRPORTS` | CSV of ICAOs to keep (empty = radius only) | `KJFK,KLAX,KORD,KATL` | ⚪ Optional |
+| `AIRFRAMES_ACARS_CENTER_LAT` | Radius-filter center latitude | `33.9416` | ⚪ Optional |
+| `AIRFRAMES_ACARS_CENTER_LON` | Radius-filter center longitude | `-118.4085` | ⚪ Optional |
+| `AIRFRAMES_ACARS_RADIUS_NM` | Radius in nautical miles | `100` | ⚪ Optional |
+
+> 📘 The firehose newest-100 window is ~5s, so keep the poll interval low; a 30s dedupe cache absorbs the overlap. Started by `python manage.py run_acars` (alongside the UDP listeners).
 
 ---
 
@@ -416,6 +446,62 @@ LLM_MODEL=anthropic/claude-3-haiku
 
 ---
 
+## 🤖 AI Assistant
+
+Tool-calling LLM agent that answers natural-language questions over your data. Requires `LLM_ENABLED` **and** a model that supports tool/function calling. See the [AI Assistant guide](../features/ai-assistant).
+
+| Variable | Description | Default | Status |
+|:---------|:------------|:--------|:------:|
+| `ASSISTANT_ENABLED` | Enable the assistant agent | `False` | ⚪ Optional |
+| `ASSISTANT_MODEL` | Model override (must support tool calling) | *(= `LLM_MODEL`)* | ⚪ Optional |
+| `ASSISTANT_MAX_STEPS` | Tool-call budget per query | `10` | ⚪ Optional |
+| `ASSISTANT_TIMEOUT` | Request timeout (seconds) | `60` | ⚪ Optional |
+| `ASSISTANT_BRIEFING_ENABLED` | Inject a live-traffic snapshot into each query | `True` | ⚪ Optional |
+| `ASSISTANT_CONTEXT_WINDOW` | Model context window (tokens); **≤16000 → compact mode**; `0` = assume large | `0` | ⚪ Optional |
+| `ASSISTANT_MAX_RESULT_CHARS` | Per-tool result cap | `6000` | ⚪ Optional |
+| `ASSISTANT_MAX_HISTORY_MSGS` | Prior turns carried | `16` | ⚪ Optional |
+| `ASSISTANT_MAX_HISTORY_CHARS` | Per-message cap | `3000` | ⚪ Optional |
+| `ASSISTANT_PHOTO_BASE_URL` | Override airframe photo `<img>` base (empty = auto: signed S3 or `/api/v1/photos/<hex>`) | Empty | ⚪ Optional |
+
+> ⚠️ **Small local models** — set `ASSISTANT_CONTEXT_WINDOW` to the model's real window (e.g. `8192`). At `0` the full prompt + 32 tool schemas overflow an 8k window on the first call.
+
+<details>
+<summary><strong>🖥️ vLLM (GPU) profile</strong></summary>
+
+Production serves the model with vLLM under the Docker Compose `gpu` profile:
+
+```bash
+docker compose --profile gpu up -d vllm
+```
+
+| Variable | Description | Default |
+|:---------|:------------|:--------|
+| `VLLM_MODEL` | Model to load | `Qwen/Qwen2.5-7B-Instruct` |
+| `VLLM_MAX_MODEL_LEN` | Max context length | `32768` |
+| `VLLM_GPU_MEMORY_UTILIZATION` | GPU memory fraction | `0.90` |
+| `VLLM_TOOL_PARSER` | Tool-call parser format | `hermes` |
+| `VLLM_PORT` | Host port | `8000` |
+| `HUGGING_FACE_HUB_TOKEN` | HF token for gated models | Empty |
+
+</details>
+
+---
+
+## 🧠 Airframe RAG / Embeddings
+
+Powers semantic search over airframe dossiers, ACARS, NOTAMs, PIREPs, and safety events. Each setting falls back to the matching `LLM_*` value. See [Airframe Intelligence](../features/airframe-intelligence).
+
+| Variable | Description | Default | Status |
+|:---------|:------------|:--------|:------:|
+| `EMBEDDING_API_URL` | OpenAI-compatible `/embeddings` endpoint | *(= `LLM_API_URL`)* | ⚪ Optional |
+| `EMBEDDING_API_KEY` | API key | *(= `LLM_API_KEY`)* | ⚪ Optional |
+| `EMBEDDING_MODEL` | Embedding model | `text-embedding-3-small` | ⚪ Optional |
+| `EMBEDDING_DIM` | Vector dimension (must match the model) | `1536` | ⚪ Optional |
+
+> 📘 **pgvector required** — the embedding column and similarity search depend on the `pgvector/pgvector:pg16` Postgres image (already set in the shipped compose files).
+
+---
+
 ## 📷 Photo Cache Configuration
 
 | Variable | Description | Default | Status |
@@ -423,6 +509,9 @@ LLM_MODEL=anthropic/claude-3-haiku
 | `PHOTO_CACHE_ENABLED` | Enable aircraft photo caching | `True` | ⚪ Optional |
 | `PHOTO_CACHE_DIR` | Directory for cached photos | `/data/photos` | ⚪ Optional |
 | `PHOTO_AUTO_DOWNLOAD` | Automatically download photos for tracked aircraft | `True` | ⚪ Optional |
+| `PHOTO_PLANESPOTTERS_USER_AGENT` | Contact UA for Planespotters (they 403 requests without a contact URL/email) | `skyspy/2.6 (+https://github.com/skyspy/skyspy)` | ⚪ Optional |
+
+> 📘 **Photo enrichment chain** — photos are resolved in order: Planespotters (hex → registration) → airport-data.com (hex/reg) → hexdb.io → Flickr (GA tail fallback). The registration fallbacks matter for US GA airframes and helicopters indexed by tail only. Set `PHOTO_PLANESPOTTERS_USER_AGENT` with your own contact so Planespotters can reach the operator.
 
 ---
 
@@ -495,6 +584,19 @@ LLM_MODEL=anthropic/claude-3-haiku
 |:---------|:------------|:--------|:------:|
 | `AVIATIONSTACK_ENABLED` | Enable Aviationstack schedules (100 req/month free) | `False` | ⚪ Optional |
 | `AVIATIONSTACK_API_KEY` | Aviationstack API key | Empty | 🔴 If enabled |
+
+### OpenSanctions Owner Screening
+
+Screens aircraft owner names against sanctions/PEP/watchlists and feeds the shell-risk score. See [Ownership & Shell-Risk Screening](../features/ownership-screening).
+
+| Variable | Description | Default | Status |
+|:---------|:------------|:--------|:------:|
+| `OPENSANCTIONS_ENABLED` | Enable owner-name screening | `False` | ⚪ Optional |
+| `OPENSANCTIONS_API_URL` | API base URL | `https://api.opensanctions.org` | ⚪ Optional |
+| `OPENSANCTIONS_API_KEY` | API key (free for non-commercial) | Empty | 🔴 If enabled |
+| `OPENSANCTIONS_DATASET` | Collection to match against | `default` | ⚪ Optional |
+
+> 📘 Shell-company risk scoring from FAA registry signals runs even without OpenSanctions; the sanctions factor simply stays zero until a key is provided.
 
 </details>
 
@@ -707,6 +809,9 @@ The frontend stores user preferences in browser localStorage via `/web/src/utils
 | Whisper | `WHISPER_ENABLED` | `False` |
 | ATC Whisper | `ATC_WHISPER_ENABLED` | `False` |
 | LLM Analysis | `LLM_ENABLED` | `False` |
+| AI Assistant | `ASSISTANT_ENABLED` | `False` |
+| Aircraft Streaming | `AIRCRAFT_STREAM_ENABLED` | `False` |
+| Airframes.io ACARS | `AIRFRAMES_ACARS_ENABLED` | `False` |
 | S3 Storage | `S3_ENABLED` | `False` |
 | OIDC/SSO | `OIDC_ENABLED` | `False` |
 
@@ -720,6 +825,7 @@ The frontend stores user preferences in browser localStorage via `/web/src/utils
 | OpenSky Live | `OPENSKY_LIVE_ENABLED` | `False` |
 | ADS-B Exchange | `ADSBX_LIVE_ENABLED` | `False` |
 | Aviationstack | `AVIATIONSTACK_ENABLED` | `False` |
+| OpenSanctions Screening | `OPENSANCTIONS_ENABLED` | `False` |
 
 </details>
 
@@ -1090,7 +1196,7 @@ Token is invalid or expired
 
 | Document | Description |
 |:---------|:------------|
-| [Installation Guide](./01-installation.md) | Getting started with SkysPy |
-| [API Reference](./03-api-reference.md) | REST API documentation |
-| [WebSocket Events](./04-websockets.md) | Real-time event reference |
-| [Deployment Guide](./05-deployment.md) | Production deployment |
+| [Quick Start](./quick-start) | Getting started with SkySpy |
+| [API Reference](../api-reference/rest-api) | REST API documentation |
+| [WebSocket Events](../api-reference/websocket-api) | Real-time event reference |
+| [Deployment Guide](../operations/deployment) | Production deployment |

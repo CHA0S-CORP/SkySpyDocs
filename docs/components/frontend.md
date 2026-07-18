@@ -18,9 +18,10 @@ hidden: false
 
 The SkySpy frontend is a **modern React application** built with Vite, delivering a real-time aircraft tracking and monitoring dashboard. Features include a modular component architecture, WebSocket-based real-time data streaming, and responsive design for desktop and mobile.
 
-> 📸 **Screenshot Placeholder**
-> ![Main Dashboard](screenshots/dashboard-overview.png)
-> *The main dashboard showing live aircraft tracking with real-time updates*
+> 📘 **v3 rebuild** — the dashboard was rebuilt for v3.0.0 (`web` package version `3.0.0`) around a canvas-rendered **Live Map** default that stays smooth past 1,000 aircraft, plus dedicated **Assistant**, **Advanced Analytics**, and **Airframes** screens.
+
+![Main Dashboard](https://raw.githubusercontent.com/CHA0S-CORP/SkySpy/main/docs/screenshots/desktop/map-overview.png)
+*The main dashboard showing live aircraft tracking with real-time updates*
 
 ---
 
@@ -105,17 +106,22 @@ flowchart TB
 
 | Tab | Icon | Description |
 |:----|:----:|:------------|
-| `map` | 🗺️ | Live aircraft map *(default)* |
+| `map` | 🗺️ | Canvas Live Map *(default)* |
 | `aircraft` | ✈️ | Sortable aircraft list |
 | `stats` | 📊 | Statistics dashboard |
-| `history` | 📜 | Historical data (sessions, sightings, ACARS, safety) |
+| `analytics` | 📈 | Advanced analytics (trends, geographic, patterns) |
+| `airframes` | 🛩️ | Airframes reference database |
+| `history` | 📜 | Historical data (sessions, sightings, ACARS, safety, NOTAMs, PIREPs, archive) |
 | `audio` | 🎵 | Radio transmission archive |
-| `notams` | 📋 | NOTAMs display |
-| `archive` | 📦 | Data archive browser |
 | `alerts` | 🔔 | Alert rule management |
 | `system` | ⚙️ | System status and configuration |
+| `assistant` | 🤖 | AI Assistant chat |
+| `admin` | 🛡️ | Admin configuration |
+| `cannonball` | 🎯 | Mobile threat-detection mode |
 | `airframe` | 🛩️ | Aircraft detail page |
 | `event` | ⚠️ | Safety event detail page |
+
+> 📘 Legacy routes `notams`, `pireps`, and `archive` are aliased to sub-tabs within **History**.
 
 ---
 
@@ -150,9 +156,8 @@ graph TB
 
 ### 🗺️ Map View Components
 
-> 📸 **Screenshot Placeholder**
-> ![Map View](screenshots/map-view.png)
-> *Interactive map with aircraft tracking, safety events, and ACARS panel*
+![Map View](https://raw.githubusercontent.com/CHA0S-CORP/SkySpy/main/docs/screenshots/desktop/map-full-controls.png)
+*Interactive map with aircraft tracking, safety events, and detail panel*
 
 ```mermaid
 graph TB
@@ -269,9 +274,8 @@ graph TB
 
 ### 📊 Stats Dashboard Layout
 
-> 📸 **Screenshot Placeholder**
-> ![Stats Dashboard](screenshots/stats-dashboard.png)
-> *Bento grid layout with live data, charts, and system status*
+![Stats Dashboard](https://raw.githubusercontent.com/CHA0S-CORP/SkySpy/main/docs/screenshots/desktop/stats-dashboard.png)
+*Bento grid layout with live data, charts, and system status*
 
 ```mermaid
 graph LR
@@ -301,9 +305,8 @@ graph LR
 
 ### 🎯 Cannonball Mode (Mobile)
 
-> 📸 **Screenshot Placeholder**
-> ![Cannonball Mode](screenshots/cannonball-mode.png)
-> *Fullscreen mobile proximity detection with HUD overlay*
+![Cannonball Mode](https://raw.githubusercontent.com/CHA0S-CORP/SkySpy/main/docs/screenshots/desktop/cannonball-radar-view.png)
+*Fullscreen mobile proximity detection with HUD overlay*
 
 A **fullscreen mobile-optimized mode** for proximity-based aircraft detection:
 
@@ -799,10 +802,10 @@ if (canAccessFeature('alerts', 'write')) {
 
 | Document | Description |
 |:---------|:------------|
-| 📡 [Backend API Documentation](./07-api.md) | REST API reference |
-| 🔌 [WebSocket Protocol](./06-websocket.md) | Real-time messaging protocol |
-| 🚀 [Deployment Guide](./03-deployment.md) | Production deployment |
-| ⚙️ [Configuration Reference](./02-configuration.md) | Environment configuration |
+| 📡 [Backend API Documentation](../api-reference/rest-api) | REST API reference |
+| 🔌 [WebSocket Protocol](../api-reference/websocket-api) | Real-time messaging protocol |
+| 🚀 [Deployment Guide](../operations/deployment) | Production deployment |
+| ⚙️ [Configuration Reference](../getting-started/config-reference) | Environment configuration |
 
 ---
 

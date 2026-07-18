@@ -17,6 +17,8 @@ hidden: false
 
 SkySpy captures position data from **1090MHz Mode S** and **978MHz UAT** receivers, displays aircraft on an interactive map, monitors safety conditions, and provides advanced features like custom alerts, weather integration, ACARS message decoding, and push notifications.
 
+![SkySpy Live Map](https://raw.githubusercontent.com/CHA0S-CORP/SkySpy/main/docs/screenshots/desktop/map-overview.png)
+
 > 📘 **Deployment Flexibility**
 >
 > SkySpy is designed to run on hardware ranging from **Raspberry Pi edge devices** to **enterprise server infrastructure**, with configuration profiles optimized for each deployment scenario.
@@ -37,6 +39,10 @@ SkySpy captures position data from **1090MHz Mode S** and **978MHz UAT** receive
 | 🌤️ **Aviation Weather** | METARs, TAFs, PIREPs, SIGMETs, G-AIRMETs, and NOTAMs integration | ✅ |
 | 📻 **ACARS/VDL2 Decoding** | Aircraft communication message reception, parsing, and display with libacars integration | ✅ |
 | 💻 **Multi-Platform CLI** | Native Go terminal radar client with themes, overlays, and export capabilities | ✅ |
+| 🤖 **AI Assistant** | Natural-language questions over live traffic, history, safety, ACARS & airframes via a tool-calling LLM agent | ✅ |
+| 🧠 **Airframe Intelligence** | Per-airframe dossiers, NTSB safety history & semantic (pgvector) search | ✅ |
+| 🕵️ **Ownership Screening** | Shell-company risk scoring + OpenSanctions/PEP owner screening | ✅ |
+| 🛰️ **Anomaly Detection** | Flight-path geometry classifier — orbits, holds, survey grids, surveillance shapes | ✅ |
 
 <br/>
 
@@ -483,7 +489,7 @@ SkySpy provides a comprehensive REST API with OpenAPI documentation:
 | Component | Version | Status |
 |:----------|:--------|:------:|
 | 🚀 **SkySpy API** | `2.6.0` | ![Stable](https://img.shields.io/badge/status-stable-green) |
-| 🌐 **Web Dashboard** | `2.5.0` | ![Stable](https://img.shields.io/badge/status-stable-green) |
+| 🌐 **Web Dashboard** | `3.0.0` | ![Stable](https://img.shields.io/badge/status-stable-green) |
 | 🖥️ **Go CLI** | `1.0.0` | ![Stable](https://img.shields.io/badge/status-stable-green) |
 | 🐍 **Django** | `5.x` | ![Required](https://img.shields.io/badge/required-5.x-blue) |
 | 🐍 **Python** | `3.12+` | ![Required](https://img.shields.io/badge/required-3.12+-blue) |
@@ -498,12 +504,12 @@ SkySpy provides a comprehensive REST API with OpenAPI documentation:
 
 | Link | Description |
 |:-----|:------------|
-| 📥 [Installation Guide](./02-installation.md) | Detailed setup instructions |
-| ⚙️ [Configuration Reference](./03-configuration.md) | Environment variables and settings |
-| 🔗 [API Reference](./04-api-reference.md) | Complete API documentation |
-| 🔌 [WebSocket Protocol](./05-websocket.md) | Real-time streaming guide |
-| 🔔 [Alert Rules](./06-alerts.md) | Custom alert configuration |
-| 🔐 [Authentication](./07-authentication.md) | Auth modes and SSO setup |
+| 📥 [Quick Start](./quick-start) | Detailed setup instructions |
+| ⚙️ [Configuration Reference](./config-reference) | Environment variables and settings |
+| 🔗 [API Reference](../api-reference/rest-api) | Complete API documentation |
+| 🔌 [WebSocket Protocol](../api-reference/websocket-api) | Real-time streaming guide |
+| 🤖 [AI Assistant](../features/ai-assistant) | Natural-language queries over your data |
+| 🔐 [Authentication](../core-features/authentication) | Auth modes and SSO setup |
 
 <br/>
 

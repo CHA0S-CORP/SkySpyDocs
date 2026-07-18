@@ -557,15 +557,15 @@ curl http://localhost:8000/api/v1/system/status/
 
 | Guide | Description | Icon |
 |:------|:------------|:----:|
-| [📖 Configuration Guide](./01-configuration.md) | Complete environment variable reference | ⚙️ |
-| [🔐 Authentication](./02-authentication.md) | Set up user authentication and OIDC/SSO | 🔑 |
-| [🔔 Alerts & Notifications](./03-alerts.md) | Advanced alert rules and notification setup | 📬 |
-| [📡 API Reference](./04-api-reference.md) | Complete REST API documentation | 🔌 |
-| [⚡ WebSocket Guide](./05-websockets.md) | Real-time data streaming | 🌐 |
-| [📻 ACARS Integration](./06-acars.md) | Set up ACARS/VDL2 message decoding | 📡 |
-| [🎙️ Audio & Transcription](./07-audio.md) | Radio capture and AI transcription | 🔊 |
-| [🚀 Deployment](./08-deployment.md) | Production deployment best practices | ☁️ |
-| [🍓 Raspberry Pi](./09-raspberry-pi.md) | Optimized settings for Pi deployment | 💻 |
+| [📖 Configuration Guide](./config-reference) | Complete environment variable reference | ⚙️ |
+| [🔐 Authentication](../core-features/authentication) | Set up user authentication and OIDC/SSO | 🔑 |
+| [🔔 Alerts & Notifications](../features/safety-alerts) | Advanced alert rules and notification setup | 📬 |
+| [📡 API Reference](../api-reference/rest-api) | Complete REST API documentation | 🔌 |
+| [⚡ WebSocket Guide](../api-reference/websocket-api) | Real-time data streaming | 🌐 |
+| [📻 ACARS Integration](../features/acars) | Set up ACARS/VDL2 message decoding | 📡 |
+| [🎙️ Audio & Transcription](../api-reference/rest-api) | Radio capture and AI transcription | 🔊 |
+| [🚀 Deployment](../operations/deployment) | Production deployment best practices | ☁️ |
+| [🍓 Raspberry Pi](../operations/deployment) | Optimized settings for Pi deployment | 💻 |
 
 ---
 
@@ -616,7 +616,7 @@ curl http://localhost:8000/api/v1/system/status/
 
 > 📘 **Complete Reference**
 >
-> For the complete environment variable reference, see the [Configuration Guide](./01-configuration.md).
+> For the complete environment variable reference, see the [Configuration Guide](./config-reference).
 
 ---
 
@@ -624,7 +624,7 @@ curl http://localhost:8000/api/v1/system/status/
 
 | 🐛 Issues | 💭 Discussions | 📚 Documentation |
 |:---------:|:--------------:|:----------------:|
-| [GitHub Issues](https://github.com/your-org/skyspy/issues) | [GitHub Discussions](https://github.com/your-org/skyspy/discussions) | [Full Documentation](./README.md) |
+| [GitHub Issues](https://github.com/your-org/skyspy/issues) | [GitHub Discussions](https://github.com/your-org/skyspy/discussions) | [Full Documentation](./overview) |
 | Report bugs and request features | Ask questions and share ideas | Complete guides and references |
 
 ---

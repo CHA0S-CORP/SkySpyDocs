@@ -1249,6 +1249,6 @@ GET /api/v1/alerts/rules/metrics/
 
 ## Related Documentation
 
-- [WebSocket Integration Guide](./websocket-guide.md)
-- [API Authentication](./authentication.md)
-- [Deployment Guide](./deployment.md)
+- [WebSocket Integration Guide](../api-reference/websocket-api)
+- [API Authentication](../core-features/authentication)
+- [Deployment Guide](../operations/deployment)
